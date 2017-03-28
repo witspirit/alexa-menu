@@ -1,0 +1,6 @@
+WhatsForDinnerIntent what is for dinner
+WhatsForDinnerIntent what's for dinner
+WhatsForDinnerIntent what are we having
+WhatsForDinnerIntent dinner
+WhatsForDinnerIntent what do we eat
+

@@ -1,0 +1,10 @@
+{
+  "intents": [
+    {
+      "intent": "WhatsForDinnerIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    }
+  ]
+}
