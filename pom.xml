@@ -10,7 +10,7 @@
   <modules>
     <module>alexa-menu-skill</module>
   </modules>
-  
+
   <build>
     <pluginManagement>
       <plugins>
