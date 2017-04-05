@@ -15,6 +15,6 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
     }
 
     private static Set<String> supportedApplicationIds() {
-        return Collections.singleton("notyetset");
+        return Collections.singleton("amzn1.ask.skill.51d5e161-2205-44b0-a0ea-aaf646d40a1e");
     }
 }
