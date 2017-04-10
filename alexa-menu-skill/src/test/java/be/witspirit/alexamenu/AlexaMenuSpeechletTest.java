@@ -1,23 +1,16 @@
 package be.witspirit.alexamenu;
 
-import com.amazon.speech.json.SpeechletRequestEnvelope;
-import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.OutputSpeech;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit test for the AlexaMenuSpeechlet
@@ -65,16 +58,6 @@ class AlexaMenuSpeechletTest {
         assertThat(repromptSpeech.getText(), is("Welcome to the Menu skill, you can ask 'what's for dinner'"));
 
         assertThat(response.getShouldEndSession(), is(false));
-    }
-
-    @Test @Disabled
-    void onHelpIntent() {
-        Intent intent = mock(Intent.class);
-        when(intent.getName()).thenReturn("AMAZON.HelpIntent");
-        SpeechletRequestEnvelope<IntentRequest> envelope = mock(SpeechletRequestEnvelope.class);
-        when(envelope.getRequest().getIntent()).thenReturn(intent);
-        SpeechletResponse response = speechlet.onIntent(envelope);
-        assertNotNull(response);
     }
 
 }
