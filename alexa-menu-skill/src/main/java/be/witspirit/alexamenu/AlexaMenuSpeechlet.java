@@ -7,10 +7,19 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
 
+import java.time.LocalDate;
+
 /**
  * Handles the actual speech commands
  */
 public class AlexaMenuSpeechlet implements SpeechletV2 {
+
+    private MenuRepository menuRepository;
+
+    public AlexaMenuSpeechlet(MenuRepository menuRepository) {
+        this.menuRepository = menuRepository;
+    }
+
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
 
@@ -93,7 +102,7 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
      * @return SpeechletResponse spoken and visual response for the given intent
      */
     private SpeechletResponse getWhatsForDinnerResponse() {
-        String speechText = "We haven't decided yet";
+        String speechText = menuRepository.whatIsForDinner(LocalDate.now());
 
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();

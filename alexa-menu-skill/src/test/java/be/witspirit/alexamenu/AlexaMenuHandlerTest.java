@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -26,14 +27,14 @@ public class AlexaMenuHandlerTest {
     void whatsForDinner() throws IOException {
         DocumentContext json = request("whatsfordinner");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("We haven't decided yet"));
+        assertThat(json.read("$.response.outputSpeech.text"), is("Test Recipe"));
     }
 
     private DocumentContext request(String requestName) throws IOException {
         try (FileInputStream requestStream = new FileInputStream("src/test/resources/requests/"+requestName+".json");
              ByteArrayOutputStream responseStream = new ByteArrayOutputStream();) {
 
-            AlexaMenuHandler handler = new AlexaMenuHandler();
+            AlexaMenuHandler handler = new AlexaMenuHandler(new TestMenuRepository());
             handler.handleRequest(requestStream, responseStream, null);
 
             DocumentContext json = JsonPath.parse(responseStream.toString());
@@ -41,6 +42,14 @@ public class AlexaMenuHandlerTest {
             System.out.println(json.jsonString());
 
             return json;
+        }
+    }
+
+    private static class TestMenuRepository implements MenuRepository {
+
+        @Override
+        public String whatIsForDinner(LocalDate date) {
+            return "Test Recipe";
         }
     }
 }

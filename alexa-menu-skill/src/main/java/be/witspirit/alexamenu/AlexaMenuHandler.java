@@ -10,8 +10,13 @@ import java.util.Set;
  */
 public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
 
+    // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        super(new AlexaMenuSpeechlet(), supportedApplicationIds());
+        this(new FixedMenuRepository());
+    }
+
+    public AlexaMenuHandler(MenuRepository menuRepository) {
+        super(new AlexaMenuSpeechlet(menuRepository), supportedApplicationIds());
     }
 
     private static Set<String> supportedApplicationIds() {

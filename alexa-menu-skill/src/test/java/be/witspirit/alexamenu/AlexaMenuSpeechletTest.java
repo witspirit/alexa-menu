@@ -21,7 +21,7 @@ class AlexaMenuSpeechletTest {
 
     @BeforeEach
     void createSpeechletAndStart() {
-        speechlet = new AlexaMenuSpeechlet();
+        speechlet = new AlexaMenuSpeechlet(new MapMenuRepository());
         // Don't need the request envelope at the moment
         speechlet.onSessionStarted(null);
     }
