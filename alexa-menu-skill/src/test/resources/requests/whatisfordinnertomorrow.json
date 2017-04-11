@@ -1,0 +1,24 @@
+{
+  "session": {
+    "sessionId": "SessionId.fa4e24ad-283a-46fa-85f0-f19c8e0c73bc",
+    "application": {
+      "applicationId": "amzn1.ask.skill.51d5e161-2205-44b0-a0ea-aaf646d40a1e"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI"
+    },
+    "new": true
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.efe1d47c-02f2-44c9-8a84-a6c8cf7a992b",
+    "locale": "en-US",
+    "timestamp": "2017-04-11T18:31:06Z",
+    "intent": {
+      "name": "WhatsForDinnerTomorrowIntent",
+      "slots": {}
+    }
+  },
+  "version": "1.0"
+}

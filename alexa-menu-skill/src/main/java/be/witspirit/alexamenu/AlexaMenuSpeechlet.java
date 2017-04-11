@@ -36,11 +36,13 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
         String intentName = (intent != null) ? intent.getName() : null;
 
         if ("WhatsForDinnerIntent".equals(intentName)) {
-            return getWhatsForDinnerResponse();
+            return getWhatsForDinnerResponse(LocalDate.now());
+        } else if ("WhatsForDinnerTomorrowIntent".equals(intentName)) {
+            return getWhatsForDinnerResponse(LocalDate.now().plusDays(1));
         } else if ("AMAZON.HelpIntent".equals(intentName)) {
             return getHelpResponse();
         }
-        return null;
+        return getHelpResponse();
     }
 
 
@@ -101,8 +103,8 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
      *
      * @return SpeechletResponse spoken and visual response for the given intent
      */
-    private SpeechletResponse getWhatsForDinnerResponse() {
-        String speechText = menuRepository.whatIsForDinner(LocalDate.now());
+    private SpeechletResponse getWhatsForDinnerResponse(LocalDate date) {
+        String speechText = menuRepository.whatIsForDinner(date);
 
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();

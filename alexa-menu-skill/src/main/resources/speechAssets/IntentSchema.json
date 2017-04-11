@@ -4,6 +4,9 @@
       "intent": "WhatsForDinnerIntent"
     },
     {
+      "intent": "WhatsForDinnerTomorrowIntent"
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     }
   ]

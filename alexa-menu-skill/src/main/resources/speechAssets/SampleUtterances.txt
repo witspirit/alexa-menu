@@ -4,3 +4,8 @@ WhatsForDinnerIntent what are we having
 WhatsForDinnerIntent dinner
 WhatsForDinnerIntent what do we eat
 
+WhatsForDinnerTomorrowIntent what is for dinner tomorrow
+WhatsForDinnerTomorrowIntent what's for dinner tomorrow
+WhatsForDinnerTomorrowIntent tomorrow
+
+

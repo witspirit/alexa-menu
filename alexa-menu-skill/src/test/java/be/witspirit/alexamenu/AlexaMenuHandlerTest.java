@@ -27,7 +27,14 @@ public class AlexaMenuHandlerTest {
     void whatsForDinner() throws IOException {
         DocumentContext json = request("whatsfordinner");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Test Recipe"));
+        assertThat(json.read("$.response.outputSpeech.text"), is("Today's Recipe"));
+    }
+
+    @Test
+    void whatIsForDinnerTomorrow() throws IOException {
+        DocumentContext json = request("whatisfordinnertomorrow");
+
+        assertThat(json.read("$.response.outputSpeech.text"), is("Tomorrow's Recipe"));
     }
 
     private DocumentContext request(String requestName) throws IOException {
@@ -49,7 +56,12 @@ public class AlexaMenuHandlerTest {
 
         @Override
         public String whatIsForDinner(LocalDate date) {
-            return "Test Recipe";
+            if (date.equals(LocalDate.now())) {
+                return "Today's Recipe";
+            } else if (date.equals(LocalDate.now().plusDays(1))) {
+                return "Tomorrow's Recipe";
+            }
+            return "We haven't decided yet";
         }
     }
 }
