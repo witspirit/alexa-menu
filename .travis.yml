@@ -5,7 +5,7 @@ deploy:
   provider: releases
   api_key:
     secure: Y2TBAKh0mrzfQKiOrSeuEtaAUZWCwz+XOZD7xLiBa7VgTFJscNTzTj/DR1yzGBzqX567qubUfBCN9/jRHB7GoYf2FNQVW92Fpk5higz+X0PAxYUsNkfTt8GhoLPHvk640wx5nToeriLRrfgB8pXDM8fvvHlgV1sGSRMQOxwzw1qWrXBhv9euUE68ZoN1sK+xyE22ewGSz2l7pMVh2DGu92s161ilIr3RTcR8l22tx5CkJY7/fja4BumGfzhDLMr+Oiq8obJO6UAP7kZhzPfc9mc/HWwqslCuLRWASQNcUOVqpKux4e5onWpKWajaFWVsuUbAgWhzto9lG86FM/WgjDw/hLNrDBxpdXPslN9R4JfYiUf7716cPtwO9gZLmOGV1MLaC1cM+0mAICoXjTSAa1SFaF3Chtpwv0uiQiOZYlhqpaxYqxOCiAwURL1U4E+SG9WZaiN1LU0ZZpXdEUT/0halA+CzX4bdr3W/ZrnJU+o6muYvCfSxtFHB4J3lQgJ3ahKi1SKbshJTIS8nl6CiZX3z+6ovfiy9C4pUk1MxMNuX37oBliWMhqUG4LGyo0kvO1a5b/TfOXAi2U4jpIEqRJBVZMG3QIE17MupJpoH0PwZ8ILr5C5aRtpAtGcTF6xDdbw8v8WJEmTF/gU4vnTOTIJ1z8hWgiiZR76XrttaSCI=
-  file: "/alexa-menu-skill/target/alexa-menu-skill-*.jar"
+  file: /alexa-menu-skill/target/alexa-menu-skill-*.jar
   file_glob: true
   skip_cleanup: true
   on:
