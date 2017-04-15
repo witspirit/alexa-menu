@@ -17,6 +17,7 @@ deploy:
   role: arn:aws:iam::138759191763:role/service-role/AlexaMenuSkillRole
   runtime: java8
   handler_name: be.witspirit.alexamenu.AlexaMenuHandler
+  zip: alexa-menu-skill/target/alexa-menu-skill-${TRAVIS-TAG}-jar-with-dependencies.jar
   access_key_id: AKIAI3XGM2S2K2A6SKZQ
   secret_access_key:
     secure: pjolROtMmHFBY97fSNNROBE1Wr919+GsOjDNd/e66pRkQ8Uu6Vy9BBEPG4ApmhM8KjiQoB7+5oVA5Qy7TXe1kQVPpj6vPK62Oi85YH2AYULO4VnB1ZAiIWJdcpJt4ijWLOYLd4Ll5avwtWZbuQka6oB1iscu2OGWS1K8/ouDMj7E8uQlbGzSCRG+NcAzpjeqXTY1rlA46R+e/PHCXb25jQ3REQm4IKn6MtyWotAd1FVo3G4miFmtfzuV0OsTTWEwANcDayYYeAuaPdAK/+cE9rsi3RPBPhC+XQUUNSXsKW/567CFB4L6WYfnE/VDUHNlr6BMHZiP8nz3W1Y2KDBuFXPm7Wkgwr6n8gEPx2G+NjWp21IBa02PT/0HNFwYYMjmdNrSaFNEdMiaWwg+kwgy8IGoQ2fbZTbtDC54VeEL03YGllVUQu8IUo3XDLBSmbFYMh2e+3Cohk4ozc2EXUY9IS9demyGQDc9BtuoKDGS5UVwCFTnfWYeL6W/874bDdzrkvrT2KVdj9iiAHh9S3j9oBNiwmI19/SVoybWbOKbUzrioRM8EJQwWYHHoEVpxdeRCR0i27cTrM4WtiKL285VBB7id5S+9UqmL7D1v1tMF5ofE4JWglNUUGG0n2griX61M0oqchZPWqesNbJs34CpGmmkr1JmUPDCwrqy9kJf6wc=
