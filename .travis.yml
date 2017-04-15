@@ -2,12 +2,24 @@ language: java
 jdk:
 - oraclejdk8
 deploy:
-  provider: releases
+- provider: releases
   api_key:
     secure: Y2TBAKh0mrzfQKiOrSeuEtaAUZWCwz+XOZD7xLiBa7VgTFJscNTzTj/DR1yzGBzqX567qubUfBCN9/jRHB7GoYf2FNQVW92Fpk5higz+X0PAxYUsNkfTt8GhoLPHvk640wx5nToeriLRrfgB8pXDM8fvvHlgV1sGSRMQOxwzw1qWrXBhv9euUE68ZoN1sK+xyE22ewGSz2l7pMVh2DGu92s161ilIr3RTcR8l22tx5CkJY7/fja4BumGfzhDLMr+Oiq8obJO6UAP7kZhzPfc9mc/HWwqslCuLRWASQNcUOVqpKux4e5onWpKWajaFWVsuUbAgWhzto9lG86FM/WgjDw/hLNrDBxpdXPslN9R4JfYiUf7716cPtwO9gZLmOGV1MLaC1cM+0mAICoXjTSAa1SFaF3Chtpwv0uiQiOZYlhqpaxYqxOCiAwURL1U4E+SG9WZaiN1LU0ZZpXdEUT/0halA+CzX4bdr3W/ZrnJU+o6muYvCfSxtFHB4J3lQgJ3ahKi1SKbshJTIS8nl6CiZX3z+6ovfiy9C4pUk1MxMNuX37oBliWMhqUG4LGyo0kvO1a5b/TfOXAi2U4jpIEqRJBVZMG3QIE17MupJpoH0PwZ8ILr5C5aRtpAtGcTF6xDdbw8v8WJEmTF/gU4vnTOTIJ1z8hWgiiZR76XrttaSCI=
   file: alexa-menu-skill/target/alexa-menu-skill-*.jar
   file_glob: true
   skip_cleanup: true
+  on:
+    repo: witspirit/alexa-menu
+    tags: true
+- provider: lambda
+  function_name: alexa-menu-skill
+  region: eu-west-1
+  role: arn:aws:iam::138759191763:role/service-role/AlexaMenuSkillRole
+  runtime: java8
+  handler_name: be.witspirit.alexamenu.AlexaMenuHandler
+  access_key_id: AKIAI3XGM2S2K2A6SKZQ
+  secret_access_key:
+    secure: pjolROtMmHFBY97fSNNROBE1Wr919+GsOjDNd/e66pRkQ8Uu6Vy9BBEPG4ApmhM8KjiQoB7+5oVA5Qy7TXe1kQVPpj6vPK62Oi85YH2AYULO4VnB1ZAiIWJdcpJt4ijWLOYLd4Ll5avwtWZbuQka6oB1iscu2OGWS1K8/ouDMj7E8uQlbGzSCRG+NcAzpjeqXTY1rlA46R+e/PHCXb25jQ3REQm4IKn6MtyWotAd1FVo3G4miFmtfzuV0OsTTWEwANcDayYYeAuaPdAK/+cE9rsi3RPBPhC+XQUUNSXsKW/567CFB4L6WYfnE/VDUHNlr6BMHZiP8nz3W1Y2KDBuFXPm7Wkgwr6n8gEPx2G+NjWp21IBa02PT/0HNFwYYMjmdNrSaFNEdMiaWwg+kwgy8IGoQ2fbZTbtDC54VeEL03YGllVUQu8IUo3XDLBSmbFYMh2e+3Cohk4ozc2EXUY9IS9demyGQDc9BtuoKDGS5UVwCFTnfWYeL6W/874bDdzrkvrT2KVdj9iiAHh9S3j9oBNiwmI19/SVoybWbOKbUzrioRM8EJQwWYHHoEVpxdeRCR0i27cTrM4WtiKL285VBB7id5S+9UqmL7D1v1tMF5ofE4JWglNUUGG0n2griX61M0oqchZPWqesNbJs34CpGmmkr1JmUPDCwrqy9kJf6wc=
   on:
     repo: witspirit/alexa-menu
     tags: true
