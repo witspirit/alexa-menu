@@ -55,9 +55,9 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/descriptors/lambda.xml</descriptor>
+                    </descriptors>
                 </configuration>
                 <executions>
                     <execution>
