@@ -1,6 +1,13 @@
 language: java
 jdk:
 - oraclejdk8
+env:
+  global:
+  - AWS_ACCESS_KEY_ID=AKIAI3XGM2S2K2A6SKZQ
+  - AWS_DEFAULT_REGION=eu-west-1
+  - secure: QUAs90MSfHfGVohTY0Lj9oWQN9RoohHwEJIvqzzM0f6YX05CJGuYKv9yUJB/VILlvRb5Qk9wWthyp+gtYb35b7zQezSzpfj55qbQHmz5fJDeuF0xMvrX8GLV5Uix2HVkXmTmrfU2iGe4jujUaHzgUVh63JJan96e1eTqYnGj4x1RS9D2wTsJZzYzFNyk1sxltZK/51s0mr48/Rso/MG6JYktPHhU3B0GmXdq8pwQuO//1+obbJMkZcKNb4+LeqysPDVT+P150L5mc+MLu+MOcAhEQAG0KIwuXxfKiR6oF/0D6ViGMTIOiBcihQvFwR4wLJXV9HnthwOfXq8S5NocN5kXuifaX3GoSsx8I4KF9tpXxUMuYCwazCpEuWVpvoL7zNx1jShggUbOPoCY5bLrr+L3JGqFVB9LYLWyoC+rF/+DH+enhXLStct82usADvENCXDURXtMmT5AaPvUsrTC2c3YUd09g5gVOp2JwDDfZCr6bHzYxG+y+UqcVv2yPjNIczZcdhNYf1qZBLqsxwWTL41gjgKnNDks2re9AQY+13oZgFiscGEILsW3w8oBkfEjJoA12gxTLepmuGiziO4zgjnZGsYmtISKlDLafWQW6FFJYHKTvE47dVgM0xmpn1L6A5LgSGztQJ3q6AW+HkkqvOcd+yKBSekK0eV7wOh7pPU=
+before_install:
+- pip install --upgrade --user awscli
 deploy:
 - provider: releases
   api_key:
@@ -11,17 +18,9 @@ deploy:
   on:
     repo: witspirit/alexa-menu
     tags: true
-- provider: lambda
-  function_name: alexa-menu-skill
-  region: eu-west-1
-  role: arn:aws:iam::138759191763:role/service-role/AlexaMenuSkillRole
-  runtime: java8
-  module_name: be.witspirit.alexamenu
-  handler_name: AlexaMenuHandler
-  zip: fileb://./alexa-menu-skill/target/alexa-menu-skill-${TRAVIS-TAG}-jar-with-dependencies.jar
-  access_key_id: AKIAI3XGM2S2K2A6SKZQ
-  secret_access_key:
-    secure: pjolROtMmHFBY97fSNNROBE1Wr919+GsOjDNd/e66pRkQ8Uu6Vy9BBEPG4ApmhM8KjiQoB7+5oVA5Qy7TXe1kQVPpj6vPK62Oi85YH2AYULO4VnB1ZAiIWJdcpJt4ijWLOYLd4Ll5avwtWZbuQka6oB1iscu2OGWS1K8/ouDMj7E8uQlbGzSCRG+NcAzpjeqXTY1rlA46R+e/PHCXb25jQ3REQm4IKn6MtyWotAd1FVo3G4miFmtfzuV0OsTTWEwANcDayYYeAuaPdAK/+cE9rsi3RPBPhC+XQUUNSXsKW/567CFB4L6WYfnE/VDUHNlr6BMHZiP8nz3W1Y2KDBuFXPm7Wkgwr6n8gEPx2G+NjWp21IBa02PT/0HNFwYYMjmdNrSaFNEdMiaWwg+kwgy8IGoQ2fbZTbtDC54VeEL03YGllVUQu8IUo3XDLBSmbFYMh2e+3Cohk4ozc2EXUY9IS9demyGQDc9BtuoKDGS5UVwCFTnfWYeL6W/874bDdzrkvrT2KVdj9iiAHh9S3j9oBNiwmI19/SVoybWbOKbUzrioRM8EJQwWYHHoEVpxdeRCR0i27cTrM4WtiKL285VBB7id5S+9UqmL7D1v1tMF5ofE4JWglNUUGG0n2griX61M0oqchZPWqesNbJs34CpGmmkr1JmUPDCwrqy9kJf6wc=
+- provider: script
+  script: devops/scripts/update_lambda.sh ${TRAVIS_TAG}
   on:
     repo: witspirit/alexa-menu
     tags: true
+
