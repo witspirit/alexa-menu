@@ -16,8 +16,8 @@ deploy:
   region: eu-west-1
   role: arn:aws:iam::138759191763:role/service-role/AlexaMenuSkillRole
   runtime: java8
-  module_name:
-  handler_name: be.witspirit.alexamenu.AlexaMenuHandler
+  module_name: be.witspirit.alexamenu
+  handler_name: AlexaMenuHandler
   zip: fileb://./alexa-menu-skill/target/alexa-menu-skill-${TRAVIS-TAG}-jar-with-dependencies.jar
   access_key_id: AKIAI3XGM2S2K2A6SKZQ
   secret_access_key:
