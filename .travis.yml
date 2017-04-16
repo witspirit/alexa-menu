@@ -19,6 +19,7 @@ deploy:
     repo: witspirit/alexa-menu
     tags: true
 - provider: script
+  skip_cleanup: true
   script: devops/scripts/update_lambda.sh ${TRAVIS_TAG}
   on:
     repo: witspirit/alexa-menu
