@@ -3,12 +3,12 @@ set RELVERSION=%1
 set NEWDEVVERSION=%2
 
 echo Preparing release version: %RELVERSION%
-call mvn versions:set -DnewVersion=%RELVERSION%
+call mvn versions:set -DnewVersion=%RELVERSION% -DgenerateBackupPoms=false
 call git commit -a -m "Setting release version to %RELVERSION%"
 call git tag %RELVERSION%
 
 echo Preparing next development version: %NEWDEVVERSION%
-call mvn versions:set -DnewVersion=%NEWDEVVERSION%
+call mvn versions:set -DnewVersion=%NEWDEVVERSION% -DgenerateBackupPoms=false
 call git commit -a -m "Setting next development version to %NEWDEVVERSION%"
 
 REM call git push
