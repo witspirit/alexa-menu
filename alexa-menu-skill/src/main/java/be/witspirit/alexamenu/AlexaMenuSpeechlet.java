@@ -41,7 +41,9 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
         Intent intent = requestEnvelope.getRequest().getIntent();
         String intentName = (intent != null) ? intent.getName() : null;
 
-        LOG.info("Resolving intent '{}'", intentName);
+        String userId = requestEnvelope.getSession().getUser().getUserId();
+
+        LOG.info("Resolving intent '{}' for user '{}'", intentName, userId);
 
         switch (intentName) {
             case "WhatsForDinnerIntent" : return dinner(LocalDate.now());

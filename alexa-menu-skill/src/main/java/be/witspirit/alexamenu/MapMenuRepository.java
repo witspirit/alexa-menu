@@ -13,7 +13,7 @@ public class MapMenuRepository implements MenuRepository {
     private Map<LocalDate, String> menu = new HashMap<>();;
 
     @Override
-    public String whatIsForDinner(LocalDate date) {
+    public String whatIsForDinner(String userId, LocalDate date) {
         return menu.getOrDefault(date, "We haven't decided yet");
     }
 

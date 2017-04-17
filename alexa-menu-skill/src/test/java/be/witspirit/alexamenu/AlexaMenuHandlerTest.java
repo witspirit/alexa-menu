@@ -55,7 +55,7 @@ public class AlexaMenuHandlerTest {
     private static class TestMenuRepository implements MenuRepository {
 
         @Override
-        public String whatIsForDinner(LocalDate date) {
+        public String whatIsForDinner(String userId, LocalDate date) {
             if (date.equals(LocalDate.now())) {
                 return "Today's Recipe";
             } else if (date.equals(LocalDate.now().plusDays(1))) {

@@ -7,5 +7,5 @@ import java.time.LocalDate;
  */
 public interface MenuRepository {
 
-    String whatIsForDinner(LocalDate date);
+    String whatIsForDinner(String userId, LocalDate date);
 }
