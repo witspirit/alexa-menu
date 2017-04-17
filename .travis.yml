@@ -6,6 +6,12 @@ env:
   - AWS_ACCESS_KEY_ID=AKIAI3XGM2S2K2A6SKZQ
   - AWS_DEFAULT_REGION=eu-west-1
   - secure: QUAs90MSfHfGVohTY0Lj9oWQN9RoohHwEJIvqzzM0f6YX05CJGuYKv9yUJB/VILlvRb5Qk9wWthyp+gtYb35b7zQezSzpfj55qbQHmz5fJDeuF0xMvrX8GLV5Uix2HVkXmTmrfU2iGe4jujUaHzgUVh63JJan96e1eTqYnGj4x1RS9D2wTsJZzYzFNyk1sxltZK/51s0mr48/Rso/MG6JYktPHhU3B0GmXdq8pwQuO//1+obbJMkZcKNb4+LeqysPDVT+P150L5mc+MLu+MOcAhEQAG0KIwuXxfKiR6oF/0D6ViGMTIOiBcihQvFwR4wLJXV9HnthwOfXq8S5NocN5kXuifaX3GoSsx8I4KF9tpXxUMuYCwazCpEuWVpvoL7zNx1jShggUbOPoCY5bLrr+L3JGqFVB9LYLWyoC+rF/+DH+enhXLStct82usADvENCXDURXtMmT5AaPvUsrTC2c3YUd09g5gVOp2JwDDfZCr6bHzYxG+y+UqcVv2yPjNIczZcdhNYf1qZBLqsxwWTL41gjgKnNDks2re9AQY+13oZgFiscGEILsW3w8oBkfEjJoA12gxTLepmuGiziO4zgjnZGsYmtISKlDLafWQW6FFJYHKTvE47dVgM0xmpn1L6A5LgSGztQJ3q6AW+HkkqvOcd+yKBSekK0eV7wOh7pPU=
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.cache/pip
+before_cache:
+  - rm -f $HOME/.cache/pip/log/debug.log
 before_install:
 - pip install --upgrade --user awscli
 deploy:
