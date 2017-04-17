@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
+import com.amazonaws.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +49,12 @@ public class DynamoDBMenuRepository implements MenuRepository {
             // Exactly what we expect if an entry is available
             AttributeValue dinner = queryResult.getItems().get(0).get("dinner");
             if (dinner != null) {
-                LOG.debug("{}-{} -> {}", userId, dateKey, dinner);
-                return dinner.getS();
+                if (!StringUtils.isNullOrEmpty(dinner.getS())) {
+                    LOG.debug("{}-{} -> {}", userId, dateKey, dinner);
+                    return dinner.getS();
+                } else {
+                    LOG.warn("Found an empty dinner value for {}-{}", userId, dateKey);
+                }
             } else {
                 LOG.error("Found an entry for {}-{}, but din't contain a {} attribute", userId, dateKey, "dinner");
             }
