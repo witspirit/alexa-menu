@@ -46,16 +46,16 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
         LOG.info("Resolving intent '{}' for user '{}'", intentName, userId);
 
         switch (intentName) {
-            case "WhatsForDinnerIntent" : return dinner(LocalDate.now());
-            case "WhatsForDinnerTomorrowIntent" : return dinner(LocalDate.now().plusDays(1));
+            case "WhatsForDinnerIntent" : return dinner(userId, LocalDate.now());
+            case "WhatsForDinnerTomorrowIntent" : return dinner(userId, LocalDate.now().plusDays(1));
             case "AMAZON.HelpIntent" :
             default: return menuResponses.help();
         }
     }
 
-    private SpeechletResponse dinner(LocalDate date) {
+    private SpeechletResponse dinner(String userId, LocalDate date) {
         LOG.info("Producing dinner response for {}", date);
-        return menuResponses.dinner(date, menuRepository.whatIsForDinner(date));
+        return menuResponses.dinner(date, menuRepository.whatIsForDinner(userId, date));
     }
 
 

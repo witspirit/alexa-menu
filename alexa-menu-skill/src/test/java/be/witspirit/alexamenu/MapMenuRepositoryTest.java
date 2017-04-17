@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.is;
  */
 public class MapMenuRepositoryTest {
 
+    private static final String DUMMY_USER = "dummyUserId";
+
     private MapMenuRepository menu;
 
     @BeforeEach
@@ -23,18 +25,18 @@ public class MapMenuRepositoryTest {
     @Test
     void localDate() {
         menu.set(LocalDate.of(2017,04,10), "Test");
-        assertThat(menu.whatIsForDinner(LocalDate.of(2017,04,10)), is("Test"));
+        assertThat(menu.whatIsForDinner(DUMMY_USER, LocalDate.of(2017,04,10)), is("Test"));
     }
 
     @Test
     void integerDate() {
         menu.set(2017,04,10, "Test");
-        assertThat(menu.whatIsForDinner(LocalDate.of(2017,04,10)), is("Test"));
+        assertThat(menu.whatIsForDinner(DUMMY_USER, LocalDate.of(2017,04,10)), is("Test"));
     }
 
     @Test
     void textDate() {
         menu.set("20170410", "Test");
-        assertThat(menu.whatIsForDinner(LocalDate.of(2017, 04, 10)), is("Test"));
+        assertThat(menu.whatIsForDinner(DUMMY_USER, LocalDate.of(2017, 04, 10)), is("Test"));
     }
 }
