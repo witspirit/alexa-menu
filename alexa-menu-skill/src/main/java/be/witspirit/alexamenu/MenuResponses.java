@@ -4,6 +4,8 @@ import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
@@ -11,6 +13,7 @@ import java.time.LocalDate;
  * Groups our responses
  */
 public class MenuResponses {
+    private static final Logger LOG = LoggerFactory.getLogger(MenuResponses.class);
 
     /**
      * Creates and returns a {@code SpeechletResponse} with a welcome message.
@@ -44,6 +47,7 @@ public class MenuResponses {
         Reprompt reprompt = new Reprompt();
         reprompt.setOutputSpeech(speech);
 
+        LOG.debug("Reprompt response with message '{}'", speechText);
         return SpeechletResponse.newAskResponse(speech, reprompt, card);
     }
 
@@ -67,6 +71,7 @@ public class MenuResponses {
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText(speechText);
 
+        LOG.debug("Tell response with message '{}'", speechText);
         return SpeechletResponse.newTellResponse(speech, card);
     }
 }
