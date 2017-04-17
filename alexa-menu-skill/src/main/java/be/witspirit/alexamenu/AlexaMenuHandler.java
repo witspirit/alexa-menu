@@ -12,7 +12,7 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
 
     // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        this(new FixedMenuRepository());
+        this(new DynamoDBMenuRepository());
     }
 
     public AlexaMenuHandler(MenuRepository menuRepository) {
