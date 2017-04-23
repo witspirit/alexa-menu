@@ -68,6 +68,17 @@ public class DynamoDbExperimenter {
         set("20170421", "Spaghetti");
     }
 
+    @Test
+    void writeMenuWeekApril22() {
+        set("20170422", "Sandwiches");
+        set("20170423", "Soep met balletjes");
+        set("20170424", "Pragerschnitzel");
+        set("20170425", "Biefstuk - Frietjes");
+        set("20170426", "Croques");
+        set("20170427", "Groen patatjes met worst");
+        set("20170428", "Spaghetti");
+    }
+
     private void set(String date, String dinner) {
         Map<String, AttributeValue> itemValues = new LinkedHashMap<>();
         itemValues.put("userId", new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI"));
