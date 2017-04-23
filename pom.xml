@@ -165,13 +165,14 @@
 
                     <execution>
                         <id>default-report</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <!-- I think this is going to break when we have more modules... -->
-                            <outputDirectory>../shippable/codecoverage</outputDirectory>
-                        </configuration>
+                        <!--<configuration>-->
+                            <!--&lt;!&ndash; I think this is going to break when we have more modules... &ndash;&gt;-->
+                            <!--<outputDirectory>../shippable/codecoverage</outputDirectory>-->
+                        <!--</configuration>-->
                     </execution>
 
                 </executions>
