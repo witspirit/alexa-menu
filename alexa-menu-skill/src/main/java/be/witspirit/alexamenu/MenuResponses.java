@@ -1,6 +1,7 @@
 package be.witspirit.alexamenu;
 
 import com.amazon.speech.speechlet.SpeechletResponse;
+import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
@@ -73,5 +74,17 @@ public class MenuResponses {
 
         LOG.debug("Tell response with message '{}'", speechText);
         return SpeechletResponse.newTellResponse(speech, card);
+    }
+
+    public SpeechletResponse linkAccount() {
+        SpeechletResponse linkAccount = tell("Please link an Amazon account to get your personal menu storage");
+        LinkAccountCard accountCard = new LinkAccountCard();
+        accountCard.setTitle("Menu");
+        linkAccount.setCard(accountCard);
+        return linkAccount;
+    }
+
+    public SpeechletResponse profile(String name, String email, String userId) {
+        return tell("Hi "+name+". We can reach you on "+email+" and will identify you using userId "+userId);
     }
 }

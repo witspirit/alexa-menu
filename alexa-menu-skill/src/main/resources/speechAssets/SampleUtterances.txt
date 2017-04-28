@@ -12,3 +12,6 @@ WhatsForDinnerTomorrowIntent what's for dinner tomorrow
 WhatsForDinnerTomorrowIntent tomorrow
 
 
+LinkExperimentIntent e-mail
+LinkExperimentIntent link test
+LinkExperimentIntent profile

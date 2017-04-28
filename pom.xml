@@ -11,8 +11,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- JUnit 5 Versions -->
-        <junit.version>5.0.0-M3</junit.version>
-        <junit.platform.surefire.version>1.0.0-M3</junit.platform.surefire.version>
+        <junit.version>5.0.0-M4</junit.version>
+        <junit.platform.surefire.version>1.0.0-M4</junit.platform.surefire.version>
+
+        <httpcomponents.version>4.5.3</httpcomponents.version>
 
     </properties>
 
@@ -59,6 +61,18 @@
                 <artifactId>aws-java-sdk-dynamodb</artifactId>
                 <version>1.9.40</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>fluent-hc</artifactId>
+                <version>${httpcomponents.version}</version>
+            </dependency>
+
 
 
             <dependency>
