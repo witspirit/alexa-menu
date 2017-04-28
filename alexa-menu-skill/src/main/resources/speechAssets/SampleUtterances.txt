@@ -15,3 +15,10 @@ WhatsForDinnerTomorrowIntent tomorrow
 LinkExperimentIntent e-mail
 LinkExperimentIntent link test
 LinkExperimentIntent profile
+LinkExperimentIntent for my profile
+LinkExperimentIntent for my account
+LinkExperimentIntent for my info
+LinkExperimentIntent for my e-mail
+LinkExperimentIntent what is my profile
+LinkExperimentIntent what's my profile
+
