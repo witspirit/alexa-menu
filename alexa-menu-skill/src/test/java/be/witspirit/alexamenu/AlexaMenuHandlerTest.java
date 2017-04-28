@@ -45,11 +45,18 @@ public class AlexaMenuHandlerTest {
         assertThat(json.read("$.response.outputSpeech.text"), is("Please link an Amazon account to get your personal menu storage"));
     }
 
+    @Test
+    void profileValidToken() throws IOException {
+        DocumentContext json = request("profile_with_valid_token");
+
+        assertThat(json.read("$.response.outputSpeech.text"), is("Hi Tet User. We can reach you on test.user@example.com and will identify you using userId amzn1.account.TESTACCOUNTID"));
+    }
+
     private DocumentContext request(String requestName) throws IOException {
         try (FileInputStream requestStream = new FileInputStream("src/test/resources/requests/"+requestName+".json");
              ByteArrayOutputStream responseStream = new ByteArrayOutputStream();) {
 
-            AlexaMenuHandler handler = new AlexaMenuHandler(new TestMenuRepository());
+            AlexaMenuHandler handler = new AlexaMenuHandler(new TestMenuRepository(), new TestProfileService());
             handler.handleRequest(requestStream, responseStream, null);
 
             DocumentContext json = JsonPath.parse(responseStream.toString());
@@ -70,6 +77,23 @@ public class AlexaMenuHandlerTest {
                 return "Tomorrow's Recipe";
             }
             return "We haven't decided yet";
+        }
+    }
+
+    private static class TestProfileService implements ProfileService {
+
+        @Override
+        public AmazonProfile getProfile(String accessToken) {
+            if (accessToken.equals("ValidToken")) {
+                AmazonProfile profile = new AmazonProfile();
+                profile.setName("Tet User");
+                profile.setEmail("test.user@example.com");
+                profile.setUserId("amzn1.account.TESTACCOUNTID");
+
+                return profile;
+
+            }
+            return null;
         }
     }
 }

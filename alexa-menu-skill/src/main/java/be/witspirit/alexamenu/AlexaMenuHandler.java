@@ -12,11 +12,11 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
 
     // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        this(new DynamoDBMenuRepository());
+        this(new DynamoDBMenuRepository(), new AmazonProfileService());
     }
 
-    public AlexaMenuHandler(MenuRepository menuRepository) {
-        super(new AlexaMenuSpeechlet(menuRepository), supportedApplicationIds());
+    public AlexaMenuHandler(MenuRepository menuRepository, ProfileService profileService) {
+        super(new AlexaMenuSpeechlet(menuRepository, profileService), supportedApplicationIds());
     }
 
     private static Set<String> supportedApplicationIds() {

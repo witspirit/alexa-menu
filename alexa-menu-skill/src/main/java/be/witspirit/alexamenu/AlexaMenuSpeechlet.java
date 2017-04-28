@@ -23,12 +23,14 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
 
     private final MenuResponses menuResponses;
     private final MenuRepository menuRepository;
+    private final ProfileService profileService;
 
 
-    public AlexaMenuSpeechlet(MenuRepository menuRepository) {
+    public AlexaMenuSpeechlet(MenuRepository menuRepository, ProfileService profileService) {
         LOG.trace("AlexaMenuSpeechlet - Construction");
         this.menuResponses = new MenuResponses();
         this.menuRepository = menuRepository;
+        this.profileService = profileService;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
     public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
         LOG.trace("onIntent");
         Intent intent = requestEnvelope.getRequest().getIntent();
-        String intentName = (intent != null) ? intent.getName() : null;
+        String intentName = (intent != null) ? intent.getName() : "-NoIntentMatch-"; // Not working with null to avoid issues in the switch
 
         String userId = requestEnvelope.getSession().getUser().getUserId();
 
@@ -66,27 +68,13 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
     }
 
     private SpeechletResponse profile(String accessToken) {
+        LOG.debug("Access Token : {}", accessToken);
         if (accessToken == null) {
             return menuResponses.linkAccount();
         }
-        try {
 
-            Content profileResponse = Request.Get("https://api.amazon.com/user/profile")
-                    .addHeader("Authorization", "bearer " + accessToken)
-                    .execute()
-                    .returnContent();
-
-            LOG.info("Received profile: {}", profileResponse.toString());
-
-
-            AmazonProfile amazonProfile = new ObjectMapper().readValue(profileResponse.toString(), AmazonProfile.class);
-            return menuResponses.profile(amazonProfile);
-
-        } catch (IOException e) {
-            // Not yet sure what to do with this...
-            e.printStackTrace();
-            return null;
-        }
+        AmazonProfile amazonProfile = profileService.getProfile(accessToken);
+        return menuResponses.profile(amazonProfile);
     }
 
     private SpeechletResponse dinner(String userId, LocalDate date) {
