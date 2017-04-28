@@ -79,12 +79,8 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
             LOG.info("Received profile: {}", profileResponse.toString());
 
 
-            Map<String, String> profileMap = new ObjectMapper().readValue(profileResponse.toString(), new TypeReference() {});
-            String name = profileMap.get("name");
-            String email = profileMap.get("email");
-            String userId = profileMap.get("user_id");
-
-            return menuResponses.profile(name, email, userId);
+            AmazonProfile amazonProfile = new ObjectMapper().readValue(profileResponse.toString(), AmazonProfile.class);
+            return menuResponses.profile(amazonProfile);
 
         } catch (IOException e) {
             // Not yet sure what to do with this...

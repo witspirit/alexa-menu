@@ -84,7 +84,9 @@ public class MenuResponses {
         return linkAccount;
     }
 
-    public SpeechletResponse profile(String name, String email, String userId) {
-        return tell("Hi "+name+". We can reach you on "+email+" and will identify you using userId "+userId);
+    public SpeechletResponse profile(AmazonProfile amazonProfile) {
+        return tell("Hi "+amazonProfile.getName()+". " +
+                "We can reach you on "+amazonProfile.getEmail()+
+                " and will identify you using userId "+amazonProfile.getUserId());
     }
 }

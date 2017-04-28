@@ -8,6 +8,7 @@ import java.io.*;
 import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -35,6 +36,13 @@ public class AlexaMenuHandlerTest {
         DocumentContext json = request("whatisfordinnertomorrow");
 
         assertThat(json.read("$.response.outputSpeech.text"), is("Tomorrow's Recipe"));
+    }
+
+    @Test
+    void profileNoToken() throws IOException {
+        DocumentContext json = request("profile_without_access_token");
+
+        assertThat(json.read("$.response.outputSpeech.text"), is("Please link an Amazon account to get your personal menu storage"));
     }
 
     private DocumentContext request(String requestName) throws IOException {
