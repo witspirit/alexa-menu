@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.alexamenu.support.TestResources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class ProfileDeserializeTest {
 
     @Test
     void testProfile() throws IOException {
-        String profileJson = IOUtils.toString(ProfileDeserializeTest.class.getResourceAsStream("/profiles/testprofile.json"), "UTF-8");
+        String profileJson = TestResources.classpath("/profiles/testprofile.json");
 
         AmazonProfile amazonProfile = new ObjectMapper().readValue(profileJson, AmazonProfile.class);
 

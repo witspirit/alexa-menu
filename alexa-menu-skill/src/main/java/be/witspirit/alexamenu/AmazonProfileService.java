@@ -14,11 +14,23 @@ import java.io.IOException;
 public class AmazonProfileService implements ProfileService {
     private static final Logger LOG = LoggerFactory.getLogger(AmazonProfileService.class);
 
+    public static final String AWS_PROFILE_URL = "https://api.amazon.com/user/profile";
+
+    private final String profileUrl;
+
+    public AmazonProfileService() {
+        this(AWS_PROFILE_URL);
+    }
+
+    public AmazonProfileService(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
     @Override
     public AmazonProfile getProfile(String accessToken) {
         try {
 
-            Content profileResponse = Request.Get("https://api.amazon.com/user/profile")
+            Content profileResponse = Request.Get(profileUrl)
                     .addHeader("Authorization", "bearer " + accessToken)
                     .execute()
                     .returnContent();

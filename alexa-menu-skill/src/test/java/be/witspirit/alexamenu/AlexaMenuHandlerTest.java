@@ -17,6 +17,12 @@ import static org.hamcrest.Matchers.is;
 public class AlexaMenuHandlerTest {
 
     @Test
+    void defaultStartup() {
+        // Just to see if we didn't break the bootstrap
+        new AlexaMenuHandler();
+    }
+
+    @Test
     void helpIntent() throws IOException {
         DocumentContext json = request("help");
 

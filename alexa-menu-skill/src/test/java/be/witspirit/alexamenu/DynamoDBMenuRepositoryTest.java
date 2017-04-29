@@ -32,6 +32,12 @@ public class DynamoDBMenuRepositoryTest {
     }
 
     @Test
+    void defaultStartup() {
+        // Just to see if we didn't break the bootstrap
+        new DynamoDBMenuRepository();
+    }
+
+    @Test
     void normalCase() {
         QueryResult result = result(item("TEST_USER", "20170417", "Today's Dinner"));
         when(dbMock.query(any())).thenReturn(result);
