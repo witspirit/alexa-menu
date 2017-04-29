@@ -138,9 +138,6 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.19.1</version>
-                    <configuration>
-                        <reportsDirectory>../shippable/testresults</reportsDirectory>
-                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.junit.platform</groupId>
@@ -183,26 +180,11 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <!--<configuration>-->
-                            <!--&lt;!&ndash; I think this is going to break when we have more modules... &ndash;&gt;-->
-                            <!--<outputDirectory>../shippable/codecoverage</outputDirectory>-->
-                        <!--</configuration>-->
                     </execution>
 
                 </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>shippable</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>
