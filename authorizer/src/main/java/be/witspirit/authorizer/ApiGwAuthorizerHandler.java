@@ -94,7 +94,7 @@ public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerCon
 
     private boolean authorized(AmazonProfile profile) {
         // A bit naive, but will do for now, until I implement a proper system.
-        String authorizedEmails = System.getenv("authorizer.authorizedEmails");
+        String authorizedEmails = System.getenv("authorizedEmails");
         LOG.debug("authorizedEmails : {}", authorizedEmails);
         if (authorizedEmails == null) {
             authorizedEmails = "";
