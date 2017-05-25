@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu.support;
+package be.witspirit.amazonlogin.support;
 
 import org.apache.commons.io.IOUtils;
 

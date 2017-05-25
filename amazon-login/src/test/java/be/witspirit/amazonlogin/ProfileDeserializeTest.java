@@ -1,8 +1,7 @@
-package be.witspirit.alexamenu;
+package be.witspirit.amazonlogin;
 
-import be.witspirit.alexamenu.support.TestResources;
+import be.witspirit.amazonlogin.support.TestResources;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

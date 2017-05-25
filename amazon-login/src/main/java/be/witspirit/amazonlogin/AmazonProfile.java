@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu;
+package be.witspirit.amazonlogin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

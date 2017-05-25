@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.amazonlogin.AmazonProfile;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;

@@ -1,5 +1,7 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.amazonlogin.AmazonProfile;
+import be.witspirit.amazonlogin.ProfileService;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;

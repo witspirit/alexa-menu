@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu;
+package be.witspirit.amazonlogin;
 
 /**
  * Small interface to abstract our Profile Service implementation

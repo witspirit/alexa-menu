@@ -1,5 +1,7 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.amazonlogin.AmazonProfile;
+import be.witspirit.amazonlogin.ProfileService;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;

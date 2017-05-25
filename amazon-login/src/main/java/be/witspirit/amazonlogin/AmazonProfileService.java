@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu;
+package be.witspirit.amazonlogin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Content;

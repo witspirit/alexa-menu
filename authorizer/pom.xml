@@ -1,24 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>be.witspirit.alexamenu</groupId>
         <artifactId>alexa-menu-root</artifactId>
+        <groupId>be.witspirit.alexamenu</groupId>
         <version>0.3.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>alexa-menu-skill</artifactId>
+    <artifactId>authorizer</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>be.witspirit.alexamenu</groupId>
-            <artifactId>amazon-login</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.amazon.alexa</groupId>
             <artifactId>alexa-skills-kit</artifactId>
@@ -30,6 +26,12 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-dynamodb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>be.witspirit.alexamenu</groupId>
+            <artifactId>amazon-login</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -100,4 +102,6 @@
 
         </plugins>
     </build>
+
+
 </project>
