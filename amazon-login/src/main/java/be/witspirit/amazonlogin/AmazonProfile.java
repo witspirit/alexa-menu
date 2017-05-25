@@ -37,4 +37,9 @@ public class AmazonProfile {
         this.userId = userId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return userId + "("+name+" - "+email+")";
+    }
 }

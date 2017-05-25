@@ -1,8 +1,11 @@
 package be.witspirit.amazonlogin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,16 +33,25 @@ public class AmazonProfileService implements ProfileService {
     public AmazonProfile getProfile(String accessToken) {
         try {
 
-            Content profileResponse = Request.Get(profileUrl)
+            Response response = Request.Get(profileUrl)
                     .addHeader("Authorization", "bearer " + accessToken)
-                    .execute()
-                    .returnContent();
+                    .execute();
+            HttpResponse httpResponse = response.returnResponse();
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            String body = EntityUtils.toString(httpResponse.getEntity());
+            if (statusCode == 200) {
+                LOG.info("Received profile: {}", body);
 
-            LOG.info("Received profile: {}", profileResponse.toString());
-
-            AmazonProfile amazonProfile = new ObjectMapper().readValue(profileResponse.toString(), AmazonProfile.class);
-            return amazonProfile;
-
+                AmazonProfile amazonProfile = new ObjectMapper().readValue(body, AmazonProfile.class);
+                return amazonProfile;
+            } else if (statusCode == 400) {
+                // Expect this to map to InvalidToken, but not entirely sure
+                LOG.info("Received 400 : {}", body);
+                throw new InvalidTokenException();
+            } else {
+                LOG.error("Unexpected response from Login with Amazon : {} - {}", httpResponse.getStatusLine().toString(), body);
+                throw new RuntimeException("Unexpected response from Login with Amazon, check the logs for details");
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to obtain profile from Login with Amazon", e);
         }
