@@ -11,6 +11,7 @@ package be.witspirit.authorizer;
 
 import be.witspirit.amazonlogin.AmazonProfile;
 import be.witspirit.amazonlogin.AmazonProfileService;
+import be.witspirit.amazonlogin.InvalidTokenException;
 import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.authorizer.io.AuthPolicy;
 import be.witspirit.authorizer.io.TokenAuthorizerContext;
@@ -28,6 +29,16 @@ import org.slf4j.LoggerFactory;
 public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerContext, AuthPolicy> {
     private static final Logger LOG = LoggerFactory.getLogger(ApiGwAuthorizerHandler.class);
 
+    private final ProfileService profileService;
+
+    public ApiGwAuthorizerHandler() {
+        this(new AmazonProfileService());
+    }
+
+    public ApiGwAuthorizerHandler(ProfileService profileService) {
+        this.profileService = profileService;
+    }
+
     @Override
     public AuthPolicy handleRequest(TokenAuthorizerContext input, Context context) {
 
@@ -43,9 +54,13 @@ public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerCon
         // 3. Lookup in a self-managed DB
 
         // This implementation goes to AmazonLogin
-        ProfileService profileService = new AmazonProfileService();
-        AmazonProfile profile = profileService.getProfile(token);
-        LOG.debug("Obtained profile : {}", profile);
+        AmazonProfile profile;
+        try {
+            profile = profileService.getProfile(token);
+            LOG.debug("Obtained profile : {}", profile);
+        } catch (InvalidTokenException e) {
+            throw new RuntimeException("Unauthorized"); // Standardized 401 response
+        }
 
         String principalId = profile.getUserId();
 
@@ -94,7 +109,7 @@ public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerCon
 
     private boolean authorized(AmazonProfile profile) {
         // A bit naive, but will do for now, until I implement a proper system.
-        String authorizedEmails = System.getenv("authorizedEmails");
+        String authorizedEmails = System.getProperty("authorizedEmails");
         LOG.debug("authorizedEmails : {}", authorizedEmails);
         if (authorizedEmails == null) {
             authorizedEmails = "";
