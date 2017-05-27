@@ -130,12 +130,29 @@ public class DynamoDbExperimenter {
         set("20170526", "Tussendoor Snacks");
     }
 
+    @Test
+    void writeMenuWeekMay27() {
+        set("20170527", "Sushi Boterhammen");
+        set("20170528", "Erwtjes en worteltjes met worst");
+        set("20170529", "Sushi Boot");
+        set("20170530", "Diepvriespizza");
+        set("20170531", "Vol-au-vent");
+        set("20170601", "Koude rijst");
+        set("20170602", "Spaghetti");
+    }
+
     private void set(String date, String dinner) {
         Map<String, AttributeValue> itemValues = new LinkedHashMap<>();
+        // Alexa User Key
         itemValues.put("userId", new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI"));
         itemValues.put("date", new AttributeValue(date));
         itemValues.put("dinner", new AttributeValue(dinner));
         PutItemRequest putItemRequest = new PutItemRequest("menus", itemValues);
+        dbClient.putItem(putItemRequest);
+
+        // Amazon User Key
+        itemValues.put("userId", new AttributeValue("amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ"));
+        putItemRequest = new PutItemRequest("menus", itemValues);
         dbClient.putItem(putItemRequest);
     }
 
@@ -146,6 +163,7 @@ public class DynamoDbExperimenter {
 
         QueryRequest queryRequest = new QueryRequest("menus");
         queryRequest.addKeyConditionsEntry("userId", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI")));
+        // queryRequest.addKeyConditionsEntry("amazonUserId", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue("amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ")));
         queryRequest.addKeyConditionsEntry("date", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue(date)));
         QueryResult queryResult = dbClient.query(queryRequest);
         for (Map<String, AttributeValue> item : queryResult.getItems()) {
