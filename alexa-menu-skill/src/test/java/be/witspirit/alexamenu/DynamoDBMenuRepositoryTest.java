@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import com.amazon.speech.speechlet.User;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.when;
  * Unit test for the DynamoDB Menu Repository
  */
 public class DynamoDBMenuRepositoryTest {
+    private static final User TEST_USER = User.builder().withUserId("TEST_USER").build();
 
     private AmazonDynamoDB dbMock;
     private DynamoDBMenuRepository repo;
@@ -42,7 +44,7 @@ public class DynamoDBMenuRepositoryTest {
         QueryResult result = result(item("TEST_USER", "20170417", "Today's Dinner"));
         when(dbMock.query(any())).thenReturn(result);
 
-        String todaysDinner = repo.whatIsForDinner("TEST_USER", LocalDate.of(2017, 04, 17));
+        String todaysDinner = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(todaysDinner, is("Today's Dinner"));
     }
 
@@ -50,7 +52,7 @@ public class DynamoDBMenuRepositoryTest {
     void noResults() {
         when(dbMock.query(any())).thenReturn(result());
 
-        String nothingAvailable = repo.whatIsForDinner("TEST_USER", LocalDate.of(2017, 04, 17));
+        String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
     }
 
@@ -62,7 +64,7 @@ public class DynamoDBMenuRepositoryTest {
         );
         when(dbMock.query(any())).thenReturn(result);
 
-        String nothingAvailable = repo.whatIsForDinner("TEST_USER", LocalDate.of(2017, 04, 17));
+        String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
     }
 
@@ -72,7 +74,7 @@ public class DynamoDBMenuRepositoryTest {
         missingDinner.remove("dinner");
         when(dbMock.query(any())).thenReturn(result(missingDinner));
 
-        String nothingAvailable = repo.whatIsForDinner("TEST_USER", LocalDate.of(2017, 04, 17));
+        String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
     }
 
@@ -80,7 +82,7 @@ public class DynamoDBMenuRepositoryTest {
     void resultWithNullDinner() {
         when(dbMock.query(any())).thenReturn(result(item("TEST_USER", "20170417", null)));
 
-        String nothingAvailable = repo.whatIsForDinner("TEST_USER", LocalDate.of(2017, 04, 17));
+        String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
     }
 

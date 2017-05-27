@@ -1,5 +1,7 @@
 package be.witspirit.alexamenu;
 
+import com.amazon.speech.speechlet.User;
+
 import java.time.LocalDate;
 
 /**
@@ -7,5 +9,5 @@ import java.time.LocalDate;
  */
 public interface MenuRepository {
 
-    String whatIsForDinner(String userId, LocalDate date);
+    String whatIsForDinner(User user, LocalDate date);
 }

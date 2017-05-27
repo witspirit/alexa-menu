@@ -1,5 +1,7 @@
 package be.witspirit.alexamenu;
 
+import com.amazon.speech.speechlet.User;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -13,7 +15,7 @@ public class MapMenuRepository implements MenuRepository {
     private Map<LocalDate, String> menu = new HashMap<>();;
 
     @Override
-    public String whatIsForDinner(String userId, LocalDate date) {
+    public String whatIsForDinner(User user, LocalDate date) {
         return menu.getOrDefault(date, "We haven't decided yet");
     }
 

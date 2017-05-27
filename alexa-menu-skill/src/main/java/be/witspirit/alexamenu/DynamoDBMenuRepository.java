@@ -1,7 +1,9 @@
 package be.witspirit.alexamenu;
 
+import com.amazon.speech.speechlet.User;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
@@ -26,8 +28,9 @@ public class DynamoDBMenuRepository implements MenuRepository {
     }
 
     private static AmazonDynamoDB createDefaultDynamoDBClient() {
-        AmazonDynamoDBClient dbClient = new AmazonDynamoDBClient();
-        dbClient.setEndpoint("dynamodb.eu-west-1.amazonaws.com");
+        AmazonDynamoDB dbClient = AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("dynamodb.eu-west-1.amazonaws.com", "eu-west-1"))
+                .build();
         return dbClient;
     }
 
@@ -36,7 +39,8 @@ public class DynamoDBMenuRepository implements MenuRepository {
     }
 
     @Override
-    public String whatIsForDinner(String userId, LocalDate date) {
+    public String whatIsForDinner(User user, LocalDate date) {
+        String userId = user.getUserId();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String dateKey = dateFormat.format(date);
 

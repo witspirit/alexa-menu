@@ -2,15 +2,17 @@ package be.witspirit.alexamenu;
 
 import be.witspirit.amazonlogin.AmazonProfile;
 import be.witspirit.amazonlogin.ProfileService;
+import com.amazon.speech.speechlet.User;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -78,7 +80,7 @@ public class AlexaMenuHandlerTest {
     private static class TestMenuRepository implements MenuRepository {
 
         @Override
-        public String whatIsForDinner(String userId, LocalDate date) {
+        public String whatIsForDinner(User user, LocalDate date) {
             if (date.equals(LocalDate.now())) {
                 return "Today's Recipe";
             } else if (date.equals(LocalDate.now().plusDays(1))) {

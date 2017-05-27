@@ -1,6 +1,9 @@
 package be.witspirit.alexamenu;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazon.speech.speechlet.User;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -8,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Small piece of experimentation with the Amazon DynamoDB Client
@@ -16,15 +21,16 @@ import java.util.*;
 @Disabled("Requires a particular environment setup and is meant as an interactive tool, rather than a test")
 public class DynamoDbExperimenter {
 
-    private static AmazonDynamoDBClient dbClient;
+    private static AmazonDynamoDB dbClient;
 
     @BeforeAll
     static void initClient() {
         // Control credentials through environment variables:
         // AWS_ACCESS_KEY_ID & AWS_SECRET_KEY
         // or via the aws configure in the AWS CLI
-        dbClient = new AmazonDynamoDBClient();
-        dbClient.setEndpoint("dynamodb.eu-west-1.amazonaws.com");
+        dbClient = AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("dynamodb.eu-west-1.amazonaws.com", "eu-west-1"))
+                .build();
     }
 
     @Test
@@ -54,7 +60,9 @@ public class DynamoDbExperimenter {
     @Test
     void todaysMenuViaMenuRepository() {
         DynamoDBMenuRepository repo = new DynamoDBMenuRepository();
-        String dinner = repo.whatIsForDinner("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI", LocalDate.now());
+        String dinner = repo.whatIsForDinner(
+                User.builder().withUserId("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI").build(),
+                LocalDate.now());
         System.out.println("Dinner today = "+dinner);
     }
 

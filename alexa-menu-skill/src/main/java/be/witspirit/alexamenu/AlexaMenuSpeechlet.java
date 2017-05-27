@@ -5,17 +5,10 @@ import be.witspirit.amazonlogin.ProfileService;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
-import com.amazon.speech.ui.LinkAccountCard;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Map;
 
 /**
  * Handles the actual speech commands
@@ -52,24 +45,25 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
         Intent intent = requestEnvelope.getRequest().getIntent();
         String intentName = (intent != null) ? intent.getName() : "-NoIntentMatch-"; // Not working with null to avoid issues in the switch
 
-        String userId = requestEnvelope.getSession().getUser().getUserId();
+        User user = requestEnvelope.getSession().getUser();
 
-        LOG.info("Resolving intent '{}' for user '{}'", intentName, userId);
+        LOG.info("Resolving intent '{}' for user '{}'", intentName, user.getUserId());
 
         switch (intentName) {
             case "WhatsForDinnerIntent":
-                return dinner(userId, LocalDate.now());
+                return dinner(user, LocalDate.now());
             case "WhatsForDinnerTomorrowIntent":
-                return dinner(userId, LocalDate.now().plusDays(1));
+                return dinner(user, LocalDate.now().plusDays(1));
             case "LinkExperimentIntent":
-                return profile(requestEnvelope.getSession().getUser().getAccessToken());
+                return profile(user);
             case "AMAZON.HelpIntent":
             default:
                 return menuResponses.help();
         }
     }
 
-    private SpeechletResponse profile(String accessToken) {
+    private SpeechletResponse profile(User user) {
+        String accessToken = user.getAccessToken();
         LOG.debug("Access Token : {}", accessToken);
         if (accessToken == null) {
             return menuResponses.linkAccount();
@@ -79,9 +73,9 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
         return menuResponses.profile(amazonProfile);
     }
 
-    private SpeechletResponse dinner(String userId, LocalDate date) {
+    private SpeechletResponse dinner(User user, LocalDate date) {
         LOG.info("Producing dinner response for {}", date);
-        return menuResponses.dinner(date, menuRepository.whatIsForDinner(userId, date));
+        return menuResponses.dinner(date, menuRepository.whatIsForDinner(user, date));
     }
 
 

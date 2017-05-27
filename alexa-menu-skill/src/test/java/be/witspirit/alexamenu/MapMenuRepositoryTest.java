@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import com.amazon.speech.speechlet.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class MapMenuRepositoryTest {
 
-    private static final String DUMMY_USER = "dummyUserId";
+    private static final User DUMMY_USER = User.builder().withUserId("dummyUser").withAccessToken("dummyAccessToken").build();
 
     private MapMenuRepository menu;
 
