@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerContext, AuthPolicy> {
     private static final Logger LOG = LoggerFactory.getLogger(ApiGwAuthorizerHandler.class);
+    public static final String BEARER = "bearer";
 
     private final ProfileService profileService;
 
@@ -44,6 +45,9 @@ public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerCon
 
         String token = input.getAuthorizationToken();
         LOG.debug("Incoming token : {}", token);
+
+        token = normalizeToken(token);
+        LOG.debug("Normalized token : {}", token);
 
         // validate the incoming token
         // and produce the principal user identifier associated with the token
@@ -105,6 +109,29 @@ public class ApiGwAuthorizerHandler implements RequestHandler<TokenAuthorizerCon
 
         // the example policy below denies access to all resources in the RestApi
         return new AuthPolicy(principalId, AuthPolicy.PolicyDocument.getDenyAllPolicy(region, awsAccountId, restApiId, stage));
+    }
+
+    /**
+     * Strip any Bearer prefixes to ensure we have a common parameters
+     *
+     * Depending on the client, the authorization header will contain the OAuth typical Bearer prefix.
+     * We just need the token portion.
+     *
+     * @param rawToken The token as received from the Authorization header
+     * @return The token without any identifying prefixes
+     */
+    private String normalizeToken(String rawToken) {
+        if (rawToken == null) {
+            return null;
+        }
+        if (rawToken.length() > BEARER.length()) {
+            String prefixCandidate = rawToken.substring(0, BEARER.length());
+            prefixCandidate = prefixCandidate.toLowerCase();
+            if (prefixCandidate.equals(BEARER)) {
+                return rawToken.substring((BEARER+" ").length());
+            }
+        }
+        return rawToken;
     }
 
     private boolean authorized(AmazonProfile profile) {

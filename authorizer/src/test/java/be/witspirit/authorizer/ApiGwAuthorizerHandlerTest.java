@@ -73,6 +73,19 @@ public class ApiGwAuthorizerHandlerTest {
         }
     }
 
+    @Test
+    void allowBearerPrefix() {
+        // In the OAuth protocol, the token is prefixed with Bearer before the actual token. The Amazon Login service
+        // however does not allow this. But for easier integration with clients, I am going to detect and strip this from
+        // the token, to ensure it works irrespective.
+        System.setProperty("authorizedEmails", "testUser@example.com");
+
+        ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
+        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
+
+        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+    }
+
 
 
     private TokenAuthorizerContext authorizerContext(String token) {
