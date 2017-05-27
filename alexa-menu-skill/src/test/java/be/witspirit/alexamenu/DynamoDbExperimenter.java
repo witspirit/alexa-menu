@@ -52,6 +52,13 @@ public class DynamoDbExperimenter {
     }
 
     @Test
+    void todaysMenuViaMenuRepository() {
+        DynamoDBMenuRepository repo = new DynamoDBMenuRepository();
+        String dinner = repo.whatIsForDinner("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI", LocalDate.now());
+        System.out.println("Dinner today = "+dinner);
+    }
+
+    @Test
     void writeMenu() {
         set("20170410", "Macaroni");
         set("20170411", "Toscaanse Kip");
