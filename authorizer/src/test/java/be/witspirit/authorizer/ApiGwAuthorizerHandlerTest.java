@@ -12,6 +12,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -43,22 +44,26 @@ public class ApiGwAuthorizerHandlerTest {
     @Test
     void validTokenAuthorized() {
         System.setProperty("authorizedEmails", "testUser@example.com");
+        try {
 
-        ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
-        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("ValidToken"), null);
+            ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
+            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("ValidToken"), null);
 
-        PolicyHelper policyHelper = new PolicyHelper(authPolicy);
+            PolicyHelper policyHelper = new PolicyHelper(authPolicy);
 
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
-        assertThat(policyHelper.getAllowResources().length, is(1));
-        assertThat(policyHelper.getDenyResources().length, is(0));
+            assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+            assertThat(policyHelper.getAllowResources().length, is(1));
+            assertThat(policyHelper.getDenyResources().length, is(0));
 
 
-        Map<String, Object> context = authPolicy.getContext();
-        assertThat(context.size(), is(2)); // For unauthorized users, we don't provide profile info
+            Map<String, Object> context = authPolicy.getContext();
+            assertThat(context.size(), is(2)); // For unauthorized users, we don't provide profile info
 
-        assertThat(context.get("name"), is("Test User"));
-        assertThat(context.get("email"), is("testUser@example.com"));
+            assertThat(context.get("name"), is("Test User"));
+            assertThat(context.get("email"), is("testUser@example.com"));
+        } finally {
+            System.clearProperty("authorizedEmails");
+        }
     }
 
     @Test
@@ -79,11 +84,15 @@ public class ApiGwAuthorizerHandlerTest {
         // however does not allow this. But for easier integration with clients, I am going to detect and strip this from
         // the token, to ensure it works irrespective.
         System.setProperty("authorizedEmails", "testUser@example.com");
+        try {
 
-        ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
-        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
+            ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
+            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
 
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+            assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+        } finally {
+            System.clearProperty("authorizedEmails");
+        }
     }
 
 
@@ -97,22 +106,26 @@ public class ApiGwAuthorizerHandlerTest {
     }
 
     private static class PolicyHelper {
-        private Map<String, Object> allowStatement;
-        private Map<String, Object> denyStatement;
+        private Map<String, Object> allowStatement = null;
+        private Map<String, Object> denyStatement = null;
 
         PolicyHelper(AuthPolicy authPolicy) {
             Map<String, Object>[] statements = (Map<String, Object>[]) authPolicy.getPolicyDocument().get("Statement");
             assertThat(statements.length, is(2));
 
-            // Hoping that the sequence is stable
+            for (Map<String, Object> statement : statements) {
+                String effect = (String) statement.get("Effect");
+                if (effect.equals("Allow")) {
+                    allowStatement = statement;
+                } else if (effect.equals("Deny")) {
+                    denyStatement = statement;
+                } else {
+                    fail("Unexpected statement effect: "+effect);
+                }
+            }
 
-            allowStatement = statements[0];
-            String effect = (String) allowStatement.get("Effect");
-            assertThat(effect, is( "Allow"));
-
-            denyStatement = statements[1];
-            effect = (String) denyStatement.get("Effect");
-            assertThat(effect, is( "Deny"));
+            assertNotNull(allowStatement, "Missing Allow statement");
+            assertNotNull(denyStatement, "Missing Deny statement");
         }
 
         String[] getAllowResources() {
