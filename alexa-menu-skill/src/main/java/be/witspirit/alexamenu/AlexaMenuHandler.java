@@ -14,7 +14,7 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
 
     // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        this(new DynamoDBMenuRepository(), new AmazonProfileService());
+        this(new ApiGwMenuRepository(), new AmazonProfileService());
     }
 
     public AlexaMenuHandler(MenuRepository menuRepository, ProfileService profileService) {

@@ -1,6 +1,7 @@
 package be.witspirit.alexamenu;
 
 import be.witspirit.amazonlogin.AmazonProfile;
+import be.witspirit.amazonlogin.InvalidTokenException;
 import be.witspirit.amazonlogin.ProfileService;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.slu.Intent;
@@ -75,7 +76,14 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
 
     private SpeechletResponse dinner(User user, LocalDate date) {
         LOG.info("Producing dinner response for {}", date);
-        return menuResponses.dinner(date, menuRepository.whatIsForDinner(user, date));
+        try {
+            // Not pre-checking the access token, as depending on the implementation, this is a don't care
+            return menuResponses.dinner(date, menuRepository.whatIsForDinner(user, date));
+        } catch (InvalidTokenException e) {
+            // Do have to catch this exception if the implementation cares
+            LOG.debug("Received InvalidTokenException while trying to obtain Menu", e);
+            return menuResponses.linkAccount();
+        }
     }
 
 
