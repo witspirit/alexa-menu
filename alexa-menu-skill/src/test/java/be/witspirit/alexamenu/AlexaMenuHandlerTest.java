@@ -2,6 +2,7 @@ package be.witspirit.alexamenu;
 
 import be.witspirit.amazonlogin.AmazonProfile;
 import be.witspirit.amazonlogin.ProfileService;
+import be.witspirit.common.exception.InvalidTokenException;
 import com.amazon.speech.speechlet.User;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -62,6 +63,13 @@ public class AlexaMenuHandlerTest {
         assertThat(json.read("$.response.outputSpeech.text"), is("Hi Tet User. We can reach you on test.user@example.com and will identify you using userId amzn1.account.TESTACCOUNTID"));
     }
 
+    @Test
+    void whatIsForDinnerWithInvalidToken() throws IOException {
+        DocumentContext json = request("whatsfordinner_invalidtoken");
+
+        assertThat(json.read("$.response.outputSpeech.text"), is("Please link an Amazon account to get your personal menu storage"));
+    }
+
     private DocumentContext request(String requestName) throws IOException {
         try (FileInputStream requestStream = new FileInputStream("src/test/resources/requests/"+requestName+".json");
              ByteArrayOutputStream responseStream = new ByteArrayOutputStream();) {
@@ -81,6 +89,10 @@ public class AlexaMenuHandlerTest {
 
         @Override
         public String whatIsForDinner(User user, LocalDate date) {
+            if (!user.getAccessToken().equals("ValidToken")) {
+                throw new InvalidTokenException();
+            }
+
             if (date.equals(LocalDate.now())) {
                 return "Today's Recipe";
             } else if (date.equals(LocalDate.now().plusDays(1))) {

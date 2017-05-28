@@ -40,6 +40,6 @@ public class AmazonProfile {
 
     @Override
     public String toString() {
-        return userId + "("+name+" - "+email+")";
+        return userId + " ("+name+" - "+email+")";
     }
 }

@@ -1,8 +1,8 @@
 package be.witspirit.amazonlogin;
 
+import be.witspirit.common.exception.InvalidTokenException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.util.EntityUtils;

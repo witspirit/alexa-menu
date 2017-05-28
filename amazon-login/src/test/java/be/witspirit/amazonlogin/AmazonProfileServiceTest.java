@@ -1,6 +1,7 @@
 package be.witspirit.amazonlogin;
 
-import be.witspirit.amazonlogin.support.TestResources;
+import be.witspirit.common.exception.InvalidTokenException;
+import be.witspirit.common.test.TestResources;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Fault;
@@ -40,6 +41,7 @@ public class AmazonProfileServiceTest {
             assertThat(profile.getName(), is("Test User"));
             assertThat(profile.getEmail(), is("test.user@example.com"));
             assertThat(profile.getUserId(), is("amzn1.account.TESTACCOUNTID"));
+            assertThat(profile.toString(), is("amzn1.account.TESTACCOUNTID (Test User - test.user@example.com)"));
 
         });
     }

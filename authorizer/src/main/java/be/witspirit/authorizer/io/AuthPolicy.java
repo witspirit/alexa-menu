@@ -92,9 +92,6 @@ public class AuthPolicy {
         return context;
     }
 
-    public void setContext(Map<String, Object> context) {
-        this.context = context;
-    }
 
     /**
      * PolicyDocument represents an IAM Policy, specifically for the execute-api:Invoke action
@@ -238,10 +235,6 @@ public class AuthPolicy {
 
         private List<String> resourceList;
 
-        public Statement() {
-
-        }
-
         public Statement(String effect, String action, List<String> resourceList, Map<String, Map<String, Object>> condition) {
             this.Effect = effect;
             this.Action = action;
@@ -257,16 +250,8 @@ public class AuthPolicy {
             return Effect;
         }
 
-        public void setEffect(String effect) {
-            this.Effect = effect;
-        }
-
         public String getAction() {
             return Action;
-        }
-
-        public void setAction(String action) {
-            this.Action = action;
         }
 
         public String[] getResource() {

@@ -15,6 +15,11 @@
     <dependencies>
         <dependency>
             <groupId>be.witspirit.alexamenu</groupId>
+            <artifactId>menu-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>be.witspirit.alexamenu</groupId>
             <artifactId>amazon-login</artifactId>
             <version>${project.version}</version>
         </dependency>

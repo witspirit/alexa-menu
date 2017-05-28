@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu.support;
+package be.witspirit.common.test;
 
 import org.apache.commons.io.IOUtils;
 

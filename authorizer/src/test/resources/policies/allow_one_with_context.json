@@ -1,0 +1,20 @@
+{
+  "principalId" : "testPrincipalId",
+  "policyDocument" : {
+    "Version" : "2012-10-17",
+    "Statement" : [ {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAccountId:testRestApiId/testStage/GET/testResourcePath" ],
+      "Effect" : "Allow"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ ],
+      "Effect" : "Deny"
+    } ]
+  },
+  "context" : {
+    "testContextKey" : "testContextValue"
+  }
+}

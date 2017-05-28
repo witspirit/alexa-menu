@@ -11,10 +11,10 @@ package be.witspirit.authorizer;
 
 import be.witspirit.amazonlogin.AmazonProfile;
 import be.witspirit.amazonlogin.AmazonProfileService;
-import be.witspirit.amazonlogin.InvalidTokenException;
 import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.authorizer.io.AuthPolicy;
 import be.witspirit.authorizer.io.TokenAuthorizerContext;
+import be.witspirit.common.exception.InvalidTokenException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.slf4j.Logger;

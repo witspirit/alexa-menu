@@ -1,7 +1,7 @@
 package be.witspirit.alexamenu;
 
-import be.witspirit.alexamenu.support.TestResources;
-import be.witspirit.amazonlogin.InvalidTokenException;
+import be.witspirit.common.exception.InvalidTokenException;
+import be.witspirit.common.test.TestResources;
 import com.amazon.speech.speechlet.User;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;

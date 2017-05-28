@@ -1,10 +1,10 @@
 package be.witspirit.authorizer;
 
 import be.witspirit.amazonlogin.AmazonProfile;
-import be.witspirit.amazonlogin.InvalidTokenException;
 import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.authorizer.io.AuthPolicy;
 import be.witspirit.authorizer.io.TokenAuthorizerContext;
+import be.witspirit.common.exception.InvalidTokenException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

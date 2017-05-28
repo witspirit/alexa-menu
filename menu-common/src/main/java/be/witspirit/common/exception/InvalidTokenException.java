@@ -1,4 +1,4 @@
-package be.witspirit.amazonlogin;
+package be.witspirit.common.exception;
 
 /**
  * Indicates that the provided token was invalid

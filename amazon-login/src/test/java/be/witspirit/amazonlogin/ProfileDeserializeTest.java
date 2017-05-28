@@ -1,6 +1,6 @@
 package be.witspirit.amazonlogin;
 
-import be.witspirit.amazonlogin.support.TestResources;
+import be.witspirit.common.test.TestResources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 

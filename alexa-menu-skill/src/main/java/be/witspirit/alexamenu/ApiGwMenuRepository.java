@@ -1,6 +1,6 @@
 package be.witspirit.alexamenu;
 
-import be.witspirit.amazonlogin.InvalidTokenException;
+import be.witspirit.common.exception.InvalidTokenException;
 import com.amazon.speech.speechlet.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;

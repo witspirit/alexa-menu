@@ -24,6 +24,7 @@
         <module>alexa-menu-skill</module>
         <module>authorizer</module>
         <module>amazon-login</module>
+        <module>menu-common</module>
     </modules>
 
     <dependencyManagement>
@@ -87,6 +88,13 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.4</version> <!-- The version originally included by the alexa skills kit -->
+            </dependency>
+
+            <dependency>
+                <groupId>org.skyscreamer</groupId>
+                <artifactId>jsonassert</artifactId>
+                <version>1.5.0</version>
+                <scope>test</scope>
             </dependency>
 
 
