@@ -5,10 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.JSONException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Although the AuthPolicy class was taken from the Blueprint, still writing a test to better
@@ -63,6 +68,34 @@ public class AuthPolicyTest {
         policy.getContext().put("testContextKey", "testContextValue");
 
         assertEquals("allow_one_with_context", policy);
+    }
+
+    @Test
+    void denyOneWithSomeArtificialCallsForCoverage() {
+        AuthPolicy.PolicyDocument denyOnePolicy = AuthPolicy.PolicyDocument.getDenyOnePolicy(
+                "testRegion",
+                "testAwsAccountId",
+                "testRestApiId",
+                "testStage",
+                AuthPolicy.HttpMethod.HEAD,
+                "/");
+
+        String version = denyOnePolicy.getVersion();
+        Assertions.assertEquals("2012-10-17", version);
+        denyOnePolicy.setVersion(version);
+
+        String effect = denyOnePolicy.getStatement()[1].getEffect();
+        Assertions.assertEquals("Deny", effect);
+        String action = denyOnePolicy.getStatement()[1].getAction();
+        Assertions.assertEquals("execute-api:Invoke", action);
+
+        AuthPolicy.Statement statement = new AuthPolicy.Statement("Allow", "dummyAction", new ArrayList<String>(), new HashMap<String, Map<String, Object>>());
+        statement.addCondition("OP", "testConditionKey", "testConditionValue");
+
+        denyOnePolicy.addStatement(statement);
+
+        assertEquals("artificial_policy", new AuthPolicy("testPrincipalId", denyOnePolicy));
+
     }
 
     private void assertEquals(String expectedPolicyName, AuthPolicy policy)  {

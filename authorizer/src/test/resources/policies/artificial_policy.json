@@ -1,0 +1,47 @@
+{
+  "principalId" : "testPrincipalId",
+  "policyDocument" : {
+    "Version" : "2012-10-17",
+    "Statement" : [ {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ ],
+      "Effect" : "Allow"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/HEAD/" ],
+      "Effect" : "Deny"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ ],
+      "Effect" : "Allow"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/HEAD/" ],
+      "Effect" : "Deny"
+    }, {
+      "Condition" : {
+        "OP" : {
+          "testConditionKey" : "testConditionValue"
+        }
+      },
+      "Action" : "dummyAction",
+      "Resource" : [ ],
+      "Effect" : "Allow"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ ],
+      "Effect" : "Allow"
+    }, {
+      "Condition" : { },
+      "Action" : "execute-api:Invoke",
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/HEAD/" ],
+      "Effect" : "Deny"
+    } ]
+  },
+  "context" : { }
+}
