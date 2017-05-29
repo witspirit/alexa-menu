@@ -85,6 +85,15 @@ public class AlexaMenuHandlerTest {
         assertThat(json.read("$.version"), is("1.0"));
     }
 
+    @Test
+    void invalidIntent() throws IOException {
+        DocumentContext json = request("invalid_intent");
+
+        // If we cannot resolve the intent, we fallback to Help
+        assertThat(json.read("$.response.outputSpeech.text"), is("You can ask me 'what's for dinner'"));
+        assertThat(json.read("$.response.card.title"), is("Menu"));
+    }
+
     private DocumentContext request(String requestName) throws IOException {
         try (FileInputStream requestStream = new FileInputStream("src/test/resources/requests/"+requestName+".json");
              ByteArrayOutputStream responseStream = new ByteArrayOutputStream();) {
