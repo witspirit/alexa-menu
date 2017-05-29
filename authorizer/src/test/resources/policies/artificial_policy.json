@@ -5,7 +5,7 @@
     "Statement" : [ {
       "Condition" : { },
       "Action" : "execute-api:Invoke",
-      "Resource" : [ ],
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/DELETE/some/dummy/resource" ],
       "Effect" : "Allow"
     }, {
       "Condition" : { },
@@ -15,7 +15,7 @@
     }, {
       "Condition" : { },
       "Action" : "execute-api:Invoke",
-      "Resource" : [ ],
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/DELETE/some/dummy/resource" ],
       "Effect" : "Allow"
     }, {
       "Condition" : { },
@@ -34,7 +34,7 @@
     }, {
       "Condition" : { },
       "Action" : "execute-api:Invoke",
-      "Resource" : [ ],
+      "Resource" : [ "arn:aws:execute-api:testRegion:testAwsAccountId:testRestApiId/testStage/DELETE/some/dummy/resource" ],
       "Effect" : "Allow"
     }, {
       "Condition" : { },

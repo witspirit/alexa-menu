@@ -94,6 +94,8 @@ public class AuthPolicyTest {
 
         denyOnePolicy.addStatement(statement);
 
+        denyOnePolicy.allowMethod(AuthPolicy.HttpMethod.DELETE, "/some/dummy/resource");
+
         assertEquals("artificial_policy", new AuthPolicy("testPrincipalId", denyOnePolicy));
 
     }
