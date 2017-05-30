@@ -112,6 +112,12 @@ public class ApiGwAuthorizerHandlerTest {
         } catch (RuntimeException e) {
             // Expected due to TestProfileService for a null token
         }
+
+        // Alternate ARN size
+        TokenAuthorizerContext tokenContext = authorizerContext("ValidToken");
+        tokenContext.setMethodArn("arn:aws:execute-api:test-region:my-account:api-id/api-stage/method");
+        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(tokenContext, null);
+        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
     }
 
 
