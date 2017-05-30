@@ -1,0 +1,5 @@
+{
+  "type" : "TOKEN",
+  "authorizationToken" : "dummyToken",
+  "methodArn" : "arn:dummy:method"
+}
