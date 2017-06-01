@@ -2,5 +2,5 @@
 
 Attempt to create a small Alexa skill that can read back our menu for the day.
 
-![Menu Skill Architecture](https://www.lucidchart.com/invitations/accept/e27bd03b-558d-4890-9bdd-f96f1df66942 "Menu Skill Architecture")
+![Menu Skill Architecture](docs/images/Menu%20Skill%20Overview.png "Menu Skill Architecture")
 
