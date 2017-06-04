@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import java.util.Map;
 @Disabled("Requires a particular environment setup and is meant as an interactive tool, rather than a test")
 public class DynamoDbExperimenter {
 
+    public static final String ALEXA_USER_ID = "amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI";
+    public static final String AMAZON_USER_ID = "amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ";
     private static AmazonDynamoDB dbClient;
 
     @BeforeAll
@@ -43,14 +46,14 @@ public class DynamoDbExperimenter {
     void listItemsInMenus() {
         ScanResult scanResult = dbClient.scan("menus", Arrays.asList("userId", "date", "dinner"));
         for (Map<String, AttributeValue> item : scanResult.getItems()) {
-            System.out.println(item.get("userId")+";"+item.get("date")+";"+item.get("dinner"));
+            System.out.println(item.get("userId") + ";" + item.get("date") + ";" + item.get("dinner"));
         }
     }
 
     @Test
     void writeEntry() {
         Map<String, AttributeValue> itemValues = new LinkedHashMap<>();
-        itemValues.put("userId", new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI"));
+        itemValues.put("userId", new AttributeValue(ALEXA_USER_ID));
         itemValues.put("date", new AttributeValue("20170412"));
         itemValues.put("dinner", new AttributeValue("Pannenkoeken"));
         PutItemRequest putItemRequest = new PutItemRequest("menus", itemValues);
@@ -61,9 +64,9 @@ public class DynamoDbExperimenter {
     void todaysMenuViaMenuRepository() {
         DynamoDBMenuRepository repo = new DynamoDBMenuRepository();
         String dinner = repo.whatIsForDinner(
-                User.builder().withUserId("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI").build(),
+                User.builder().withUserId(ALEXA_USER_ID).build(),
                 LocalDate.now());
-        System.out.println("Dinner today = "+dinner);
+        System.out.println("Dinner today = " + dinner);
     }
 
     @Test
@@ -150,18 +153,7 @@ public class DynamoDbExperimenter {
     }
 
     private void set(String date, String dinner) {
-        Map<String, AttributeValue> itemValues = new LinkedHashMap<>();
-        // Alexa User Key
-        itemValues.put("userId", new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI"));
-        itemValues.put("date", new AttributeValue(date));
-        itemValues.put("dinner", new AttributeValue(dinner));
-        PutItemRequest putItemRequest = new PutItemRequest("menus", itemValues);
-        dbClient.putItem(putItemRequest);
-
-        // Amazon User Key
-        itemValues.put("userId", new AttributeValue("amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ"));
-        putItemRequest = new PutItemRequest("menus", itemValues);
-        dbClient.putItem(putItemRequest);
+        writeRecord(AMAZON_USER_ID, date, dinner);
     }
 
     @Test
@@ -169,17 +161,73 @@ public class DynamoDbExperimenter {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateFormat.format(LocalDate.now());
 
-        QueryRequest queryRequest = new QueryRequest("menus");
-        queryRequest.addKeyConditionsEntry("userId", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue("amzn1.ask.account.AF6NFJLGC6OF6K7PVCXQMYAC2ZSMHZDATQOYPEOMQTIEWHRPZJCBF4NUC7756SLUM2YTNOP3NJBCR7EZ4LQJN6QIZT3SE5BEVO2BUB7K2MXDUDI3CUISC3WC5NDWKSF3DDCVBWV2F4L2SFXUNX6QCDKACXQHGSRBGOJHEXEDCYOM73TUZGEP5PQADFW75U6NUQ6U53MANRWCYRI")));
-        // queryRequest.addKeyConditionsEntry("amazonUserId", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue("amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ")));
-        queryRequest.addKeyConditionsEntry("date", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue(date)));
-        QueryResult queryResult = dbClient.query(queryRequest);
-        for (Map<String, AttributeValue> item : queryResult.getItems()) {
-            System.out.println(item.get("userId")+";"+item.get("date")+";"+item.get("dinner"));
+        Map<String, AttributeValue> record = getRecord(AMAZON_USER_ID, date);
+
+        if (record == null) {
+            System.out.println("No dinner found for " + AMAZON_USER_ID + "-" + date);
+        } else {
+            String dinner = record.get("dinner").getS();
+            System.out.println("Dinner on " + date + " is " + dinner);
         }
 
-        String dinner = queryResult.getItems().get(0).get("dinner").getS();
+    }
 
-        System.out.println("Dinner on "+date+" is "+dinner);
+    @Test
+    void migrateAllAlexaAccountsToAmazonAccounts() {
+        ScanRequest scanRequest = new ScanRequest("menus");
+        scanRequest.addScanFilterEntry("userId", new Condition().withComparisonOperator("EQ").withAttributeValueList(new AttributeValue(ALEXA_USER_ID)));
+        ScanResult scanResult = dbClient.scan(scanRequest);
+
+        System.out.println("---------------");
+        for (Map<String, AttributeValue> record : scanResult.getItems()) {
+
+            for (String attributeKey : record.keySet()) {
+                System.out.println(attributeKey + " : " + record.get(attributeKey).getS());
+            }
+
+            migrate(record);
+
+            System.out.println("---------------");
+        }
+
+    }
+
+    private void migrate(Map<String, AttributeValue> alexaRecord) {
+        String date = alexaRecord.get("date").getS();
+        Map<String, AttributeValue> amazonRecord = getRecord(AMAZON_USER_ID, date);
+        if (amazonRecord == null) {
+            System.out.println("No existing record found for " + AMAZON_USER_ID + "-" + date + " -> Migrating");
+            // Amazon based record does not yet exist, so migrate
+            writeRecord(AMAZON_USER_ID, date, alexaRecord.get("dinner").getS());
+        } else {
+            System.out.println("Existing record found for " + AMAZON_USER_ID + "-" + date + " -> Assuming more recent, so skipping migration");
+        }
+        // Cleanup original record
+        deleteRecord(ALEXA_USER_ID, date);
+    }
+
+    private void deleteRecord(String userId, String date) {
+        Map<String, AttributeValue> deleteKeys = new HashMap<>();
+        deleteKeys.put("userId", new AttributeValue(userId));
+        deleteKeys.put("date", new AttributeValue(date));
+        dbClient.deleteItem("menus", deleteKeys);
+    }
+
+    private Map<String, AttributeValue> getRecord(String userId, String date) {
+        Map<String, AttributeValue> keys = new HashMap<>();
+        keys.put("userId", new AttributeValue(userId));
+        keys.put("date", new AttributeValue(date));
+        GetItemRequest lookup = new GetItemRequest("menus", keys);
+        GetItemResult itemResult = dbClient.getItem(lookup);
+        return itemResult.getItem();
+    }
+
+    private void writeRecord(String userId, String date, String dinner) {
+        Map<String, AttributeValue> itemValues = new LinkedHashMap<>();
+        itemValues.put("userId", new AttributeValue(userId));
+        itemValues.put("date", new AttributeValue(date));
+        itemValues.put("dinner", new AttributeValue(dinner));
+        PutItemRequest putItemRequest = new PutItemRequest("menus", itemValues);
+        dbClient.putItem(putItemRequest);
     }
 }
