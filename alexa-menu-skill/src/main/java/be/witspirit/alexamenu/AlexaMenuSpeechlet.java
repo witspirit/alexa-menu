@@ -50,7 +50,7 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
 
         LOG.info("Resolving intent '{}' for user '{}'", intentName, user.getUserId());
 
-        switch (intentName) {
+        switch (intentName) { // Issue in JaCoCo to compute coverage on String Switch. Issue already identified on GitHub, but not yet merged :-(
             case "WhatsForDinnerIntent":
                 return dinner(user, LocalDate.now());
             case "WhatsForDinnerTomorrowIntent":

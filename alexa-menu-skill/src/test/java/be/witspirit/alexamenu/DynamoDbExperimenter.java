@@ -152,6 +152,17 @@ public class DynamoDbExperimenter {
         set("20170602", "Spaghetti");
     }
 
+    @Test
+    void writeMenuWeekJune03() {
+        set("20170603", "Verjaardag Kris");
+        set("20170604", "Nasi Goreng");
+        set("20170605", "Kip met appelmoes");
+        set("20170606", "Diepvriespizza");
+        set("20170607", "Pannenkoeken");
+        set("20170608", "E&W met biefstuk");
+        set("20170609", "Spaghetti");
+    }
+
     private void set(String date, String dinner) {
         writeRecord(AMAZON_USER_ID, date, dinner);
     }
