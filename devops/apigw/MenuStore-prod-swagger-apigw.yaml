@@ -1,0 +1,202 @@
+---
+swagger: "2.0"
+info:
+  version: "2017-05-28T14:03:42Z"
+  title: "MenuStore"
+host: "4abokujlye.execute-api.eu-west-1.amazonaws.com"
+basePath: "/prod"
+schemes:
+- "https"
+paths:
+  /menus:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::138759191763:role/ApiGwFullDynamoDBExperimental"
+        responses:
+          default:
+            statusCode: "200"
+        requestTemplates:
+          application/json: "{\n   \"TableName\": \"menus\"\n}"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/DescribeTable"
+        passthroughBehavior: "never"
+        httpMethod: "POST"
+        type: "aws"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+  /menus/{menuDate}:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "menuDate"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Menu"
+      security:
+      - AmazonLogin: []
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::138759191763:role/ApiGwMenuStore"
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n#if ($inputRoot.Count\
+                \ == 0)\n{ \n  \"date\" : \"$input.params('menuDate')\",\n  \"menu\"\
+                \ : \"We haven't decided yet\"\n}\n#else\n{\n  \"date\" : \"$inputRoot.Items[0].date.S\"\
+                ,\n  \"menu\" : \"$inputRoot.Items[0].dinner.S\"\n}\n#end\n"
+        requestTemplates:
+          application/json: "{\r\n   \"TableName\":\"menus\",\r\n   \"KeyConditions\"\
+            :{\r\n      \"date\":{\r\n         \"AttributeValueList\":[\r\n      \
+            \      {\r\n               \"S\":\"$input.params('menuDate')\"\r\n   \
+            \         }\r\n         ],\r\n         \"ComparisonOperator\":\"EQ\"\r\
+            \n      },\r\n      \"userId\":{\r\n         \"AttributeValueList\":[\r\
+            \n            {\r\n               \"S\":\"$context.authorizer.principalId\"\
+            \r\n            }\r\n         ],\r\n         \"ComparisonOperator\":\"\
+            EQ\"\r\n      }\r\n   }\r\n}"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/Query"
+        passthroughBehavior: "never"
+        httpMethod: "POST"
+        cacheNamespace: "k1cx2l"
+        type: "aws"
+    put:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "menuDate"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "MenuUpdate"
+        required: true
+        schema:
+          $ref: "#/definitions/MenuUpdate"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Menu"
+      security:
+      - AmazonLogin: []
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"date\"\
+                \ : \"$input.params('menuDate')\",\n  \"menu\" : \"Should be $input.json('$.menu')\
+                \ - but doesn't work\"\n}"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "never"
+        type: "mock"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+        type: "mock"
+securityDefinitions:
+  AmazonLogin:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    x-amazon-apigateway-authtype: "custom"
+    x-amazon-apigateway-authorizer:
+      authorizerUri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:138759191763:function:AmazonLoginAuthorizer/invocations"
+      authorizerResultTtlInSeconds: 0
+      type: "token"
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
+  Menu:
+    type: "object"
+    properties:
+      date:
+        type: "string"
+      menu:
+        type: "string"
+    title: "Menu"
+  MenuUpdate:
+    type: "object"
+    properties:
+      menu:
+        type: "string"
+    title: "Menu Update"
