@@ -1,4 +1,4 @@
-package be.witspirit.alexamenu;
+package be.witspirit.alexamenu.menustore;
 
 /**
  * Menu representation as provided by the MenuStore API
@@ -21,5 +21,10 @@ public class Menu {
 
     public void setMenu(String menu) {
         this.menu = menu;
+    }
+
+    @Override
+    public String toString() {
+        return date+"->"+menu;
     }
 }

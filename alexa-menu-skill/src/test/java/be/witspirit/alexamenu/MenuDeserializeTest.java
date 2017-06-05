@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.alexamenu.menustore.Menu;
 import be.witspirit.common.test.TestResources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
