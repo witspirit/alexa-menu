@@ -165,8 +165,8 @@ public class DynamoDbExperimenter {
 
     @Test
     void getDinnerForToday() {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = dateFormat.format(LocalDate.now());
+        LocalDate today = LocalDate.now();
+        String date = dateKey(today);
 
         // date = "20170101";
 
@@ -204,6 +204,31 @@ public class DynamoDbExperimenter {
     @Test
     void writeTestDate() {
         set("20170102", "Dummy Dinner");
+    }
+
+    @Test
+    void nextWeek() {
+        String dateKey = dateKey(LocalDate.now());
+
+        dateKey = "20170607";
+
+        QueryRequest query = new QueryRequest("menus");
+        query.addKeyConditionsEntry("userId", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue(AMAZON_USER_ID)));
+        query.addKeyConditionsEntry("date", new Condition().withComparisonOperator(ComparisonOperator.GE).withAttributeValueList(new AttributeValue(dateKey)));
+        query.setLimit(7);
+        QueryResult queryResult = dbClient.query(query);
+
+        System.out.println("---------------");
+        for (Map<String, AttributeValue> record : queryResult.getItems()) {
+
+            for (String attributeKey : record.keySet()) {
+                System.out.println(attributeKey + " : " + record.get(attributeKey).getS());
+            }
+
+            System.out.println("---------------");
+        }
+
+
     }
 
     private void migrate(Map<String, AttributeValue> alexaRecord) {
@@ -248,4 +273,10 @@ public class DynamoDbExperimenter {
         PutItemRequest putItemRequest = new PutItemRequest("menus", itemValues);
         dbClient.putItem(putItemRequest);
     }
+
+    private String dateKey(LocalDate date) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return dateFormat.format(date);
+    }
+
 }
