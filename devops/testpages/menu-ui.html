@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alexa Menu Skill UI</title>
+
+    <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.45.0.min.js"></script>-->
+
+
+</head>
+<body>
+<div id="amazon-root"></div>
+<script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.a8a528043bd14173af05b05c19d63c24');
+    };
+    (function(d) {
+        var a = d.createElement('script'); a.type = 'text/javascript';
+        a.async = true; a.id = 'amazon-login-sdk';
+        a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+        d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+</script>
+
+<h1>Amazon Login Test Page</h1>
+
+<a href="#" id="LoginWithAmazon">
+    <img border="0" alt="Login with Amazon"
+         src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+         width="156" height="32" />
+</a>
+
+<script type="text/javascript">
+    let handleResponse = function(response) {
+        console.log('onAuthorizeResponse');
+
+        if (response.error) {
+            alert('oauth error '+response.error+ ' - '+response.error_description);
+            return;
+        }
+        alert('success: '+response.access_token);
+        console.log("Access Token: "+response.access_token);
+
+        let token = response.access_token;
+
+        console.log('Calling retrieveProfile');
+        amazon.Login.retrieveProfile(token, function(response) {
+            console.log('Profile Response:' + JSON.stringify(response));
+        });
+    };
+
+    document.getElementById('LoginWithAmazon').onclick = function() {
+        options = { scope : 'profile' };
+        amazon.Login.authorize(options, handleResponse);
+        return false;
+    };
+
+</script>
+
+
+
+
+<br/>
+
+
+
+
+
+<a id="Logout">Logout</a>
+
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function() {
+        amazon.Login.logout();
+    };
+</script>
+
+<!--<button onclick="login()">Trigger Authentication</button>-->
+<!--<script src="menu-ui.js" type="text/javascript"></script>-->
+</body>
+</html>
