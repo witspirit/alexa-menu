@@ -163,14 +163,12 @@ public class DynamoDbExperimenter {
         set("20170609", "Spaghetti");
     }
 
-    private void set(String date, String dinner) {
-        writeRecord(AMAZON_USER_ID, date, dinner);
-    }
-
     @Test
     void getDinnerForToday() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = dateFormat.format(LocalDate.now());
+
+        // date = "20170101";
 
         Map<String, AttributeValue> record = getRecord(AMAZON_USER_ID, date);
 
@@ -203,6 +201,11 @@ public class DynamoDbExperimenter {
 
     }
 
+    @Test
+    void writeTestDate() {
+        set("20170102", "Dummy Dinner");
+    }
+
     private void migrate(Map<String, AttributeValue> alexaRecord) {
         String date = alexaRecord.get("date").getS();
         Map<String, AttributeValue> amazonRecord = getRecord(AMAZON_USER_ID, date);
@@ -231,6 +234,10 @@ public class DynamoDbExperimenter {
         GetItemRequest lookup = new GetItemRequest("menus", keys);
         GetItemResult itemResult = dbClient.getItem(lookup);
         return itemResult.getItem();
+    }
+
+    private void set(String date, String dinner) {
+        writeRecord(AMAZON_USER_ID, date, dinner);
     }
 
     private void writeRecord(String userId, String date, String dinner) {

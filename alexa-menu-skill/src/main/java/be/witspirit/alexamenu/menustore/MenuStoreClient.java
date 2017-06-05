@@ -50,12 +50,12 @@ public class MenuStoreClient {
         return invoke(Request.Get(baseUrl + "/menus/" + dateKey), this::parseAsMenu);
     }
 
-    public Menu setMenu(String dateKey, String dinner) {
+    public void setMenu(String dateKey, String dinner) {
         String updateJson = toMenuUpdateJson(dinner);
 
-        return invoke(Request.Put(baseUrl + "/menus/" + dateKey)
+        invoke(Request.Put(baseUrl + "/menus/" + dateKey)
                         .bodyString(updateJson, ContentType.APPLICATION_JSON),
-                    this::parseAsMenu);
+                this::noResponse);
 
     }
 
@@ -67,8 +67,8 @@ public class MenuStoreClient {
             HttpResponse httpResponse = response.returnResponse();
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             String body = EntityUtils.toString(httpResponse.getEntity());
-            if (statusCode == 200) {
-                LOG.info("Received 200: {}", body);
+            if (statusCode == 200 || statusCode == 201) {
+                LOG.info("Received {} : {}", statusCode, body);
 
                 return resultHandler.apply(body);
             } else if (statusCode == 401) {
@@ -82,6 +82,11 @@ public class MenuStoreClient {
         } catch (IOException e) {
             throw new RuntimeException("Failed to interact with MenuStore", e);
         }
+    }
+
+    private Void noResponse(String json) {
+        // Do nothing
+        return null;
     }
 
     private Menu parseAsMenu(String json) {

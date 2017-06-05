@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "2017-05-28T14:03:42Z"
+  version: "2017-06-05T11:21:35Z"
   title: "MenuStore"
 host: "4abokujlye.execute-api.eu-west-1.amazonaws.com"
 basePath: "/dev"
@@ -87,28 +87,23 @@ paths:
           default:
             statusCode: "200"
             responseTemplates:
-              application/json: "#set($inputRoot = $input.path('$'))\n#if ($inputRoot.Count\
-                \ == 0)\n{ \n  \"date\" : \"$input.params('menuDate')\",\n  \"menu\"\
-                \ : \"We haven't decided yet\"\n}\n#else\n{\n  \"date\" : \"$inputRoot.Items[0].date.S\"\
-                ,\n  \"menu\" : \"$inputRoot.Items[0].dinner.S\"\n}\n#end\n"
+              application/json: "#set($inputRoot = $input.path('$'))\n#if ($inputRoot\
+                \ == '{}')\n{ \n  \"date\" : \"$input.params('menuDate')\",\n  \"\
+                menu\" : \"We haven't decided yet\"\n}\n#else\n{\n  \"date\" : \"\
+                $inputRoot.Item.date.S\",\n  \"menu\" : \"$inputRoot.Item.dinner.S\"\
+                \n}\n#end\n"
         requestTemplates:
-          application/json: "{\r\n   \"TableName\":\"menus\",\r\n   \"KeyConditions\"\
-            :{\r\n      \"date\":{\r\n         \"AttributeValueList\":[\r\n      \
-            \      {\r\n               \"S\":\"$input.params('menuDate')\"\r\n   \
-            \         }\r\n         ],\r\n         \"ComparisonOperator\":\"EQ\"\r\
-            \n      },\r\n      \"userId\":{\r\n         \"AttributeValueList\":[\r\
-            \n            {\r\n               \"S\":\"$context.authorizer.principalId\"\
-            \r\n            }\r\n         ],\r\n         \"ComparisonOperator\":\"\
-            EQ\"\r\n      }\r\n   }\r\n}"
-        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/Query"
+          application/json: "{\r\n    \"TableName\":\"menus\",\r\n    \"Key\":{\r\n\
+            \        \"date\":{\r\n            \"S\":\"$input.params('menuDate')\"\
+            \r\n        },\r\n        \"userId\":{\r\n            \"S\":\"$context.authorizer.principalId\"\
+            \r\n        }\r\n    }\r\n}\r\n"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/GetItem"
         passthroughBehavior: "never"
         httpMethod: "POST"
         cacheNamespace: "k1cx2l"
         type: "aws"
     put:
       consumes:
-      - "application/json"
-      produces:
       - "application/json"
       parameters:
       - name: "menuDate"
@@ -125,24 +120,26 @@ paths:
         schema:
           $ref: "#/definitions/MenuUpdate"
       responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/Menu"
+        201:
+          description: "201 response"
       security:
       - AmazonLogin: []
       x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::138759191763:role/ApiGwMenuStore"
         responses:
           default:
-            statusCode: "200"
-            responseTemplates:
-              application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"date\"\
-                \ : \"$input.params('menuDate')\",\n  \"menu\" : \"Should be $input.json('$.menu')\
-                \ - but doesn't work\"\n}"
+            statusCode: "201"
         requestTemplates:
-          application/json: "{\"statusCode\": 200}"
+          application/json: "{\n    \"TableName\":\"menus\",\n    \"Item\":{\n   \
+            \     \"userId\":{\n            \"S\":\"$context.authorizer.principalId\"\
+            \n        },\n        \"date\":{\n            \"S\":\"$input.params('menuDate')\"\
+            \n        },\n        \"dinner\":{\n            \"S\":$input.json('$.menu')\n\
+            \        }\n    }\n}"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/PutItem"
         passthroughBehavior: "never"
-        type: "mock"
+        httpMethod: "POST"
+        cacheNamespace: "k1cx2l"
+        type: "aws"
     options:
       consumes:
       - "application/json"
