@@ -1,5 +1,6 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.alexamenu.menustore.MenuStoreClient;
 import be.witspirit.common.exception.InvalidTokenException;
 import be.witspirit.common.test.TestResources;
 import com.amazon.speech.speechlet.User;
@@ -36,7 +37,7 @@ public class ApiGwMenuRepositoryTest {
             stubFor(get(urlEqualTo("/menus/20170528")).withHeader("Authorization", equalTo("ValidToken"))
                     .willReturn(aResponse().withStatus(200).withBody(TestResources.classpath("/menus/menu.json"))));
 
-            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository("http://localhost:8089");
+            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository(new MenuStoreClient("http://localhost:8089"));
             LocalDate date = LocalDate.of(2017, 05, 28);
             User user = User.builder().withAccessToken("ValidToken").build();
             String menu = menuRepo.whatIsForDinner(user, date);
@@ -51,7 +52,7 @@ public class ApiGwMenuRepositoryTest {
             stubFor(get(urlEqualTo("/menus/20170528")).withHeader("Authorization", equalTo("InvalidToken"))
                     .willReturn(aResponse().withStatus(401)));
 
-            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository("http://localhost:8089");
+            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository(new MenuStoreClient("http://localhost:8089"));
             LocalDate date = LocalDate.of(2017, 05, 28);
             User user = User.builder().withAccessToken("InvalidToken").build();
 
@@ -71,7 +72,7 @@ public class ApiGwMenuRepositoryTest {
             stubFor(get(urlEqualTo("/menus/20170528")).withHeader("Authorization", equalTo("broken"))
                     .willReturn(aResponse().withStatus(500)));
 
-            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository("http://localhost:8089");
+            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository(new MenuStoreClient("http://localhost:8089"));
             LocalDate date = LocalDate.of(2017, 05, 28);
             User user = User.builder().withAccessToken("broken").build();
             // There is probably a nicer way in JUnit 5, but haven't checked yet and wonder if it is compatible with this lambda wrapper
@@ -94,7 +95,7 @@ public class ApiGwMenuRepositoryTest {
             stubFor(get(urlEqualTo("/menus/20170528")).withHeader("Authorization", equalTo("ioProblem"))
                     .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
 
-            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository("http://localhost:8089");
+            ApiGwMenuRepository menuRepo = new ApiGwMenuRepository(new MenuStoreClient("http://localhost:8089"));
             LocalDate date = LocalDate.of(2017, 05, 28);
             User user = User.builder().withAccessToken("ioProblem").build();
             // There is probably a nicer way in JUnit 5, but haven't checked yet and wonder if it is compatible with this lambda wrapper
