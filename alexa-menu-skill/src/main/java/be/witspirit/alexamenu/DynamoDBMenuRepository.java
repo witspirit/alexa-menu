@@ -1,5 +1,7 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.amazonlogin.ProfileService;
+import be.witspirit.common.exception.InvalidTokenException;
 import com.amazon.speech.speechlet.User;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -22,9 +24,10 @@ public class DynamoDBMenuRepository implements MenuRepository {
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBMenuRepository.class);
 
     private final AmazonDynamoDB dynamo;
+    private final ProfileService profileService;
 
-    public DynamoDBMenuRepository() {
-        this(createDefaultDynamoDBClient());
+    public DynamoDBMenuRepository(ProfileService profileService) {
+        this(createDefaultDynamoDBClient(), profileService);
     }
 
     private static AmazonDynamoDB createDefaultDynamoDBClient() {
@@ -34,13 +37,14 @@ public class DynamoDBMenuRepository implements MenuRepository {
         return dbClient;
     }
 
-    public DynamoDBMenuRepository(AmazonDynamoDB dynamo) {
+    public DynamoDBMenuRepository(AmazonDynamoDB dynamo, ProfileService profileService) {
         this.dynamo = dynamo;
+        this.profileService = profileService;
     }
 
     @Override
     public String whatIsForDinner(User user, LocalDate date) {
-        String userId = user.getUserId();
+        String userId = extractUserId(user);
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String dateKey = dateFormat.format(date);
 
@@ -69,5 +73,13 @@ public class DynamoDBMenuRepository implements MenuRepository {
         }
 
         return "We haven't decided yet";
+    }
+
+    private String extractUserId(User user) {
+        String accessToken = user.getAccessToken();
+        if (accessToken == null) {
+            throw new InvalidTokenException();
+        }
+        return profileService.getProfile(accessToken).getUserId();
     }
 }

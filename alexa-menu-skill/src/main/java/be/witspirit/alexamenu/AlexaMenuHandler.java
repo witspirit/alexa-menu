@@ -14,7 +14,7 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
 
     // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        this(menuRepository(), new AmazonProfileService());
+        this(menuRepository(new AmazonProfileService()), new AmazonProfileService());
     }
 
     public AlexaMenuHandler(MenuRepository menuRepository, ProfileService profileService) {
@@ -25,10 +25,10 @@ public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
         return Collections.singleton("amzn1.ask.skill.51d5e161-2205-44b0-a0ea-aaf646d40a1e");
     }
 
-    private static MenuRepository menuRepository() {
+    private static MenuRepository menuRepository(ProfileService profileService) {
         String menuRepoId = System.getenv().get("menuRepository");
         if (menuRepoId == null || menuRepoId.equals("dynamodb")) {
-            return new DynamoDBMenuRepository();
+            return new DynamoDBMenuRepository(profileService);
         } else {
             return new ApiGwMenuRepository();
         }

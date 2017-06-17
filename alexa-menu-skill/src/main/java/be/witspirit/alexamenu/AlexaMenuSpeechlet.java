@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * Handles the actual speech commands
@@ -64,14 +65,16 @@ public class AlexaMenuSpeechlet implements SpeechletV2 {
     }
 
     private SpeechletResponse profile(User user) {
+        return retrieveProfile(user).map(p -> menuResponses.profile(p)).orElse(menuResponses.linkAccount());
+    }
+
+    private Optional<AmazonProfile> retrieveProfile(User user) {
         String accessToken = user.getAccessToken();
         LOG.debug("Access Token : {}", accessToken);
         if (accessToken == null) {
-            return menuResponses.linkAccount();
+            return Optional.empty();
         }
-
-        AmazonProfile amazonProfile = profileService.getProfile(accessToken);
-        return menuResponses.profile(amazonProfile);
+        return Optional.of(profileService.getProfile(accessToken));
     }
 
     private SpeechletResponse dinner(User user, LocalDate date) {

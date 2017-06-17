@@ -1,5 +1,8 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.amazonlogin.AmazonProfile;
+import be.witspirit.amazonlogin.ProfileService;
+import be.witspirit.common.exception.InvalidTokenException;
 import com.amazon.speech.speechlet.User;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
@@ -22,7 +25,7 @@ import static org.mockito.Mockito.when;
  * Unit test for the DynamoDB Menu Repository
  */
 public class DynamoDBMenuRepositoryTest {
-    private static final User TEST_USER = User.builder().withUserId("TEST_USER").build();
+    private static final User TEST_USER = User.builder().withUserId("TEST_USER_ALEXA_ID").withAccessToken("TEST_USER_TOKEN").build();
 
     private AmazonDynamoDB dbMock;
     private DynamoDBMenuRepository repo;
@@ -30,18 +33,18 @@ public class DynamoDBMenuRepositoryTest {
     @BeforeEach
     void initRepo() {
         dbMock = mock(AmazonDynamoDB.class);
-        repo = new DynamoDBMenuRepository(dbMock);
+        repo = new DynamoDBMenuRepository(dbMock, new TestProfileService());
     }
 
     @Test
     void defaultStartup() {
         // Just to see if we didn't break the bootstrap
-        new DynamoDBMenuRepository();
+        new DynamoDBMenuRepository(new TestProfileService());
     }
 
     @Test
     void normalCase() {
-        QueryResult result = result(item("TEST_USER", "20170417", "Today's Dinner"));
+        QueryResult result = result(item("TEST_USER_AMAZON_ID", "20170417", "Today's Dinner"));
         when(dbMock.query(any())).thenReturn(result);
 
         String todaysDinner = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
@@ -59,8 +62,8 @@ public class DynamoDBMenuRepositoryTest {
     @Test
     void multipleResults() {
         QueryResult result = result(
-                item("TEST_USER", "20170417", "Dinner 1"),
-                item("TEST_USER", "20170417", "Dinner 2")
+                item("TEST_USER_AMAZON_ID", "20170417", "Dinner 1"),
+                item("TEST_USER_AMAZON_ID", "20170417", "Dinner 2")
         );
         when(dbMock.query(any())).thenReturn(result);
 
@@ -70,7 +73,7 @@ public class DynamoDBMenuRepositoryTest {
 
     @Test
     void resultWithMissingDinner() {
-        Map<String, AttributeValue> missingDinner = item("TEST_USER", "20170417", "Missing");
+        Map<String, AttributeValue> missingDinner = item("TEST_USER_AMAZON_ID", "20170417", "Missing");
         missingDinner.remove("dinner");
         when(dbMock.query(any())).thenReturn(result(missingDinner));
 
@@ -80,7 +83,7 @@ public class DynamoDBMenuRepositoryTest {
 
     @Test
     void resultWithNullDinner() {
-        when(dbMock.query(any())).thenReturn(result(item("TEST_USER", "20170417", null)));
+        when(dbMock.query(any())).thenReturn(result(item("TEST_USER_AMAZON_ID", "20170417", null)));
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
@@ -99,5 +102,16 @@ public class DynamoDBMenuRepositoryTest {
         item.put("date", new AttributeValue(date));
         item.put("dinner", new AttributeValue(dinner));
         return item;
+    }
+
+    private class TestProfileService implements ProfileService {
+
+        @Override
+        public AmazonProfile getProfile(String accessToken) {
+            if (accessToken != null && accessToken.equals("TEST_USER_TOKEN")) {
+                return new AmazonProfile().setName("Test User").setEmail("testuser@example.com").setUserId("TEST_USER_AMAZON_ID");
+            }
+            throw new InvalidTokenException();
+        }
     }
 }
