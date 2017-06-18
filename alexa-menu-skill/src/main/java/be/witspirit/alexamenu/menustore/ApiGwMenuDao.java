@@ -19,8 +19,8 @@ import java.util.function.Function;
 /**
  * Client for API Gateway Menu Store
  */
-public class MenuStoreClient {
-    private static final Logger LOG = LoggerFactory.getLogger(MenuStoreClient.class);
+public class ApiGwMenuDao implements MenuDao {
+    private static final Logger LOG = LoggerFactory.getLogger(ApiGwMenuDao.class);
 
     private static final String DEFAULT_BASE_URL = "https://4abokujlye.execute-api.eu-west-1.amazonaws.com/prod";
 
@@ -28,15 +28,15 @@ public class MenuStoreClient {
 
     private String accessToken = null;
 
-    public MenuStoreClient() {
+    public ApiGwMenuDao() {
         this(DEFAULT_BASE_URL);
     }
 
-    public MenuStoreClient(String baseUrl) {
+    public ApiGwMenuDao(String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    public MenuStoreClient withAccessToken(String accessToken) {
+    public ApiGwMenuDao withAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
     }
@@ -46,10 +46,12 @@ public class MenuStoreClient {
      * @param dateKey Date in yyyyMMdd format
      * @return The menu for the given date
      */
+    @Override
     public Menu getMenu(String dateKey) {
         return invoke(Request.Get(baseUrl + "/menus/" + dateKey), this::parseAsMenu);
     }
 
+    @Override
     public void setMenu(String dateKey, String dinner) {
         String updateJson = toMenuUpdateJson(dinner);
 

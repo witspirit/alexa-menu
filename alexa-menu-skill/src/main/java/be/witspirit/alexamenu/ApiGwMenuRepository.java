@@ -1,6 +1,7 @@
 package be.witspirit.alexamenu;
 
-import be.witspirit.alexamenu.menustore.MenuStoreClient;
+import be.witspirit.alexamenu.menustore.ApiGwMenuDao;
+import be.witspirit.alexamenu.menustore.MenuDao;
 import com.amazon.speech.speechlet.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +15,14 @@ import java.time.format.DateTimeFormatter;
 public class ApiGwMenuRepository implements MenuRepository {
     private static final Logger LOG = LoggerFactory.getLogger(ApiGwMenuRepository.class);
 
-    private final MenuStoreClient menuStoreClient;
+    private final MenuDao menuDao;
 
     public ApiGwMenuRepository() {
-        this(new MenuStoreClient());
+        this(new ApiGwMenuDao());
     }
 
-    public ApiGwMenuRepository(MenuStoreClient menuStoreClient) {
-        this.menuStoreClient = menuStoreClient;
+    public ApiGwMenuRepository(MenuDao menuDao) {
+        this.menuDao = menuDao;
     }
 
     @Override
@@ -33,6 +34,6 @@ public class ApiGwMenuRepository implements MenuRepository {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String dateKey = dateFormat.format(date);
 
-        return menuStoreClient.withAccessToken(accessToken).getMenu(dateKey).getMenu();
+        return menuDao.withAccessToken(accessToken).getMenu(dateKey).getMenu();
     }
 }
