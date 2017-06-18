@@ -2,11 +2,13 @@ package be.witspirit.amazonlogin;
 
 import be.witspirit.common.exception.InvalidTokenException;
 import be.witspirit.common.test.TestResources;
+import be.witspirit.common.test.WithWireMock;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Fault;
 import org.junit.jupiter.api.Test;
 
+import static be.witspirit.common.test.WireMockExtension.SERVER_URL;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Try to verify the behavior of the AmazonProfileService
  */
+@WithWireMock
 public class AmazonProfileServiceTest {
 
     @Test
@@ -28,13 +31,11 @@ public class AmazonProfileServiceTest {
 
     @Test
     void successProfile() {
-        // They also have a Rule, but this is not compatible with JUnit 5 - So have to setup manually for now
-        withWireMock(() -> {
 
             stubFor(get(urlEqualTo("/user/profile")).withHeader("Authorization", equalTo("bearer ValidToken"))
                     .willReturn(aResponse().withStatus(200).withBody(TestResources.classpath("/profiles/testprofile.json"))));
 
-            AmazonProfileService profileService = new AmazonProfileService("http://localhost:8089/user/profile");
+            AmazonProfileService profileService = new AmazonProfileService(SERVER_URL+"/user/profile");
             AmazonProfile profile = profileService.getProfile("ValidToken");
 
             assertNotNull(profile);
@@ -43,16 +44,14 @@ public class AmazonProfileServiceTest {
             assertThat(profile.getUserId(), is("amzn1.account.TESTACCOUNTID"));
             assertThat(profile.toString(), is("amzn1.account.TESTACCOUNTID (Test User - test.user@example.com)"));
 
-        });
     }
 
     @Test
     void invalidToken() {
-        withWireMock(() -> {
             stubFor(get(urlEqualTo("/user/profile")).withHeader("Authorization", equalTo("bearer InvalidToken"))
                     .willReturn(aResponse().withStatus(400)));
 
-            AmazonProfileService profileService = new AmazonProfileService("http://localhost:8089/user/profile");
+            AmazonProfileService profileService = new AmazonProfileService(SERVER_URL+"/user/profile");
             // There is probably a nicer way in JUnit 5, but haven't checked yet and wonder if it is compatible with this lambda wrapper
             try {
                 AmazonProfile profile = profileService.getProfile("InvalidToken");
@@ -60,16 +59,14 @@ public class AmazonProfileServiceTest {
             } catch (InvalidTokenException e) {
                 // Expected exception
             }
-        });
     }
 
     @Test
     void unexpectedResponse() {
-        withWireMock(() -> {
             stubFor(get(urlEqualTo("/user/profile")).withHeader("Authorization", equalTo("bearer broken"))
                     .willReturn(aResponse().withStatus(401)));
 
-            AmazonProfileService profileService = new AmazonProfileService("http://localhost:8089/user/profile");
+            AmazonProfileService profileService = new AmazonProfileService(SERVER_URL+"/user/profile");
             // There is probably a nicer way in JUnit 5, but haven't checked yet and wonder if it is compatible with this lambda wrapper
             try {
                 AmazonProfile profile = profileService.getProfile("broken");
@@ -81,16 +78,14 @@ public class AmazonProfileServiceTest {
                 }
                 assertThat(e.getMessage(), containsString("Unexpected response"));
             }
-        });
     }
 
     @Test
     void ioProblem() {
-        withWireMock(() -> {
             stubFor(get(urlEqualTo("/user/profile")).withHeader("Authorization", equalTo("bearer ioProblem"))
                     .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
 
-            AmazonProfileService profileService = new AmazonProfileService("http://localhost:8089/user/profile");
+            AmazonProfileService profileService = new AmazonProfileService(SERVER_URL+"/user/profile");
             // There is probably a nicer way in JUnit 5, but haven't checked yet and wonder if it is compatible with this lambda wrapper
             try {
                 AmazonProfile profile = profileService.getProfile("ioProblem");
@@ -102,20 +97,6 @@ public class AmazonProfileServiceTest {
                 }
                 assertThat(e.getMessage(), containsString("Failed"));
             }
-        });
-    }
-
-    private void withWireMock(Runnable runnable) {
-        WireMockServer mockServer = new WireMockServer(wireMockConfig().port(8089));
-        try {
-            mockServer.start();
-            WireMock.configureFor(8089);
-
-            runnable.run();
-
-        } finally {
-            mockServer.stop();
-        }
     }
 
 }

@@ -17,6 +17,20 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional> <!-- Assumption is that anyone who wants to use the provided extensions, will already have the dependency -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional> <!-- Assumption is that anyone who wants to use the provided extensions, will already have the dependency -->
+        </dependency>
     </dependencies>
 
 </project>
