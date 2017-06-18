@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -22,8 +21,8 @@ public class ProfileDeserializeTest {
         AmazonProfile amazonProfile = new ObjectMapper().readValue(profileJson, AmazonProfile.class);
 
         assertNotNull(amazonProfile);
-        assertThat(amazonProfile.getName(), is("Test User"));
-        assertThat(amazonProfile.getEmail(), is("test.user@example.com"));
-        assertThat(amazonProfile.getUserId(), is("amzn1.account.TESTACCOUNTID"));
+        assertThat(amazonProfile.getName()).isEqualTo("Test User");
+        assertThat(amazonProfile.getEmail()).isEqualTo("test.user@example.com");
+        assertThat(amazonProfile.getUserId()).isEqualTo("amzn1.account.TESTACCOUNTID");
     }
 }

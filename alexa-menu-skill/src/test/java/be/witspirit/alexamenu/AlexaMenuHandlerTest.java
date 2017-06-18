@@ -13,13 +13,9 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.util.Map;
 
-import static java.lang.System.getenv;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Should more reflect an end-to-end test for the overall Alexa Menu Skill
@@ -51,58 +47,58 @@ public class AlexaMenuHandlerTest {
     void helpIntent() throws IOException {
         DocumentContext json = request("help");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("You can ask me 'what's for dinner'"));
-        assertThat(json.read("$.response.card.title"), is("Menu"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("You can ask me 'what's for dinner'");
+        assertThat(json.<String>read("$.response.card.title")).isEqualTo("Menu");
     }
 
     @Test
     void whatsForDinner() throws IOException {
         DocumentContext json = request("whatsfordinner");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Today's Recipe"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Today's Recipe");
     }
 
     @Test
     void whatIsForDinnerTomorrow() throws IOException {
         DocumentContext json = request("whatisfordinnertomorrow");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Tomorrow's Recipe"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Tomorrow's Recipe");
     }
 
     @Test
     void profileNoToken() throws IOException {
         DocumentContext json = request("profile_without_access_token");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Please link an Amazon account to get your personal menu storage"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Please link an Amazon account to get your personal menu storage");
     }
 
     @Test
     void profileValidToken() throws IOException {
         DocumentContext json = request("profile_with_valid_token");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Hi Tet User. We can reach you on test.user@example.com and will identify you using userId amzn1.account.TESTACCOUNTID"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Hi Tet User. We can reach you on test.user@example.com and will identify you using userId amzn1.account.TESTACCOUNTID");
     }
 
     @Test
     void whatIsForDinnerWithInvalidToken() throws IOException {
         DocumentContext json = request("whatsfordinner_invalidtoken");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Please link an Amazon account to get your personal menu storage"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Please link an Amazon account to get your personal menu storage");
     }
 
     @Test
     void open() throws IOException {
         DocumentContext json = request("open");
 
-        assertThat(json.read("$.response.outputSpeech.text"), is("Welcome to the Menu skill, you can ask 'what's for dinner'"));
-        assertThat(json.read("$.response.reprompt.outputSpeech.text"), is("Welcome to the Menu skill, you can ask 'what's for dinner'"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("Welcome to the Menu skill, you can ask 'what's for dinner'");
+        assertThat(json.<String>read("$.response.reprompt.outputSpeech.text")).isEqualTo("Welcome to the Menu skill, you can ask 'what's for dinner'");
     }
 
     @Test
     void endSession() throws IOException {
         DocumentContext json = request("end_session");
 
-        assertThat(json.read("$.version"), is("1.0"));
+        assertThat(json.<String>read("$.version")).isEqualTo("1.0");
     }
 
     @Test
@@ -110,8 +106,8 @@ public class AlexaMenuHandlerTest {
         DocumentContext json = request("invalid_intent");
 
         // If we cannot resolve the intent, we fallback to Help
-        assertThat(json.read("$.response.outputSpeech.text"), is("You can ask me 'what's for dinner'"));
-        assertThat(json.read("$.response.card.title"), is("Menu"));
+        assertThat(json.<String>read("$.response.outputSpeech.text")).isEqualTo("You can ask me 'what's for dinner'");
+        assertThat(json.<String>read("$.response.card.title")).isEqualTo("Menu");
     }
 
     private DocumentContext request(String requestName) throws IOException {

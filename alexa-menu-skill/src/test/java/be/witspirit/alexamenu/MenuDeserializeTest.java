@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -23,7 +22,7 @@ public class MenuDeserializeTest {
         Menu menu = new ObjectMapper().readValue(menuJson, Menu.class);
 
         assertNotNull(menu);
-        assertThat(menu.getDate(), is("20170528"));
-        assertThat(menu.getMenu(), is("TestMenu"));
+        assertThat(menu.getDate()).isEqualTo("20170528");
+        assertThat(menu.getMenu()).isEqualTo("TestMenu");
     }
 }

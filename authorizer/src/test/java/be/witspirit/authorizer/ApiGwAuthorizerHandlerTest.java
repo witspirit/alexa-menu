@@ -11,11 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -35,12 +32,12 @@ public class ApiGwAuthorizerHandlerTest {
 
         PolicyHelper policyHelper = new PolicyHelper(authPolicy);
 
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
-        assertThat(policyHelper.getAllowResources().length, is(0));
-        assertThat(policyHelper.getDenyResources().length, is(1));
+        assertThat(authPolicy.getPrincipalId()).isEqualTo("testUserId");
+        assertThat(policyHelper.getAllowResources().length).isEqualTo(0);
+        assertThat(policyHelper.getDenyResources().length).isEqualTo(1);
 
         Map<String, Object> context = authPolicy.getContext();
-        assertThat(context.size(), is(0)); // For unauthorized users, we don't provide profile info
+        assertThat(context.size()).isEqualTo(0); // For unauthorized users, we don't provide profile info
     }
 
     @Test
@@ -51,28 +48,24 @@ public class ApiGwAuthorizerHandlerTest {
 
         PolicyHelper policyHelper = new PolicyHelper(authPolicy);
 
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
-        assertThat(policyHelper.getAllowResources().length, is(1));
-        assertThat(policyHelper.getDenyResources().length, is(0));
+        assertThat(authPolicy.getPrincipalId()).isEqualTo("testUserId");
+        assertThat(policyHelper.getAllowResources().length).isEqualTo(1);
+        assertThat(policyHelper.getDenyResources().length).isEqualTo(0);
 
 
         Map<String, Object> context = authPolicy.getContext();
-        assertThat(context.size(), is(2)); // For unauthorized users, we don't provide profile info
+        assertThat(context.size()).isEqualTo(2); // For unauthorized users, we don't provide profile info
 
-        assertThat(context.get("name"), is("Test User"));
-        assertThat(context.get("email"), is("testUser@example.com"));
+        assertThat(context.get("name")).isEqualTo("Test User");
+        assertThat(context.get("email")).isEqualTo("testUser@example.com");
     }
 
     @Test
     void invalidToken() {
         ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
 
-        try {
-            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("InvalidToken"), null);
-            fail("Expected RuntimeException, but service continued and delivered an AuthPolicy : " + authPolicy);
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("Unauthorized"));
-        }
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> apiGwAuthorizerHandler.handleRequest(authorizerContext("InvalidToken"), null));
+        assertThat(exception.getMessage()).contains("Unauthorized");
     }
 
     @Test
@@ -84,7 +77,7 @@ public class ApiGwAuthorizerHandlerTest {
         ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
         AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
 
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+        assertThat(authPolicy.getPrincipalId()).isEqualTo("testUserId");
     }
 
     @Test
@@ -92,24 +85,16 @@ public class ApiGwAuthorizerHandlerTest {
         ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
 
         // Null Token case
-        try {
-            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext(null), null);
-        } catch (RuntimeException e) {
-            // Expected due to TestProfileService for a null token
-        }
+        assertThrows(RuntimeException.class, () -> apiGwAuthorizerHandler.handleRequest(authorizerContext(null), null));
 
         // Weird size Token case
-        try {
-            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("short"), null);
-        } catch (RuntimeException e) {
-            // Expected due to TestProfileService for a null token
-        }
+        assertThrows(RuntimeException.class, () -> apiGwAuthorizerHandler.handleRequest(authorizerContext("short"), null));
 
         // Alternate ARN size
         TokenAuthorizerContext tokenContext = authorizerContext("ValidToken");
         tokenContext.setMethodArn("arn:aws:execute-api:test-region:my-account:api-id/api-stage/method");
         AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(tokenContext, null);
-        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+        assertThat(authPolicy.getPrincipalId()).isEqualTo("testUserId");
     }
 
 
@@ -127,7 +112,7 @@ public class ApiGwAuthorizerHandlerTest {
 
         PolicyHelper(AuthPolicy authPolicy) {
             Map<String, Object>[] statements = (Map<String, Object>[]) authPolicy.getPolicyDocument().get("Statement");
-            assertThat(statements.length, is(2));
+            assertThat(statements.length).isEqualTo(2);
 
             for (Map<String, Object> statement : statements) {
                 String effect = (String) statement.get("Effect");

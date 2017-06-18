@@ -15,8 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -49,7 +48,7 @@ public class DynamoDBMenuRepositoryTest {
         when(dbMock.query(any())).thenReturn(result);
 
         String todaysDinner = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
-        assertThat(todaysDinner, is("Today's Dinner"));
+        assertThat(todaysDinner).isEqualTo("Today's Dinner");
     }
 
     @Test
@@ -57,7 +56,7 @@ public class DynamoDBMenuRepositoryTest {
         when(dbMock.query(any())).thenReturn(result());
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
-        assertThat(nothingAvailable, is("We haven't decided yet"));
+        assertThat(nothingAvailable).isEqualTo("We haven't decided yet");
     }
 
     @Test
@@ -69,7 +68,7 @@ public class DynamoDBMenuRepositoryTest {
         when(dbMock.query(any())).thenReturn(result);
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
-        assertThat(nothingAvailable, is("We haven't decided yet"));
+        assertThat(nothingAvailable).isEqualTo("We haven't decided yet");
     }
 
     @Test
@@ -79,7 +78,7 @@ public class DynamoDBMenuRepositoryTest {
         when(dbMock.query(any())).thenReturn(result(missingDinner));
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
-        assertThat(nothingAvailable, is("We haven't decided yet"));
+        assertThat(nothingAvailable).isEqualTo("We haven't decided yet");
     }
 
     @Test
@@ -87,7 +86,7 @@ public class DynamoDBMenuRepositoryTest {
         when(dbMock.query(any())).thenReturn(result(item("TEST_USER_AMAZON_ID", "20170417", null)));
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
-        assertThat(nothingAvailable, is("We haven't decided yet"));
+        assertThat(nothingAvailable).isEqualTo("We haven't decided yet");
     }
 
     @Test
