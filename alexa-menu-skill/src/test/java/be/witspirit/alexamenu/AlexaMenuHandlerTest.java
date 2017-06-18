@@ -29,12 +29,20 @@ public class AlexaMenuHandlerTest {
     @Test
     void defaultStartup() {
         // Just to see if we didn't break the bootstrap
+        // Also covers the implementationSelectionCheck case without environment
         new AlexaMenuHandler();
     }
 
     @Test
     @WithSysEnv(@EnvValue(key="menuRepository", val="apiGw"))
-    void implementationSelectionCheck() {
+    void implementationSelectionCheck_apiGw() {
+        // Difficult to verify the actual proper selection, but coverage report should show we hit the case
+        new AlexaMenuHandler();
+    }
+
+    @Test
+    @WithSysEnv(@EnvValue(key="menuRepository", val="dynamodb"))
+    void implementationSelectionCheck_dynamoDb() {
         // Difficult to verify the actual proper selection, but coverage report should show we hit the case
         new AlexaMenuHandler();
     }
