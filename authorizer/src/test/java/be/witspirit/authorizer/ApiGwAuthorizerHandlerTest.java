@@ -5,6 +5,8 @@ import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.authorizer.io.AuthPolicy;
 import be.witspirit.authorizer.io.TokenAuthorizerContext;
 import be.witspirit.common.exception.InvalidTokenException;
+import be.witspirit.common.test.EnvValue;
+import be.witspirit.common.test.WithSysEnv;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -42,28 +44,23 @@ public class ApiGwAuthorizerHandlerTest {
     }
 
     @Test
+    @WithSysEnv(@EnvValue(key = "authorizedEmails", val = "testUser@example.com"))
     void validTokenAuthorized() {
-        System.setProperty("authorizedEmails", "testUser@example.com");
-        try {
+        ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
+        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("ValidToken"), null);
 
-            ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
-            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("ValidToken"), null);
+        PolicyHelper policyHelper = new PolicyHelper(authPolicy);
 
-            PolicyHelper policyHelper = new PolicyHelper(authPolicy);
-
-            assertThat(authPolicy.getPrincipalId(), is("testUserId"));
-            assertThat(policyHelper.getAllowResources().length, is(1));
-            assertThat(policyHelper.getDenyResources().length, is(0));
+        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
+        assertThat(policyHelper.getAllowResources().length, is(1));
+        assertThat(policyHelper.getDenyResources().length, is(0));
 
 
-            Map<String, Object> context = authPolicy.getContext();
-            assertThat(context.size(), is(2)); // For unauthorized users, we don't provide profile info
+        Map<String, Object> context = authPolicy.getContext();
+        assertThat(context.size(), is(2)); // For unauthorized users, we don't provide profile info
 
-            assertThat(context.get("name"), is("Test User"));
-            assertThat(context.get("email"), is("testUser@example.com"));
-        } finally {
-            System.clearProperty("authorizedEmails");
-        }
+        assertThat(context.get("name"), is("Test User"));
+        assertThat(context.get("email"), is("testUser@example.com"));
     }
 
     @Test
@@ -79,20 +76,15 @@ public class ApiGwAuthorizerHandlerTest {
     }
 
     @Test
+    @WithSysEnv(@EnvValue(key = "authorizedEmails", val = "testUser@example.com"))
     void allowBearerPrefix() {
         // In the OAuth protocol, the token is prefixed with Bearer before the actual token. The Amazon Login service
         // however does not allow this. But for easier integration with clients, I am going to detect and strip this from
         // the token, to ensure it works irrespective.
-        System.setProperty("authorizedEmails", "testUser@example.com");
-        try {
+        ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
+        AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
 
-            ApiGwAuthorizerHandler apiGwAuthorizerHandler = new ApiGwAuthorizerHandler(new TestProfileService());
-            AuthPolicy authPolicy = apiGwAuthorizerHandler.handleRequest(authorizerContext("Bearer ValidToken"), null);
-
-            assertThat(authPolicy.getPrincipalId(), is("testUserId"));
-        } finally {
-            System.clearProperty("authorizedEmails");
-        }
+        assertThat(authPolicy.getPrincipalId(), is("testUserId"));
     }
 
     @Test
@@ -121,7 +113,6 @@ public class ApiGwAuthorizerHandlerTest {
     }
 
 
-
     private TokenAuthorizerContext authorizerContext(String token) {
         TokenAuthorizerContext authorizerContext = new TokenAuthorizerContext();
         authorizerContext.setType("TOKEN");
@@ -145,7 +136,7 @@ public class ApiGwAuthorizerHandlerTest {
                 } else if (effect.equals("Deny")) {
                     denyStatement = statement;
                 } else {
-                    fail("Unexpected statement effect: "+effect);
+                    fail("Unexpected statement effect: " + effect);
                 }
             }
 

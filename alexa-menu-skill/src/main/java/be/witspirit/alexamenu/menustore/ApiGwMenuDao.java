@@ -106,7 +106,7 @@ public class ApiGwMenuDao implements MenuDao {
             updateMenu.setMenu(dinner);
             ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             return mapper.writeValueAsString(updateMenu);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) { // Should never happen... As we know the structure of the input
             LOG.error("Failed to create Menu Update JSON with input "+dinner, e);
             throw new RuntimeException("Failed to create Menu Update JSON with input "+dinner);
         }

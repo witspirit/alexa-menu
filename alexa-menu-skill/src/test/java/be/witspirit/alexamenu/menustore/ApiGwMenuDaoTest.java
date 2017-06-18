@@ -34,6 +34,7 @@ public class ApiGwMenuDaoTest {
         assertThat(menu).isNotNull();
         assertThat(menu.getMenu()).isEqualTo("TestMenu");
         assertThat(menu.getDate()).isEqualTo("20170528");
+        assertThat(menu.toString()).isEqualTo("20170528->TestMenu");
     }
 
     @Test
@@ -44,6 +45,17 @@ public class ApiGwMenuDaoTest {
         ApiGwMenuDao menuClient = new ApiGwMenuDao(SERVER_URL).withAccessToken("InvalidToken");
 
         assertThrows(InvalidTokenException.class, () -> menuClient.getMenu("20170528"));
+    }
+
+    @Test
+    void getMenu_invalidMenuJson() {
+        stubFor(get(urlEqualTo("/menus/20170528")).withHeader("Authorization", equalTo("ValidToken"))
+                .willReturn(aResponse().withStatus(200).withBody(TestResources.classpath("/menus/broken_menu.json"))));
+
+        ApiGwMenuDao menuClient = new ApiGwMenuDao(SERVER_URL).withAccessToken("ValidToken");
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> menuClient.getMenu("20170528"));
+        assertThat(exception.getMessage()).contains("Failed to parse");
     }
 
     @Test
@@ -65,7 +77,7 @@ public class ApiGwMenuDaoTest {
         ApiGwMenuDao menuClient = new ApiGwMenuDao(SERVER_URL).withAccessToken("ioProblem");
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> menuClient.getMenu("20170528"));
-        assertThat(exception.getMessage()).contains("Failed");
+        assertThat(exception.getMessage()).contains("Failed to interact");
     }
 
     @Test
@@ -80,4 +92,5 @@ public class ApiGwMenuDaoTest {
 
         menuClient.setMenu("20170718", "SetTestMenu");
     }
+
 }

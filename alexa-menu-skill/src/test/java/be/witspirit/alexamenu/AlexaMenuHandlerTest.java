@@ -3,6 +3,8 @@ package be.witspirit.alexamenu;
 import be.witspirit.amazonlogin.AmazonProfile;
 import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.common.exception.InvalidTokenException;
+import be.witspirit.common.test.EnvValue;
+import be.witspirit.common.test.WithSysEnv;
 import com.amazon.speech.speechlet.User;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -11,8 +13,11 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.Map;
 
+import static java.lang.System.getenv;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -24,6 +29,13 @@ public class AlexaMenuHandlerTest {
     @Test
     void defaultStartup() {
         // Just to see if we didn't break the bootstrap
+        new AlexaMenuHandler();
+    }
+
+    @Test
+    @WithSysEnv(@EnvValue(key="menuRepository", val="apiGw"))
+    void implementationSelectionCheck() {
+        // Difficult to verify the actual proper selection, but coverage report should show we hit the case
         new AlexaMenuHandler();
     }
 
@@ -142,4 +154,5 @@ public class AlexaMenuHandlerTest {
             return null;
         }
     }
+
 }
