@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -87,6 +88,12 @@ public class DynamoDBMenuRepositoryTest {
 
         String nothingAvailable = repo.whatIsForDinner(TEST_USER, LocalDate.of(2017, 04, 17));
         assertThat(nothingAvailable, is("We haven't decided yet"));
+    }
+
+    @Test
+    void missingAccessToken() {
+        User userWithoutAccessToken = User.builder().withUserId("TEST_USER_ALEXA_ID").withAccessToken(null).build();
+        assertThrows(InvalidTokenException.class, () -> repo.whatIsForDinner(userWithoutAccessToken, LocalDate.of(2017, 04, 17)));
     }
 
     private QueryResult result(Map<String, AttributeValue>... items) {
