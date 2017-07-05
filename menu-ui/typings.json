@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "amazon-login-sdk": "registry:global/amazon-login-sdk#1.0.0+20160926112253"
+  }
+}
