@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-amazon-login',
@@ -7,35 +7,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AmazonLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
 
   doLogin() {
 
-    let handleResponse = function(response) {
+    let handleResponse = function (response) {
       console.log('onAuthorizeResponse');
 
       if (response.error) {
-        alert('oauth error '+response.error+ ' - '+response.error_description);
+        alert('oauth error ' + response.error + ' - ' + response.error_description);
         return;
       }
-      alert('success: '+response.access_token);
-      console.log("Access Token: "+response.access_token);
+      alert('success: ' + response.access_token);
+      console.log('Access Token: ' + response.access_token);
 
-      let token = response.access_token;
+      const token = response.access_token;
 
       console.log('Calling retrieveProfile');
       // Need to register some Typings binding for this to work :-( It exists, but I need to figure out how to configure it.
-      amazon.Login.retrieveProfile(token, function(response) {
+      amazon.Login.retrieveProfile(token, function (response) {
         console.log('Profile Response:' + JSON.stringify(response));
       });
     };
 
-    document.getElementById('LoginWithAmazon').onclick = function() {
+    document.getElementById('LoginWithAmazon').onclick = function () {
       console.log('Pressed LoginWithAmazon');
-      let options = { scope : 'profile' };
+      const options = {scope: 'profile'};
       amazon.Login.authorize(options, handleResponse);
       return false;
     };
