@@ -25,6 +25,7 @@
         <module>authorizer</module>
         <module>amazon-login</module>
         <module>menu-common</module>
+        <module>menu-api</module>
     </modules>
 
     <dependencyManagement>
