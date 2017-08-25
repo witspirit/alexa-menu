@@ -2,8 +2,8 @@ package be.witspirit.common.test;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
-import org.junit.jupiter.api.extension.TestExtensionContext;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class SysEnvExtension implements BeforeTestExecutionCallback, AfterTestEx
     }
 
     @Override
-    public void beforeTestExecution(TestExtensionContext context) throws Exception {
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
         saveCurrentEnv();
 
         WithSysEnv withSysEnv = context.getTestMethod().get().getAnnotation(WithSysEnv.class);
@@ -54,12 +54,12 @@ public class SysEnvExtension implements BeforeTestExecutionCallback, AfterTestEx
     }
 
     @Override
-    public void afterTestExecution(TestExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) throws Exception {
         restoreEnv();
     }
 
     @Override
-    public void handleTestExecutionException(TestExtensionContext context, Throwable throwable) throws Throwable {
+    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
         restoreEnv();
         throw throwable;
     }

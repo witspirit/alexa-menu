@@ -42,7 +42,7 @@ public class WireMockExtension implements BeforeAllCallback, AfterAllCallback, B
     }
 
     @Override
-    public void beforeAll(ContainerExtensionContext context) throws Exception {
+    public void beforeAll(ExtensionContext context) throws Exception {
         WithWireMock withWireMock = context.getTestClass().get().getAnnotation(WithWireMock.class);
         if (withWireMock != null) {
             mode = ExtensionMode.CLASS;
@@ -51,14 +51,14 @@ public class WireMockExtension implements BeforeAllCallback, AfterAllCallback, B
     }
 
     @Override
-    public void afterAll(ContainerExtensionContext context) throws Exception {
+    public void afterAll(ExtensionContext context) throws Exception {
         if (mode == ExtensionMode.CLASS) {
             stopMockServer();
         }
     }
 
     @Override
-    public void beforeTestExecution(TestExtensionContext context) throws Exception {
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
         if (mode == ExtensionMode.CLASS) {
             return;
         }
@@ -72,14 +72,14 @@ public class WireMockExtension implements BeforeAllCallback, AfterAllCallback, B
 
 
     @Override
-    public void afterTestExecution(TestExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) throws Exception {
         if (mode == ExtensionMode.METHOD) {
             stopMockServer();
         }
     }
 
     @Override
-    public void handleTestExecutionException(TestExtensionContext context, Throwable throwable) throws Throwable {
+    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
         if (mode == ExtensionMode.METHOD) {
             stopMockServer();
         }
