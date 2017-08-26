@@ -262,7 +262,7 @@ public class DynamoDbExperimenter {
     void nextWeek() {
         String dateKey = dateKey(LocalDate.now());
 
-        dateKey = "20170607";
+        dateKey = "20170826";
 
         QueryRequest query = new QueryRequest("menus");
         query.addKeyConditionsEntry("userId", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue(AMAZON_USER_ID)));
