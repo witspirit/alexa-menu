@@ -1,9 +1,11 @@
 package be.witspirit.menu.api.menuapi.menustore;
 
+import be.witspirit.menu.api.menuapi.LocalDateFormatter;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.*;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 /**
  * DynamoDB based implementation of the Menu Store
  */
+@Repository
 public class DynamoDBMenuStore implements MenuStore {
 
     public static final String DEFAULT_SERVICE_ENDPOINT = "dynamodb.eu-west-1.amazonaws.com";
@@ -31,14 +34,14 @@ public class DynamoDBMenuStore implements MenuStore {
 
 
     @Override
-    public Menu get(String userId, LocalDate date) {
+    public MenuRecord get(String userId, LocalDate date) {
         Map<String, AttributeValue> record = getRecord(userId, dateKey(date));
         return toMenu(record);
     }
 
 
     @Override
-    public List<Menu> getNext(String userId, LocalDate since, int nrOfDays) {
+    public List<MenuRecord> getNext(String userId, LocalDate since, int nrOfDays) {
         return nextRecords(userId, dateKey(since), nrOfDays)
                 .stream()
                 .map(this::toMenu)
@@ -46,8 +49,8 @@ public class DynamoDBMenuStore implements MenuStore {
     }
 
     @Override
-    public void set(Menu menu) {
-        writeRecord(menu.getUserId(), dateKey(menu.getDate()), menu.getDinner());
+    public void set(MenuRecord menuRecord) {
+        writeRecord(menuRecord.getUserId(), dateKey(menuRecord.getDate()), menuRecord.getDinner());
     }
 
     @Override
@@ -91,20 +94,18 @@ public class DynamoDBMenuStore implements MenuStore {
     }
 
     private String dateKey(LocalDate date) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return dateFormat.format(date);
+        return LocalDateFormatter.FORMATTER.format(date);
     }
 
     private LocalDate localDate(String dateKey) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return LocalDate.parse(dateKey, dateFormat);
+        return LocalDate.parse(dateKey, LocalDateFormatter.FORMATTER);
     }
 
-    private Menu toMenu(Map<String, AttributeValue> record) {
-        Menu menu = new Menu();
-        menu.setUserId(record.get("userId").getS())
+    private MenuRecord toMenu(Map<String, AttributeValue> record) {
+        MenuRecord menuRecord = new MenuRecord();
+        menuRecord.setUserId(record.get("userId").getS())
                 .setDate(localDate(record.get("date").getS()))
                 .setDinner(record.get("dinner").getS());
-        return menu;
+        return menuRecord;
     }
 }

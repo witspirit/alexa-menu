@@ -14,7 +14,7 @@ public interface MenuStore {
      * @param date Date for which the menu is to be retrieved
      * @return The Menu for the given date.
      */
-    Menu get(String userId, LocalDate date);
+    MenuRecord get(String userId, LocalDate date);
 
     /**
      * Retrieves the next nrOfDays menu's starting at (and including) the since date
@@ -23,13 +23,13 @@ public interface MenuStore {
      * @param nrOfDays Nr of days for which you want to retrieve the menu
      * @return
      */
-    List<Menu> getNext(String userId, LocalDate since, int nrOfDays);
+    List<MenuRecord> getNext(String userId, LocalDate since, int nrOfDays);
 
     /**
      * Sets the menu. Will overwrite whatever is already there.
-     * @param menu The menu record to be stored
+     * @param menuRecord The menu record to be stored
      */
-    void set(Menu menu);
+    void set(MenuRecord menuRecord);
 
     /**
      * Delete the menu entry that exists for userId and date

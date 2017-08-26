@@ -1,11 +1,13 @@
 package be.witspirit.menu.api.menuapi.menustore;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 /**
  * Menu representation as provided by the MenuStore API
  */
-public class Menu {
+public class MenuRecord {
     private String userId;
     private LocalDate date;
     private String dinner;
@@ -22,17 +24,17 @@ public class Menu {
         return dinner;
     }
 
-    public Menu setUserId(String userId) {
+    public MenuRecord setUserId(String userId) {
         this.userId = userId;
         return this;
     }
 
-    public Menu setDate(LocalDate date) {
+    public MenuRecord setDate(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public Menu setDinner(String dinner) {
+    public MenuRecord setDinner(String dinner) {
         this.dinner = dinner;
         return this;
     }

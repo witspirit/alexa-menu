@@ -21,14 +21,14 @@ public class DynamoDbMenuStoreExperimenter {
 
     @Test
     public void getToday() {
-        Menu menu = menuStore.get(AMAZON_USER_ID, LocalDate.now());
+        MenuRecord menuRecord = menuStore.get(AMAZON_USER_ID, LocalDate.now());
 
-        System.out.println(menu);
+        System.out.println(menuRecord);
     }
 
     @Test
     public void getUpcomingWeek() {
-        List<Menu> upcomingWeek = menuStore.getNext(AMAZON_USER_ID, LocalDate.now(), 7);
+        List<MenuRecord> upcomingWeek = menuStore.getNext(AMAZON_USER_ID, LocalDate.now(), 7);
 
         upcomingWeek.stream().forEach(System.out::println);
     }

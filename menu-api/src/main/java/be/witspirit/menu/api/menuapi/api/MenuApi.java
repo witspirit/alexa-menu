@@ -1,16 +1,38 @@
 package be.witspirit.menu.api.menuapi.api;
 
+import be.witspirit.menu.api.menuapi.LocalDateFormatter;
+import be.witspirit.menu.api.menuapi.MenuApiApplication;
+import be.witspirit.menu.api.menuapi.menustore.MenuRecord;
+import be.witspirit.menu.api.menuapi.menustore.MenuStore;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = {"/menus"})
 public class MenuApi {
 
+    // Fake security
+    private static final String AMAZON_USER_ID = "amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ";
+
+    private MenuStore menuStore;
+
+    public MenuApi(MenuStore menuStore) {
+        this.menuStore = menuStore;
+    }
+
     @GetMapping
-    public String dummy() {
-        return "Hello World";
+    public List<UserMenu> next(@RequestParam(name = "since", required = false) @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate since,
+                                 @RequestParam(name= "nrOfDays", defaultValue = "7") int nrOfDays) {
+        if (since == null) { // Unfortunately I cannot set LocalDate.now() as a default value
+            since = LocalDate.now();
+        }
+        return UserMenuConverter.toMenus(menuStore.getNext(AMAZON_USER_ID, since, nrOfDays));
     }
 
 
