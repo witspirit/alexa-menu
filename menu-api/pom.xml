@@ -26,6 +26,31 @@
 	</properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>be.witspirit.alexamenu</groupId>
+            <artifactId>amazon-login</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
+            <exclusions>
+                <!-- Exclude the logging dependencies for AWS Lambda -->
+                <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-lambda-java-log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>

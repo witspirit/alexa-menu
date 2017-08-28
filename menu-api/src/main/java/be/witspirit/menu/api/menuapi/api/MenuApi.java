@@ -5,6 +5,7 @@ import be.witspirit.menu.api.menuapi.MenuApiApplication;
 import be.witspirit.menu.api.menuapi.menustore.MenuRecord;
 import be.witspirit.menu.api.menuapi.menustore.MenuStore;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping(path = {"/menus"})
 public class MenuApi {
-
-    // Fake security
-    private static final String AMAZON_USER_ID = "amzn1.account.AHMU4WP553D7BJSRDVTXSCWKYEIQ";
 
     private MenuStore menuStore;
 
@@ -32,7 +30,11 @@ public class MenuApi {
         if (since == null) { // Unfortunately I cannot set LocalDate.now() as a default value
             since = LocalDate.now();
         }
-        return UserMenuConverter.toMenus(menuStore.getNext(AMAZON_USER_ID, since, nrOfDays));
+        return UserMenuConverter.toMenus(menuStore.getNext(amazonUserId(), since, nrOfDays));
+    }
+
+    private String amazonUserId() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 
