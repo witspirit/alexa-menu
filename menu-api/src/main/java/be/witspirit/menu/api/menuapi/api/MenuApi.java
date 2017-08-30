@@ -6,11 +6,9 @@ import be.witspirit.menu.api.menuapi.menustore.MenuRecord;
 import be.witspirit.menu.api.menuapi.menustore.MenuStore;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,8 +22,10 @@ public class MenuApi {
         this.menuStore = menuStore;
     }
 
+    // Full JSON Structure
+
     @GetMapping
-    public List<UserMenu> next(@RequestParam(name = "since", required = false) @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate since,
+    public List<UserMenu> getMenus(@RequestParam(name = "since", required = false) @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate since,
                                  @RequestParam(name= "nrOfDays", defaultValue = "7") int nrOfDays) {
         if (since == null) { // Unfortunately I cannot set LocalDate.now() as a default value
             since = LocalDate.now();
@@ -33,9 +33,27 @@ public class MenuApi {
         return UserMenuConverter.toMenus(menuStore.getNext(amazonUserId(), since, nrOfDays));
     }
 
+    @PutMapping
+    public void setMenus(@RequestBody List<UserMenu> menus) {
+        for (UserMenu menu : menus) {
+            menuStore.set(new MenuRecord().setUserId(amazonUserId()).setDate(menu.getDate()).setDinner(menu.getDinner()));
+        }
+    }
+
+    // Plain Text one-by-one approach
+
+    @GetMapping("/{date}")
+    public String getMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date) {
+        return menuStore.get(amazonUserId(), date).getDinner();
+    }
+
+    @PutMapping("/{date}")
+    public void setMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date, @RequestBody String dinner) {
+        menuStore.set(new MenuRecord().setUserId(amazonUserId()).setDate(date).setDinner(dinner));
+    }
+
     private String amazonUserId() {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
 
 }
