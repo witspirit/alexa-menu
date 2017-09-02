@@ -7,9 +7,9 @@ let userInfo;
 function resetUserInfo() {
     userInfo = {
         authenticated : false,
-        accessToken : '-Loading-',
-        name : '-Loading-',
-        email : '-Loading-'
+        accessToken : '',
+        name : 'Sign In',
+        email : ''
     };
 }
 resetUserInfo();
@@ -76,6 +76,11 @@ function logout() {
 function refreshUi() {
     $('#login').text(userInfo.name);
     $('#access-token').val(userInfo.accessToken);
+    if (userInfo.authenticated) {
+        $('#logout').show();
+    } else {
+        $('#logout').hide();
+    }
 }
 
 

@@ -1,0 +1,20 @@
+header {
+    height: 6rem;
+}
+
+header .row {
+    background-color: lightblue;
+}
+
+header .user-area {
+    text-align: right;
+}
+
+main {
+    margin-bottom: 3em;
+}
+
+footer {
+    text-align: center;
+    background-color: lightblue;
+}

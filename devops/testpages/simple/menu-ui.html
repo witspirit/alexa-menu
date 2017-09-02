@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="css/menu-ui.css">
+
 </head>
 <body>
 
@@ -20,8 +22,6 @@
     window.onAmazonLoginReady = function () {
         console.log('onAmazonLoginReady');
         amazon.Login.setClientId('amzn1.application-oa2-client.a8a528043bd14173af05b05c19d63c24');
-
-        login();
     };
     (function (d) {
         var a = d.createElement('script');
@@ -37,11 +37,11 @@
 <!-- Header -->
 <header class="container">
     <div class="row justify-content-between align-items-center">
-        <div class="col">
+        <div class="col-4">
             <h1>Menus</h1>
         </div>
-        <div class="col">
-            <a href="#" id="login">Username</a>
+        <div class="col-4 user-area">
+            <a href="#" id="login">Sign In</a>
             <a href="#" id="logout">Logout</a>
         </div>
     </div>
@@ -54,7 +54,7 @@
 </form>
 </main>
 
-<footer class="container">
+<footer class="footer container">
     <div class="row">
         <div class="col">
             witspirit.be
