@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Menus</title>
+
+    <!-- Include Bootstrap 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+</head>
+<body>
+
+<!-- Amazon Login Bootstrap loader -->
+<div id="amazon-root"></div>
+<script type="text/javascript">
+
+    window.onAmazonLoginReady = function () {
+        console.log('onAmazonLoginReady');
+        amazon.Login.setClientId('amzn1.application-oa2-client.a8a528043bd14173af05b05c19d63c24');
+
+        login();
+    };
+    (function (d) {
+        var a = d.createElement('script');
+        a.type = 'text/javascript';
+        a.async = true;
+        a.id = 'amazon-login-sdk';
+        a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+        d.getElementById('amazon-root').appendChild(a);
+    })(document);
+</script>
+
+
+<!-- Header -->
+<header class="container">
+    <div class="row justify-content-between align-items-center">
+        <div class="col">
+            <h1>Menus</h1>
+        </div>
+        <div class="col">
+            <a href="#" id="login">Username</a>
+            <a href="#" id="logout">Logout</a>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+<form>
+    <label for="access-token">Access Token</label>
+    <input id="access-token" type="text">
+</form>
+</main>
+
+<footer class="container">
+    <div class="row">
+        <div class="col">
+            witspirit.be
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+
+<script src="js/menu-ui.js"></script>
+</body>
+</html>
