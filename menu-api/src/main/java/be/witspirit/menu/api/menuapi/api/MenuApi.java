@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = {"/menus"})
 public class MenuApi {
 

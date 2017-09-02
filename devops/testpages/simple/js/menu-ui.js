@@ -83,11 +83,36 @@ function refreshUi() {
     }
 }
 
+function loadUpcomingMenus() {
+    console.log('loadUpcomingMenus');
+    $.ajax({
+        url : 'http://api.menu.witspirit.be/menus',
+        method : 'GET',
+        headers : {
+            'Authorization' : userInfo.accessToken
+        },
+        dataType : 'json',
+        jsonp : false,
+        success : showMenus,
+        error : reportAjaxError
+    });
+}
+
+function showMenus(data, statusLine, xhr) {
+    console.log('showMenus : '+JSON.stringify(data)+" ; "+statusLine);
+    $('#menusResponse').val(JSON.stringify(data));
+}
+
+function reportAjaxError(xhr, statusLine, error) {
+    console.log("reportAjaxError : "+statusLine+ " ; "+ JSON.stringify(error));
+}
+
 
 $(document).ready(function() {
     refreshUi();
     $('#login').click(login);
     $('#logout').click(logout);
+    $('#loadMenus').click(loadUpcomingMenus);
 });
 
 console.log("End of menu-ui.js");

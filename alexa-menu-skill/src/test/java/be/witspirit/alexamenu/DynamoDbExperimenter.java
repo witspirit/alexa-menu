@@ -216,6 +216,17 @@ public class DynamoDbExperimenter {
     }
 
     @Test
+    void writeMenuWeekSeptember02() {
+        set("20170902", "Varkenshaasje met mango");
+        set("20170903", "kippe loze vink + appelmoes");
+        set("20170904", "poffertjes");
+        set("20170905", "diepvriespizza");
+        set("20170906", "hotdogs");
+        set("20170907", "Koude rijst");
+        set("20170908", "Mama spaghetti");
+    }
+
+    @Test
     void getDinnerForToday() {
         LocalDate today = LocalDate.now();
         String date = dateKey(today);
