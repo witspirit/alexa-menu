@@ -86,7 +86,7 @@ function refreshUi() {
 function loadUpcomingMenus() {
     console.log('loadUpcomingMenus');
     $.ajax({
-        url : 'http://api.menu.witspirit.be/menus',
+        url : 'https://api.menu.witspirit.be/menus',
         method : 'GET',
         headers : {
             'Authorization' : userInfo.accessToken
