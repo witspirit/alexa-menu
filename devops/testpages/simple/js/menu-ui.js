@@ -100,7 +100,11 @@ function loadUpcomingMenus() {
 
 function showMenus(data, statusLine, xhr) {
     console.log('showMenus : '+JSON.stringify(data)+" ; "+statusLine);
-    $('#menusResponse').val(JSON.stringify(data));
+
+    let display = "";
+    data.forEach(menu => display += menu.date + ' : ' + menu.dinner + '\n');
+
+    $('#menusResponse').val(display);
 }
 
 function reportAjaxError(xhr, statusLine, error) {
@@ -112,7 +116,10 @@ $(document).ready(function() {
     refreshUi();
     $('#login').click(login);
     $('#logout').click(logout);
-    $('#loadMenus').click(loadUpcomingMenus);
+    $('#loadMenus').click(function(event) {
+        loadUpcomingMenus();
+        event.preventDefault(); // Inhibit form submit
+    });
 });
 
 console.log("End of menu-ui.js");
