@@ -1,0 +1,16 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-faded">
+    <a class="navbar-brand" href="#">What's for dinner ?</a>
+
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+      <a href="#" id="login">Sign In</a>
+      <a href="#" id="logout">Logout</a>
+    </div>
+
+  </nav>
+</header>
