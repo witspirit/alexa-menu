@@ -9,7 +9,7 @@
 
     <div class="collapse navbar-collapse justify-content-end" [collapse]="isCollapsed">
       <a href="#" id="login" (click)="login()">{{user}}</a>
-      <a href="#" id="logout" (click)="logout()" [hidden]="!loginService.loggedIn">Logout</a>
+      <a href="#" id="logout" (click)="logout()" [hidden]="!loggedIn">Logout</a>
     </div>
 
   </nav>
