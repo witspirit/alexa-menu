@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-amazon-login',
   templateUrl: './amazon-login.component.html',
-  styleUrls: ['./amazon-login.component.css']
+  styleUrls: ['./amazon-login.component.scss']
 })
 export class AmazonLoginComponent implements OnInit {
 

@@ -8,6 +8,7 @@ import { MenuMainComponent } from './menu-main/menu-main.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { MenuHeaderComponent } from './menu-header/menu-header.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse' ;
+import { AmazonLoginService } from './amazon-login.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse' ;
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot()
   ],
-  providers: [],
+  providers: [AmazonLoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,9 +7,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" [collapse]="isCollapsed">
-      <a href="#" id="login">Sign In</a>
-      <a href="#" id="logout">Logout</a>
+    <div class="collapse navbar-collapse justify-content-end" [collapse]="isCollapsed">
+      <a href="#" id="login" (click)="login()">{{user}}</a>
+      <a href="#" id="logout" (click)="logout()" [hidden]="!loginService.loggedIn">Logout</a>
     </div>
 
   </nav>
