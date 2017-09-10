@@ -10,13 +10,24 @@
   <title>What's for Dinner ?</title>
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <!-- Amazon Login -->
-  <script async src="https://api-cdn.amazon.com/sdk/login1.js"></script>
 </head>
 <body>
   <!-- Enable bootstrap 4 theme -->
   <script>window.__theme = 'bs4';</script>
+
+  <!-- Enable Amazon Login -->
+  <div id="amazon-root"></div>
+  <script type="text/javascript">
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId('amzn1.application-oa2-client.a8a528043bd14173af05b05c19d63c24');
+    };
+    (function(d) {
+      var a = d.createElement('script'); a.type = 'text/javascript';
+      a.async = true; a.id = 'amazon-login-sdk';
+      a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+      d.getElementById('amazon-root').appendChild(a);
+    })(document);
+  </script>
 
   <app-root></app-root>
 </body>
