@@ -3,6 +3,8 @@ import { User } from './model/user';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+declare let amazon: any; // No proper type bindings for amazon login SDK, so just declaring it as 'present'
+
 const NO_USER = new User(null);
 
 @Injectable()

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Menu } from '../model/menu';
 import { MenuService } from '../menu.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-menu-main',
@@ -8,6 +9,7 @@ import { MenuService } from '../menu.service';
   styleUrls: ['./menu-main.component.scss']
 })
 export class MenuMainComponent implements OnInit {
+  startDate: moment.Moment = moment();
   menus: Array<Menu> = [];
 
   constructor(private menuService: MenuService) { }
@@ -15,7 +17,9 @@ export class MenuMainComponent implements OnInit {
   ngOnInit() {
     this.menuService.menus$.subscribe((menus) => this.menus = menus );
 
-    this.menuService.getMenusFor('20170918');
+
+
+    this.menuService.getMenusFor(this.startDate);
   }
 
 }
