@@ -1,3 +1,14 @@
-<p>
-  menu-main works!
-</p>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Dinner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let menu of menus">
+      <td>{{menu.date}}</td>
+      <td>{{menu.dinner}}</td>
+    </tr>
+  </tbody>
+</table>
