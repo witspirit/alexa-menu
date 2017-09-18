@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Menu } from './model/menu';
 import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
+import { AmazonLoginService } from './amazon-login.service';
+import { HttpClient } from '@angular/common/http';
+
 
 // Small helper that pins down the format we are using on the server
 function format(date: moment.Moment) {
@@ -14,7 +17,7 @@ export class MenuService {
 
   public menus$ = this.menuUpdates.asObservable();
 
-  constructor() { }
+  constructor(private http: HttpClient, private login: AmazonLoginService) { }
 
   getMenusFor(date: moment.Moment) {
     // NOTE: We create fresh moment instances based on the base date, since otherwise the single date instance is modified !

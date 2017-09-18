@@ -8,6 +8,7 @@ import { MenuHeaderComponent } from './menu-header/menu-header.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse' ;
 import { AmazonLoginService } from './amazon-login.service';
 import { MenuService } from './menu.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MenuService } from './menu.service';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     CollapseModule.forRoot()
   ],
   providers: [AmazonLoginService, MenuService],
