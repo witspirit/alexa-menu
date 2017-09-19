@@ -12,6 +12,8 @@ function format(date: moment.Moment) {
   return date.format('YYYYMMDD');
 }
 
+const nrOfDays = 7;
+
 @Injectable()
 export class MenuService {
   private startDate: moment.Moment = moment();
@@ -21,7 +23,7 @@ export class MenuService {
   public menus$ = this.menuUpdates.asObservable();
 
   constructor(private http: HttpClient, private login: AmazonLoginService) {
-    login.user$.subscribe((user) => this.onUserUpdate(user));
+    login.user$.subscribe(user => this.onUserUpdate(user));
   }
 
   private onUserUpdate(user: User): void {
@@ -36,18 +38,33 @@ export class MenuService {
   getMenusFor(date: moment.Moment) {
     this.http.get<Menu[]>('https://api.menu.witspirit.be/menus', {
       headers: new HttpHeaders().set('Authorization', this.accessToken),
-      params: new HttpParams().set('since', format(date))
-    }).subscribe((receivedMenus) => this.menuUpdates.next(receivedMenus), this.errorHandler);
-
-    // NOTE: We create fresh moment instances based on the base date, since otherwise the single date instance is modified !
-    // this.menuUpdates.next([
-    //   new Menu(format(date), 'Groen patatjes, worst, eitje'),
-    //   new Menu(format(moment(date).add(1, 'days')), 'Diepvriespizza'),
-    //   new Menu(format(moment(date).add(2, 'days')), 'Something else')
-    // ]);
+      params: new HttpParams().set('since', format(date)).set('nrOfDays', nrOfDays.toString())
+    }).subscribe(receivedMenus => this.onMenusReceived(date, receivedMenus), err => this.onApiError(err));
   }
 
-  private errorHandler(err: HttpErrorResponse): void {
+  private onMenusReceived(startDate: moment.Moment, receivedMenus: Menu[]): void {
+    // Convert the received data structure to a lookup map, indexed by date
+    const menuLookup = {};
+    receivedMenus.forEach((menu) => {
+      menuLookup[menu.date]  = menu.dinner;
+    });
+
+    // Doesn't feel like idiomatic JavaScript/TypeScript but seems to get the job done in a fairly ok way
+    const processMenus = [];
+    for (let i = 0; i < nrOfDays; i++) {
+      processMenus.push(this.menuEntry(startDate, i, menuLookup));
+    }
+
+    this.menuUpdates.next(processMenus);
+  }
+
+  private menuEntry(baseDate: moment.Moment, dayOffset: Number, menuLookup: Object): Menu {
+    // NOTE: We create fresh moment instances based on the base date, since otherwise the single date instance is modified !
+    const dateKey = format(moment(baseDate).add(dayOffset, 'days'));
+    return new Menu(dateKey, menuLookup[dateKey]);
+  }
+
+  private onApiError(err: HttpErrorResponse): void {
     if (err.error instanceof Error) {
       // A client-side or network error occurred. Handle it accordingly.
       console.log('An error occurred:', err.error.message);
