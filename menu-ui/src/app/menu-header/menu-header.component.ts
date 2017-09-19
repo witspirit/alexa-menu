@@ -21,7 +21,7 @@ export class MenuHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userSubscription = this.loginService.user$.subscribe((user) => {
-      console.log('user update received : ' + user);
+      console.log('user update received : ' + JSON.stringify(user));
       if (user.isLoggedIn()) {
         this.user = user.name;
         this.loggedIn = true;
