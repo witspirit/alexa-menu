@@ -16,19 +16,35 @@ const nrOfDays = 7;
 
 @Injectable()
 export class MenuService {
-  private startDate: moment.Moment = moment();
+  public startDate: moment.Moment = moment();
   private accessToken: string;
+  private startDateUpdates = new Subject<moment.Moment>();
   private menuUpdates = new Subject<Menu[]>();
 
   public menus$ = this.menuUpdates.asObservable();
+  public startDate$ = this.startDateUpdates.asObservable();
 
   constructor(private http: HttpClient, private login: AmazonLoginService) {
     login.user$.subscribe(user => this.onUserUpdate(user));
+    this.notifyStartDate();
+  }
+
+  public setStartDate(date: moment.Moment) {
+    this.startDate = date;
+    this.refreshMenus();
+  }
+
+  private notifyStartDate(): void {
+    this.startDateUpdates.next(this.startDate);
   }
 
   private onUserUpdate(user: User): void {
     this.accessToken = user.accessToken;
-    if (this.accessToken === null) {
+    this.refreshMenus();
+  }
+
+  private refreshMenus(): void {
+    if (this.accessToken == null) {
       this.menuUpdates.next([]);
     } else {
       this.getMenusFor(this.startDate);

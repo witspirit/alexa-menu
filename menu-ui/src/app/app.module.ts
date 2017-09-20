@@ -9,12 +9,14 @@ import { CollapseModule } from 'ngx-bootstrap/collapse' ;
 import { AmazonLoginService } from './amazon-login.service';
 import { MenuService } from './menu.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DateSelectorComponent } from './date-selector/date-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuMainComponent,
-    MenuHeaderComponent
+    MenuHeaderComponent,
+    DateSelectorComponent
   ],
   imports: [
     BrowserModule,

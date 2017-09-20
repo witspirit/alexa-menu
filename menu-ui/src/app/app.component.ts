@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MenuService } from './menu.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'My Menu-UI';
   user = null;
+
+  constructor(public menuService: MenuService) {
+
+  }
 }

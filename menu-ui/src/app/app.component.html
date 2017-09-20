@@ -3,6 +3,7 @@
 
   <main>
 
+    <app-date-selector [date]="menuService.startDate" (onUpdate)="menuService.setStartDate($event)"></app-date-selector>
     <app-menu-main></app-menu-main>
 
   </main>
