@@ -58,9 +58,8 @@ export class MenuService {
     }).subscribe(receivedMenus => this.onMenusReceived(date, receivedMenus), err => this.onApiError(err));
   }
 
-  setDinner(date: moment.Moment, dinner: string): void {
-    const targetKey = format(date);
-    this.http.put('https://api.menu.witspirit.be/menus/' + targetKey, dinner, {
+  setDinner(menu: Menu): void {
+    this.http.put('https://api.menu.witspirit.be/menus/' + menu.date, menu.dinner, {
       headers: new HttpHeaders().set('Authorization', this.accessToken)
     }).subscribe(() => this.refreshMenus(), err => this.onApiError(err));
   }
