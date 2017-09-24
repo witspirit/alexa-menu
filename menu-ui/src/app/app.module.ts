@@ -10,6 +10,7 @@ import { AmazonLoginService } from './amazon-login.service';
 import { MenuService } from './menu.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DateSelectorComponent } from './date-selector/date-selector.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { DateSelectorComponent } from './date-selector/date-selector.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     CollapseModule.forRoot()
   ],

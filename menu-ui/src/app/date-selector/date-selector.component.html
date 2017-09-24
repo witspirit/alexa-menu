@@ -1,5 +1,5 @@
 <div class="date-selector">
   <button (click)="earlier()">&lt;</button>
-  <span>{{date}}</span>
+  <input type="text" [formControl]="selectedDate" (keypress)="handleUpdate($event)">
   <button (click)="later()">&gt;</button>
 </div>
