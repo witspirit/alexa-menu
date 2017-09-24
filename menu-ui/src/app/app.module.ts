@@ -11,13 +11,15 @@ import { MenuService } from './menu.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DateSelectorComponent } from './date-selector/date-selector.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MenuEditorComponent } from './menu-main/menu-editor/menu-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuMainComponent,
     MenuHeaderComponent,
-    DateSelectorComponent
+    DateSelectorComponent,
+    MenuEditorComponent
   ],
   imports: [
     BrowserModule,

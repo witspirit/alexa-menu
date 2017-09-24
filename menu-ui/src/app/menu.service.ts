@@ -58,6 +58,14 @@ export class MenuService {
     }).subscribe(receivedMenus => this.onMenusReceived(date, receivedMenus), err => this.onApiError(err));
   }
 
+  setDinner(date: moment.Moment, dinner: string): void {
+    const targetKey = format(date);
+    this.http.put('https://api.menu.witspirit.be/menus/' + targetKey, dinner, {
+      headers: new HttpHeaders().set('Authorization', this.accessToken)
+    }).subscribe(() => this.refreshMenus(), err => this.onApiError(err));
+  }
+
+
   private onMenusReceived(startDate: moment.Moment, receivedMenus: Menu[]): void {
     // Convert the received data structure to a lookup map, indexed by date
     const menuLookup = {};
@@ -74,7 +82,7 @@ export class MenuService {
     this.menuUpdates.next(processMenus);
   }
 
-  private menuEntry(baseDate: moment.Moment, dayOffset: Number, menuLookup: Object): Menu {
+  private menuEntry(baseDate: moment.Moment, dayOffset: number, menuLookup: Object): Menu {
     // NOTE: We create fresh moment instances based on the base date, since otherwise the single date instance is modified !
     const dateKey = format(moment(baseDate).add(dayOffset, 'days'));
     return new Menu(dateKey, menuLookup[dateKey]);
