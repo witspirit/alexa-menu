@@ -9,7 +9,7 @@
 
     <div class="collapse navbar-collapse justify-content-end" [collapse]="isCollapsed">
       <a href="#" id="login" (click)="login()" class="btn" [ngClass]="{'btn-primary' : !loggedIn, 'btn-link' : loggedIn}">{{user}}</a>
-      <a href="#" id="logout" (click)="logout()" [hidden]="!loggedIn" class="btn btn-link"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+      <a href="#" id="logout" (click)="logout()" [hidden]="!loggedIn" class="btn btn-link"><i class="fa fa-sign-out" aria-hidden="true" title="logout"></i></a>
     </div>
 
   </nav>
