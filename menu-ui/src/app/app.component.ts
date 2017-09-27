@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MenuService } from './menu.service';
 import { AmazonLoginService, NO_USER } from './amazon-login.service';
 import { User } from './model/user';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,11 @@ import { User } from './model/user';
 })
 export class AppComponent {
   user: User = NO_USER;
+  startDate = moment();
 
   constructor(private amazonLogin: AmazonLoginService, private menuService: MenuService) {
     amazonLogin.user$.subscribe(newUser => this.onUserUpdate(newUser));
+    menuService.setStartDate(this.startDate);
   }
 
   private onUserUpdate(updatedUser: User): void {

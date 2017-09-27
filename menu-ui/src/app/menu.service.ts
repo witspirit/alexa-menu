@@ -14,7 +14,7 @@ const nrOfDays = 7;
 
 @Injectable()
 export class MenuService {
-  public startDate: moment.Moment = moment();
+  private startDate: moment.Moment;
   private accessToken: string;
 
   private menuUpdates = new Subject<Menu[]>();
@@ -35,7 +35,7 @@ export class MenuService {
   }
 
   private refreshMenus(): void {
-    if (this.accessToken == null) {
+    if (this.accessToken == null || this.startDate == null) {
       this.menuUpdates.next([]);
     } else {
       this.getMenusFor(this.startDate);
