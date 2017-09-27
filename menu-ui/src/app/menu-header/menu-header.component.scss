@@ -1,4 +1,6 @@
+@import '../../variables';
+
 header {
-  border-bottom: 3px solid cadetblue;
+  border-bottom: 3px solid $decoration-color;
   margin-bottom: 30px;
 }
