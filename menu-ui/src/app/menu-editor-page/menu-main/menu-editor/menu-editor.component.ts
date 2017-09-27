@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { Menu } from '../../../model/menu';
 import { FormControl } from '@angular/forms';
 
-const RETURN_KEY = 13;
-
 @Component({
   selector: 'app-menu-editor',
   templateUrl: './menu-editor.component.html',
@@ -15,7 +13,8 @@ export class MenuEditorComponent implements OnInit, OnChanges {
 
   dinnerInput = new FormControl();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
@@ -24,12 +23,10 @@ export class MenuEditorComponent implements OnInit, OnChanges {
     this.dinnerInput.setValue(this.menu.dinner);
   }
 
-  public handleUpdate(event: KeyboardEvent): void {
-    if (event.keyCode === RETURN_KEY) {
-      const newMenu = new Menu(this.menu.date, this.dinnerInput.value);
-      console.log('Received confirmation for ' + newMenu);
-      this.onUpdate.emit(newMenu);
-    }
+  public applyMenuUpdate(): void {
+    const newMenu = new Menu(this.menu.date, this.dinnerInput.value);
+    console.log('Received confirmation for ' + newMenu);
+    this.onUpdate.emit(newMenu);
   }
 
 }

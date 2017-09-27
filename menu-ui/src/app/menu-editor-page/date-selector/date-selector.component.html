@@ -1,5 +1,5 @@
 <div class="date-selector">
   <button (click)="earlier()">&lt;</button>
-  <input type="text" [formControl]="selectedDate" (keypress)="handleUpdate($event)">
+  <input type="text" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()" (blur)="applyDateUpdate()">
   <button (click)="later()">&gt;</button>
 </div>

@@ -23,16 +23,14 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  public handleUpdate(event: KeyboardEvent) {
-    if (event.keyCode === RETURN_KEY) {
-      const parsedDate = moment(this.selectedDate.value, 'YYYYMMDD', true);
-      console.log('Parsed date : ' + parsedDate);
+  public applyDateUpdate() {
+    const parsedDate = moment(this.selectedDate.value, 'YYYYMMDD', true);
+    console.log('Parsed date : ' + parsedDate);
 
-      if (parsedDate.isValid() && !parsedDate.isSame(this.date)) {
-        this.update(parsedDate);
-      } else {
-        console.log('Parsing flags: ' + JSON.stringify(parsedDate.parsingFlags()));
-      }
+    if (parsedDate.isValid() && !parsedDate.isSame(this.date)) {
+      this.update(parsedDate);
+    } else {
+      console.log('Parsing flags: ' + JSON.stringify(parsedDate.parsingFlags()));
     }
   }
 
