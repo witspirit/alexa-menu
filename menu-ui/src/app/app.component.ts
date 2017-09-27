@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuService } from './menu.service';
+import { AmazonLoginService, NO_USER } from './amazon-login.service';
+import { User } from './model/user';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +9,14 @@ import { MenuService } from './menu.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'My Menu-UI';
-  user = null;
+  user: User = NO_USER;
 
-  constructor(public menuService: MenuService) {
+  constructor(private amazonLogin: AmazonLoginService, private menuService: MenuService) {
+    amazonLogin.user$.subscribe(newUser => this.onUserUpdate(newUser));
+  }
 
+  private onUserUpdate(updatedUser: User): void {
+    this.user = updatedUser;
+    this.menuService.setAcessToken(updatedUser.accessToken);
   }
 }

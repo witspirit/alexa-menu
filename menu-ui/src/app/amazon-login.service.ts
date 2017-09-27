@@ -5,12 +5,10 @@ import { Subject } from 'rxjs/Subject';
 
 declare let amazon: any; // No proper type bindings for amazon login SDK, so just declaring it as 'present'
 
-const NO_USER = new User(null);
+export const NO_USER = new User(null);
 
 @Injectable()
 export class AmazonLoginService {
-  private user = NO_USER;
-
   private userUpdates = new Subject<User>();
 
   public user$: Observable<User> = this.userUpdates.asObservable();
@@ -30,10 +28,7 @@ export class AmazonLoginService {
   logout() {
     console.log('logout()');
     amazon.Login.logout();
-
-    this.user = NO_USER;
-
-    this.notifyUi();
+    this.notify(NO_USER);
   }
 
   private handleAmazonAuthorize(response) {
@@ -45,14 +40,14 @@ export class AmazonLoginService {
     }
     console.log('Access Token: ' + response.access_token);
 
-    this.user = new User(response.access_token);
+    const user = new User(response.access_token);
 
-    this.retrieveProfile();
+    this.retrieveProfile(user);
   }
 
-  private retrieveProfile() {
-    console.log('retrieveProfile()');
-    amazon.Login.retrieveProfile(this.user.accessToken, (response) => { // Arrow function is required to preserve 'this' !
+  private retrieveProfile(user: User) {
+    console.log('retrieveProfile(' + user + ')');
+    amazon.Login.retrieveProfile(user.accessToken, (response) => { // Arrow function is required to preserve 'this' !
       console.log('Profile Response:' + JSON.stringify(response));
 
       if (response.error) {
@@ -60,16 +55,16 @@ export class AmazonLoginService {
         return;
       }
 
-      this.user.setProfile(response.profile.Name, response.profile.PrimaryEmail);
+      user.setProfile(response.profile.Name, response.profile.PrimaryEmail);
 
-      this.notifyUi();
+      this.notify(user);
     });
   }
 
-  private notifyUi() {
-    console.log('notifyUi()');
+  private notify(user: User) {
+    console.log('notify(' + user + ')');
     // Should notify UI that state has changed
-    this.userUpdates.next(this.user);
+    this.userUpdates.next(user);
   }
 
   private reportError(context, errorResponse) {

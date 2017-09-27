@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Menu } from './model/menu';
 import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
-import { AmazonLoginService } from './amazon-login.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { User } from './model/user';
 
 
 // Small helper that pins down the format we are using on the server
@@ -18,15 +16,12 @@ const nrOfDays = 7;
 export class MenuService {
   public startDate: moment.Moment = moment();
   private accessToken: string;
-  private startDateUpdates = new Subject<moment.Moment>();
+
   private menuUpdates = new Subject<Menu[]>();
 
   public menus$ = this.menuUpdates.asObservable();
-  public startDate$ = this.startDateUpdates.asObservable();
 
-  constructor(private http: HttpClient, private login: AmazonLoginService) {
-    login.user$.subscribe(user => this.onUserUpdate(user));
-    this.notifyStartDate();
+  constructor(private http: HttpClient) {
   }
 
   public setStartDate(date: moment.Moment) {
@@ -34,12 +29,8 @@ export class MenuService {
     this.refreshMenus();
   }
 
-  private notifyStartDate(): void {
-    this.startDateUpdates.next(this.startDate);
-  }
-
-  private onUserUpdate(user: User): void {
-    this.accessToken = user.accessToken;
+  public setAcessToken(accessToken: string): void {
+    this.accessToken = accessToken;
     this.refreshMenus();
   }
 
