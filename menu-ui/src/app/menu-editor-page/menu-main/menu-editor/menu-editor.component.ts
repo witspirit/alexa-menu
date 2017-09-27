@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Menu } from '../../model/menu';
+import { Menu } from '../../../model/menu';
 import { FormControl } from '@angular/forms';
 
 const RETURN_KEY = 13;

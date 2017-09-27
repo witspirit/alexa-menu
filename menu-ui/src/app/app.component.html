@@ -3,12 +3,9 @@
 
   <main>
 
-    <app-date-selector [date]="menuService.startDate" (onUpdate)="menuService.setStartDate($event)"></app-date-selector>
-    <app-menu-main></app-menu-main>
+    <app-menu-editor-page></app-menu-editor-page>
 
   </main>
 
-  <footer>
-    <a href="https://github.com/witspirit/alexa-menu">https://github.com/witspirit/alexa-menu</a>
-  </footer>
+  <app-footer></app-footer>
 </div>
