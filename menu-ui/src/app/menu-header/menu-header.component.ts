@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AmazonLoginService } from '../../amazon-login.service';
+import { AmazonLoginService } from '../amazon-login.service';
 import { Subscription } from 'rxjs/Subscription';
 
 const SIGN_IN = 'Sign In';

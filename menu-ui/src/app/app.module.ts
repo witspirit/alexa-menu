@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MenuMainComponent } from './menu-editor-page/menu-main/menu-main.component';
-import { MenuHeaderComponent } from './menu-editor-page/menu-header/menu-header.component';
+import { MenuHeaderComponent } from './menu-header/menu-header.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse' ;
 import { AmazonLoginService } from './amazon-login.service';
 import { MenuService } from './menu.service';
