@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Menu } from '../../model/menu';
-import { MenuService } from '../../menu.service';
 
 @Component({
   selector: 'app-menu-main',
@@ -8,12 +7,16 @@ import { MenuService } from '../../menu.service';
   styleUrls: ['./menu-main.component.scss']
 })
 export class MenuMainComponent implements OnInit {
-  menus: Array<Menu> = [];
+  @Input() menus: Array<Menu> = [];
+  @Output() onMenuUpdate = new EventEmitter<Menu>();
 
-  constructor(private menuService: MenuService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.menuService.menus$.subscribe((menus) => this.menus = menus );
+  }
+
+  public updateMenu(menu: Menu) {
+    this.onMenuUpdate.emit(menu);
   }
 
 }

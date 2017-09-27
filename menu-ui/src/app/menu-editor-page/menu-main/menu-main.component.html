@@ -7,7 +7,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let menu of menus">
-      <app-menu-editor [menu]="menu" (onUpdate)="menuService.setDinner($event)"></app-menu-editor>
+      <app-menu-editor [menu]="menu" (onUpdate)="updateMenu($event)"></app-menu-editor>
     </tr>
   </tbody>
 </table>

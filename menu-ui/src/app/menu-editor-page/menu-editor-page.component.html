@@ -1,2 +1,2 @@
 <app-date-selector [date]="menuService.startDate" (onUpdate)="menuService.setStartDate($event)"></app-date-selector>
-<app-menu-main></app-menu-main>
+<app-menu-main [menus]="menus" (onMenuUpdate)="menuService.setDinner($event)"></app-menu-main>
