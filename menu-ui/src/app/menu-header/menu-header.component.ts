@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AmazonLoginService } from '../amazon-login.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { User } from '../model/user';
 
 const SIGN_IN = 'Sign In';
 
@@ -9,39 +8,38 @@ const SIGN_IN = 'Sign In';
   templateUrl: './menu-header.component.html',
   styleUrls: ['./menu-header.component.scss']
 })
-export class MenuHeaderComponent implements OnInit, OnDestroy {
+export class MenuHeaderComponent implements OnInit, OnChanges {
+  @Input() user: User;
+  @Output() onLogin = new EventEmitter<void>();
+  @Output() onLogout = new EventEmitter<void>();
+
   isCollapsed = true;
-  user = SIGN_IN;
+  userText = SIGN_IN;
   loggedIn = false;
 
-  private userSubscription: Subscription;
-
-  constructor(private loginService: AmazonLoginService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.userSubscription = this.loginService.user$.subscribe((user) => {
-      console.log('user update received : ' + JSON.stringify(user));
-      if (user.isLoggedIn()) {
-        this.user = user.name;
-        this.loggedIn = true;
-      } else {
-        this.user = SIGN_IN;
-        this.loggedIn = false;
-      }
-    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('user update received : ' + JSON.stringify(this.user));
+    if (this.user.isLoggedIn()) {
+      this.userText = this.user.name;
+      this.loggedIn = true;
+    } else {
+      this.userText = SIGN_IN;
+      this.loggedIn = false;
+    }
   }
 
   login() {
-    this.loginService.login();
+    this.onLogin.emit();
   }
 
   logout() {
-    this.loginService.logout();
-  }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    this.onLogout.emit();
   }
 
 }

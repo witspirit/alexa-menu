@@ -22,4 +22,12 @@ export class AppComponent {
     this.user = updatedUser;
     this.menuService.setAcessToken(updatedUser.accessToken);
   }
+
+  public login(): void {
+    this.amazonLogin.login();
+  }
+
+  public logout(): void {
+    this.amazonLogin.logout();
+  }
 }

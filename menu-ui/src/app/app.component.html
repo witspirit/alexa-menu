@@ -1,5 +1,5 @@
 <div class="container">
-  <app-menu-header></app-menu-header>
+  <app-menu-header [user]="user" (onLogin)="login()" (onLogout)="logout()"></app-menu-header>
 
   <main>
 
