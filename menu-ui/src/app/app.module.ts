@@ -11,7 +11,6 @@ import { MenuService } from './menu.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DateSelectorComponent } from './menu-editor-page/date-selector/date-selector.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MenuEditorComponent } from './menu-editor-page/menu-main/menu-editor/menu-editor.component';
 import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
 
@@ -21,7 +20,6 @@ import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.com
     MenuMainComponent,
     MenuHeaderComponent,
     DateSelectorComponent,
-    MenuEditorComponent,
     FooterComponent,
     MenuEditorPageComponent
   ],

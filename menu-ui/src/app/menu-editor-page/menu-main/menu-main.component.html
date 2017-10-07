@@ -6,8 +6,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let menu of menus">
-      <app-menu-editor [menu]="menu" (onUpdate)="updateMenu($event)"></app-menu-editor>
+    <tr *ngFor="let menuEditor of menuEditors">
+      <td>{{menuEditor.menu.date}}</td>
+      <td><input type="text" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)"></td>
     </tr>
   </tbody>
 </table>
