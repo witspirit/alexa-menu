@@ -5,6 +5,18 @@ import { User } from './model/user';
 import * as moment from 'moment';
 import { Menu } from './model/menu';
 
+// With the current initial setup of jump by 7 and nrOfDays 21, it is nice to put the start date
+// starting at last weeks scheduling period. Such that the current period is in the middle of the screen.
+const SCHEDULE_ISO_DAY = 6;
+const WEEK_SIZE = 7;
+
+function initialStartDate() {
+  const today = moment();
+  const dayOfWeekNr = Number(today.format('E'));
+  const daysAfterStart = ((dayOfWeekNr - SCHEDULE_ISO_DAY) + WEEK_SIZE) % WEEK_SIZE;
+  return today.subtract(daysAfterStart + WEEK_SIZE, 'days');
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,10 +24,10 @@ import { Menu } from './model/menu';
 })
 export class AppComponent implements OnInit {
   user: User = NO_USER;
-  startDate = moment();
+  startDate = initialStartDate();
   menus: Array<Menu> = [];
-  jumpLength = 3;
-  nrOfDays = 7;
+  jumpLength = 7;
+  nrOfDays = 21;
 
   constructor(private amazonLogin: AmazonLoginService, private menuService: MenuService) {
     menuService.setStartDate(this.startDate);

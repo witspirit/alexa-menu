@@ -1,3 +1,13 @@
+@import '../../../variables';
+
 table {
   width: 100%;
+}
+
+.week-boundary {
+  border-top: 1px solid $decoration-color;
+}
+
+.today {
+  background-color: $soft-decoration-color;
 }

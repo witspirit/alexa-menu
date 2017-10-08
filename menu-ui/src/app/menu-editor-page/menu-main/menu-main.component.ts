@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Menu } from '../../model/menu';
 import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
+
+
 
 @Component({
   selector: 'app-menu-main',
@@ -31,7 +34,20 @@ export class MenuMainComponent implements OnInit, OnChanges {
 }
 
 export class MenuEditor {
+  public displayDay: string;
+  public displayDate: string;
+
+  public dayIndex: number;
+  public today: boolean;
+
   constructor(public menu: Menu, public dinnerInput: FormControl) {
+    const date = moment(menu.date, 'YYYYMMDD');
+
+    this.displayDay = date.format('dddd');
+    this.displayDate = date.format('MMM DD');
     this.dinnerInput.setValue(menu.dinner);
+
+    this.dayIndex = Number(date.format('E'));
+    this.today = moment().isSame(date, 'date');
   }
 }
