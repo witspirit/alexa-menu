@@ -12,15 +12,17 @@ import * as moment from 'moment';
 export class AppComponent {
   user: User = NO_USER;
   startDate = moment();
+  nrOfDays = 7;
 
   constructor(private amazonLogin: AmazonLoginService, private menuService: MenuService) {
     amazonLogin.user$.subscribe(newUser => this.onUserUpdate(newUser));
     menuService.setStartDate(this.startDate);
+    menuService.setNrOfDays(this.nrOfDays);
   }
 
   private onUserUpdate(updatedUser: User): void {
     this.user = updatedUser;
-    this.menuService.setAcessToken(updatedUser.accessToken);
+    this.menuService.setAccessToken(updatedUser.accessToken);
   }
 
   public login(): void {

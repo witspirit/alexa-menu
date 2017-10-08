@@ -2,10 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
 
-const jumpLength = 1;
-
-const RETURN_KEY = 13;
-
 @Component({
   selector: 'app-date-selector',
   templateUrl: './date-selector.component.html',
@@ -13,6 +9,7 @@ const RETURN_KEY = 13;
 })
 export class DateSelectorComponent implements OnInit, OnChanges {
   @Input() date: moment.Moment;
+  @Input() jumpLength: number; // in days
   @Output() onUpdate = new EventEmitter<moment.Moment>();
 
   selectedDate = new FormControl();
@@ -39,11 +36,11 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   }
 
   public earlier() {
-    this.update(moment(this.date).subtract(jumpLength, 'days'));
+    this.update(moment(this.date).subtract(this.jumpLength, 'days'));
   }
 
   public later() {
-    this.update(moment(this.date).add(jumpLength, 'days'));
+    this.update(moment(this.date).add(this.jumpLength, 'days'));
   }
 
   private update(desiredDate: moment.Moment) {

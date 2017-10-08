@@ -10,10 +10,9 @@ function format(date: moment.Moment) {
   return date.format('YYYYMMDD');
 }
 
-const nrOfDays = 7;
-
 @Injectable()
 export class MenuService {
+  private nrOfDays = 7;
   private startDate: moment.Moment;
   private accessToken: string;
 
@@ -24,12 +23,17 @@ export class MenuService {
   constructor(private http: HttpClient) {
   }
 
+  public setNrOfDays(nrOfDays: number) {
+    this.nrOfDays = nrOfDays;
+    this.refreshMenus();
+  }
+
   public setStartDate(date: moment.Moment) {
     this.startDate = date;
     this.refreshMenus();
   }
 
-  public setAcessToken(accessToken: string): void {
+  public setAccessToken(accessToken: string): void {
     this.accessToken = accessToken;
     this.refreshMenus();
   }
@@ -45,7 +49,7 @@ export class MenuService {
   getMenusFor(date: moment.Moment) {
     this.http.get<Menu[]>('https://api.menu.witspirit.be/menus', {
       headers: new HttpHeaders().set('Authorization', this.accessToken),
-      params: new HttpParams().set('since', format(date)).set('nrOfDays', nrOfDays.toString())
+      params: new HttpParams().set('since', format(date)).set('nrOfDays', this.nrOfDays.toString())
     }).subscribe(receivedMenus => this.onMenusReceived(date, receivedMenus), err => this.onApiError(err));
   }
 
@@ -65,7 +69,7 @@ export class MenuService {
 
     // Doesn't feel like idiomatic JavaScript/TypeScript but seems to get the job done in a fairly ok way
     const processMenus = [];
-    for (let i = 0; i < nrOfDays; i++) {
+    for (let i = 0; i < this.nrOfDays; i++) {
       processMenus.push(this.menuEntry(startDate, i, menuLookup));
     }
 
