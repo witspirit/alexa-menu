@@ -8,7 +8,7 @@
   <tbody>
     <tr *ngFor="let menuEditor of menuEditors">
       <td>{{menuEditor.menu.date}}</td>
-      <td><input type="text" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)"></td>
+      <td><input type="text" class="form-control" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)"></td>
     </tr>
   </tbody>
 </table>

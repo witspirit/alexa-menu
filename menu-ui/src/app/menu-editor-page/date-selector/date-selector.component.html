@@ -1,5 +1,11 @@
-<div class="date-selector">
-  <button (click)="earlier()">&lt;</button>
-  <input type="text" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()" (blur)="applyDateUpdate()">
-  <button (click)="later()">&gt;</button>
+<div class="date-selector" class="row">
+  <div class="col-sm-1">
+    <button class="btn float-right" (click)="earlier()">&lt;</button>
+  </div>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()" (blur)="applyDateUpdate()">
+  </div>
+  <div class="col-sm-1">
+    <button class="btn" (click)="later()">&gt;</button>
+  </div>
 </div>
