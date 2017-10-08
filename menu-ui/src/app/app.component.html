@@ -3,7 +3,13 @@
 
   <main>
 
-    <app-menu-editor-page></app-menu-editor-page>
+    <app-menu-editor-page
+      [startDate]="startDate"
+      [jumpLength]="jumpLength"
+      [menus]="menus"
+      (onStartDateUpdate)="handleStartDateUpdate($event)"
+      (onMenuUpdate)="handleMenuUpdate($event)" >
+    </app-menu-editor-page>
 
   </main>
 
