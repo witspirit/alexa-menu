@@ -11,10 +11,12 @@ import * as moment from 'moment';
 export class MenuEditorPageComponent implements OnInit {
   @Input() startDate: moment.Moment;
   @Input() jumpLength: number;
+  @Input() nrOfDays: number;
   @Input() menus: Array<Menu> = [];
 
   @Output() onMenuUpdate = new EventEmitter<Menu>();
   @Output() onStartDateUpdate = new EventEmitter<moment.Moment>();
+  @Output() onNrOfDaysUpdate = new EventEmitter<number>();
 
   constructor() {
   }
@@ -30,6 +32,8 @@ export class MenuEditorPageComponent implements OnInit {
     this.onMenuUpdate.emit(newMenu);
   }
 
-
+  handleNrOfDaysUpdate(nrOfDays: number) {
+    this.onNrOfDaysUpdate.emit(nrOfDays);
+  }
 
 }

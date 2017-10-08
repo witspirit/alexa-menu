@@ -2,8 +2,16 @@
   <div class="col-sm-1">
     <button class="btn float-right" (click)="earlier()">&lt;</button>
   </div>
-  <div class="col-sm-10">
+  <div class="col-sm-8">
     <input type="text" class="form-control" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()" (blur)="applyDateUpdate()">
+  </div>
+  <div class="col-sm-1">
+    <!--<label for="jumpLength">Jump Length</label>-->
+    <input id="jumpLength" type="number" class="form-control" [formControl]="selectedJumpLength" (keydown.enter)="applyJumpLengthUpdate()" (blur)="applyJumpLengthUpdate()">
+  </div>
+  <div class="col-sm-1">
+    <!--<label for="nrOfDays">Nr. of Days</label>-->
+    <input id="nrOfDays" type="number" class="form-control" [formControl]="selectedNrOfDays" (keydown.enter)="applyNrOfDaysUpdate()" (blur)="applyNrOfDaysUpdate()">
   </div>
   <div class="col-sm-1">
     <button class="btn" (click)="later()">&gt;</button>

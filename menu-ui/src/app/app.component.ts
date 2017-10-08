@@ -46,6 +46,11 @@ export class AppComponent implements OnInit {
     this.menuService.setStartDate(newStartDate);
   }
 
+  public handleNrOfDaysUpdate(nrOfDays: number) {
+    this.nrOfDays = nrOfDays;
+    this.menuService.setNrOfDays(nrOfDays);
+  }
+
   public handleMenuUpdate(newMenu: Menu) {
     this.menuService.setDinner(newMenu);
   }

@@ -6,8 +6,10 @@
     <app-menu-editor-page
       [startDate]="startDate"
       [jumpLength]="jumpLength"
+      [nrOfDays]="nrOfDays"
       [menus]="menus"
       (onStartDateUpdate)="handleStartDateUpdate($event)"
+      (onNrOfDaysUpdate)="handleNrOfDaysUpdate($event)"
       (onMenuUpdate)="handleMenuUpdate($event)" >
     </app-menu-editor-page>
 
