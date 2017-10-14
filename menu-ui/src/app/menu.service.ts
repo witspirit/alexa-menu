@@ -3,6 +3,7 @@ import { Menu } from './model/menu';
 import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 
 // Small helper that pins down the format we are using on the server
@@ -39,6 +40,7 @@ export class MenuService {
   }
 
   private refreshMenus(): void {
+    console.log('refreshing Menus');
     if (this.accessToken == null || this.startDate == null) {
       this.menuUpdates.next([]);
     } else {
@@ -54,9 +56,18 @@ export class MenuService {
   }
 
   public setDinner(menu: Menu): void {
-    this.http.put('https://api.menu.witspirit.be/menus/' + menu.date, menu.dinner, {
+    const authHeader = {
       headers: new HttpHeaders().set('Authorization', this.accessToken)
-    }).subscribe(() => this.refreshMenus(), err => this.onApiError(err));
+    };
+
+    let httpRequest: Observable<object>;
+    if (menu.dinner) {
+      httpRequest = this.http.put('https://api.menu.witspirit.be/menus/' + menu.date, menu.dinner, authHeader);
+    } else {
+      httpRequest = this.http.delete('https://api.menu.witspirit.be/menus/' + menu.date, authHeader);
+    }
+
+    httpRequest.subscribe(() => this.refreshMenus(), err => this.onApiError(err));
   }
 
 
@@ -64,7 +75,7 @@ export class MenuService {
     // Convert the received data structure to a lookup map, indexed by date
     const menuLookup = {};
     receivedMenus.forEach((menu) => {
-      menuLookup[menu.date]  = menu.dinner;
+      menuLookup[menu.date] = menu.dinner;
     });
 
     // Doesn't feel like idiomatic JavaScript/TypeScript but seems to get the job done in a fairly ok way
