@@ -5,6 +5,7 @@ import be.witspirit.menu.api.menuapi.MenuApiApplication;
 import be.witspirit.menu.api.menuapi.menustore.MenuRecord;
 import be.witspirit.menu.api.menuapi.menustore.MenuStore;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,12 @@ public class MenuApi {
     @PutMapping("/{date}")
     public void setMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date, @RequestBody String dinner) {
         menuStore.set(new MenuRecord().setUserId(amazonUserId()).setDate(date).setDinner(dinner));
+    }
+
+    @DeleteMapping("/{date}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date) {
+        menuStore.delete(amazonUserId(), date);
     }
 
     private String amazonUserId() {

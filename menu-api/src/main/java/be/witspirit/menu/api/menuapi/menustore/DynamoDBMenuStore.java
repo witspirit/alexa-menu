@@ -35,8 +35,9 @@ public class DynamoDBMenuStore implements MenuStore {
 
     @Override
     public MenuRecord get(String userId, LocalDate date) {
-        Map<String, AttributeValue> record = getRecord(userId, dateKey(date));
-        return toMenu(record);
+        return getRecord(userId, dateKey(date))
+                .map(this::toMenu)
+                .orElse(emptyMenu(userId, date));
     }
 
 
@@ -65,13 +66,13 @@ public class DynamoDBMenuStore implements MenuStore {
         dbClient.deleteItem("menus", deleteKeys);
     }
 
-    private Map<String, AttributeValue> getRecord(String userId, String date) {
+    private Optional<Map<String, AttributeValue>> getRecord(String userId, String date) {
         Map<String, AttributeValue> keys = new HashMap<>();
         keys.put("userId", new AttributeValue(userId));
         keys.put("date", new AttributeValue(date));
         GetItemRequest lookup = new GetItemRequest("menus", keys);
         GetItemResult itemResult = dbClient.getItem(lookup);
-        return itemResult.getItem();
+        return Optional.ofNullable(itemResult.getItem());
     }
 
     private void writeRecord(String userId, String date, String dinner) {
@@ -107,5 +108,9 @@ public class DynamoDBMenuStore implements MenuStore {
                 .setDate(localDate(record.get("date").getS()))
                 .setDinner(record.get("dinner").getS());
         return menuRecord;
+    }
+
+    private MenuRecord emptyMenu(String userId, LocalDate localDate) {
+        return new MenuRecord().setUserId(userId).setDate(localDate);
     }
 }
