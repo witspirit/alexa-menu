@@ -24,7 +24,7 @@ export class MenuMainComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('MenuMainComponent - Input changes');
-    this.menuEditors = this.menus.map((menu) => new MenuEditor(menu, new FormControl()));
+    this.menuEditors = this.menus.map((menu) => new MenuEditor(this, menu, new FormControl()));
   }
 
   public applyMenuUpdate(menuEditor: MenuEditor): void {
@@ -47,6 +47,8 @@ export class MenuMainComponent implements OnInit, OnChanges {
     });
   }
 
+
+
 }
 
 export class MenuEditor {
@@ -58,7 +60,7 @@ export class MenuEditor {
   public originalDinner: string;
   public suggestions: string[] = [];
 
-  constructor(public menu: Menu, public dinnerInput: FormControl) {
+  constructor(private main: MenuMainComponent, public menu: Menu, public dinnerInput: FormControl) {
     const date = moment(menu.date, 'YYYYMMDD');
 
     this.displayDay = date.format('dddd');
@@ -68,5 +70,11 @@ export class MenuEditor {
     this.dayIndex = Number(date.format('E'));
     this.today = moment().isSame(date, 'date');
     this.originalDinner = menu.dinner;
+  }
+
+  public applySuggestion(suggestion: string): void {
+    console.log('applySuggestion');
+    this.dinnerInput.setValue(suggestion);
+    this.main.applyMenuUpdate(this);
   }
 }
