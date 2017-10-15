@@ -70,6 +70,13 @@ export class MenuService {
     httpRequest.subscribe(() => this.refreshMenus(), err => this.onApiError(err));
   }
 
+  public getSuggestions(nrOfSuggestions: number, callback: (suggestions: string[]) => void): void {
+    this.http.get<string[]>('https://api.menu.witspirit.be/suggestions/dinner', {
+      headers: new HttpHeaders().set('Authorization', this.accessToken),
+      params: new HttpParams().set('nrOfSuggestions', nrOfSuggestions.toString())
+    }).subscribe(receivedSuggestions => callback(receivedSuggestions), err => this.onApiError(err));
+  }
+
 
   private onMenusReceived(startDate: moment.Moment, receivedMenus: Menu[]): void {
     // Convert the received data structure to a lookup map, indexed by date

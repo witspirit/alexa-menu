@@ -10,7 +10,22 @@
     <tr *ngFor="let menuEditor of menuEditors" [ngClass]="{ 'week-boundary' : menuEditor.dayIndex == 6, 'today' : menuEditor.today }">
       <td>{{menuEditor.displayDay}}</td>
       <td>{{menuEditor.displayDate}}</td>
-      <td><input type="text" class="form-control" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)"></td>
+      <td>
+        <div class="input-group">
+          <input type="text" class="form-control" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)">
+          <span class="input-group-btn">
+            <button class="btn btn-outline-primary" (click)="suggestFor(menuEditor)" [popover]="suggestionDisplay" popoverTitle="Suggestions" placement="right" triggers="focus">
+              <i class="fa fa-lightbulb-o" aria-hidden="true" title="Suggest"></i>
+            </button>
+            <template #suggestionDisplay>
+              <span [hidden]="menuEditor.suggestions.length !== 0">Fetching your suggestions...</span>
+              <ul>
+                <li *ngFor="let suggestion of menuEditor.suggestions">{{suggestion}}</li>
+              </ul>
+            </template>
+          </span>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

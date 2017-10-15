@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { Menu } from '../../model/menu';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
-
+import { MenuService } from '../../menu.service';
 
 
 @Component({
@@ -16,7 +16,8 @@ export class MenuMainComponent implements OnInit, OnChanges {
 
   menuEditors: Array<MenuEditor> = [];
 
-  constructor() { }
+  constructor(private menuService: MenuService) {
+  }
 
   ngOnInit() {
   }
@@ -38,6 +39,14 @@ export class MenuMainComponent implements OnInit, OnChanges {
     this.onMenuUpdate.emit(newMenu);
   }
 
+  public suggestFor(menuEditor: MenuEditor): void {
+    console.log('suggestFor ' + menuEditor.displayDate);
+    this.menuService.getSuggestions(3, suggestions => {
+      console.log('Received suggestions: ' + suggestions);
+      menuEditor.suggestions = suggestions;
+    });
+  }
+
 }
 
 export class MenuEditor {
@@ -47,6 +56,7 @@ export class MenuEditor {
   public dayIndex: number;
   public today: boolean;
   public originalDinner: string;
+  public suggestions: string[] = [];
 
   constructor(public menu: Menu, public dinnerInput: FormControl) {
     const date = moment(menu.date, 'YYYYMMDD');

@@ -13,6 +13,7 @@ import { DateSelectorComponent } from './menu-editor-page/date-selector/date-sel
 import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
+import { PopoverModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.com
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    PopoverModule.forRoot()
   ],
   providers: [AmazonLoginService, MenuService],
   bootstrap: [AppComponent]
