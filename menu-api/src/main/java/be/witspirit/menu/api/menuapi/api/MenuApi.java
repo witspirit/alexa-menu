@@ -1,15 +1,13 @@
 package be.witspirit.menu.api.menuapi.api;
 
 import be.witspirit.menu.api.menuapi.LocalDateFormatter;
-import be.witspirit.menu.api.menuapi.MenuApiApplication;
 import be.witspirit.menu.api.menuapi.menustore.MenuRecord;
 import be.witspirit.menu.api.menuapi.menustore.MenuStore;
+import be.witspirit.menu.api.menuapi.security.ApiSecurity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,10 +16,12 @@ import java.util.List;
 @RequestMapping(path = {"/menus"})
 public class MenuApi {
 
-    private MenuStore menuStore;
+    private final MenuStore menuStore;
+    private final ApiSecurity apiSecurity;
 
-    public MenuApi(MenuStore menuStore) {
+    public MenuApi(MenuStore menuStore, ApiSecurity apiSecurity) {
         this.menuStore = menuStore;
+        this.apiSecurity = apiSecurity;
     }
 
     // Full JSON Structure
@@ -32,13 +32,13 @@ public class MenuApi {
         if (since == null) { // Unfortunately I cannot set LocalDate.now() as a default value
             since = LocalDate.now();
         }
-        return UserMenuConverter.toMenus(menuStore.getNext(amazonUserId(), since, nrOfDays));
+        return UserMenuConverter.toMenus(menuStore.getNext(apiSecurity.getAmazonUserId(), since, nrOfDays));
     }
 
     @PutMapping
     public void setMenus(@RequestBody List<UserMenu> menus) {
         for (UserMenu menu : menus) {
-            menuStore.set(new MenuRecord().setUserId(amazonUserId()).setDate(menu.getDate()).setDinner(menu.getDinner()));
+            menuStore.set(new MenuRecord().setUserId(apiSecurity.getAmazonUserId()).setDate(menu.getDate()).setDinner(menu.getDinner()));
         }
     }
 
@@ -46,22 +46,18 @@ public class MenuApi {
 
     @GetMapping("/{date}")
     public String getMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date) {
-        return menuStore.get(amazonUserId(), date).getDinner();
+        return menuStore.get(apiSecurity.getAmazonUserId(), date).getDinner();
     }
 
     @PutMapping("/{date}")
     public void setMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date, @RequestBody String dinner) {
-        menuStore.set(new MenuRecord().setUserId(amazonUserId()).setDate(date).setDinner(dinner));
+        menuStore.set(new MenuRecord().setUserId(apiSecurity.getAmazonUserId()).setDate(date).setDinner(dinner));
     }
 
     @DeleteMapping("/{date}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMenu(@PathVariable("date") @DateTimeFormat(pattern= LocalDateFormatter.FORMAT) LocalDate date) {
-        menuStore.delete(amazonUserId(), date);
-    }
-
-    private String amazonUserId() {
-        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        menuStore.delete(apiSecurity.getAmazonUserId(), date);
     }
 
 }

@@ -8,8 +8,8 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  */
 @Repository
 public class DynamoDBMenuStore implements MenuStore {
-
     public static final String DEFAULT_SERVICE_ENDPOINT = "dynamodb.eu-west-1.amazonaws.com";
     public static final String DEFAULT_REGION = "eu-west-1";
 
@@ -47,6 +46,17 @@ public class DynamoDBMenuStore implements MenuStore {
                 .stream()
                 .map(this::toMenu)
                 .collect(Collectors.toList());
+    }
+
+    // Extremely naive and unscalable implementation to obtain dinner suggestions !
+    // Good enough to get us started with the approach, but will require some rework to make it scalable.
+    @Override
+    public List<String> getDinnerSuggestions(String userId, int nrOfSuggestions) {
+        List<Map<String, AttributeValue>> allItemsForUser = getAllItemsForUser(userId);
+
+        List<String> distinctValues = extractDistinct(allItemsForUser);
+
+        return extractSuggestions(nrOfSuggestions, distinctValues);
     }
 
     @Override
@@ -113,4 +123,24 @@ public class DynamoDBMenuStore implements MenuStore {
     private MenuRecord emptyMenu(String userId, LocalDate localDate) {
         return new MenuRecord().setUserId(userId).setDate(localDate);
     }
+
+    private List<Map<String, AttributeValue>> getAllItemsForUser(String userId) {
+        ScanRequest allMenusForUser = new ScanRequest("menus");
+        allMenusForUser.addScanFilterEntry("userId", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue(userId)));
+        ScanResult scanResult = dbClient.scan(allMenusForUser);
+        return scanResult.getItems();
+    }
+
+    private List<String> extractDistinct(List<Map<String, AttributeValue>> items) {
+        return items.stream().map(item -> item.get("dinner").getS()).distinct().collect(Collectors.toList());
+    }
+
+    private List<String> extractSuggestions(int nrOfSuggestions, List<String> allValues) {
+        List<String> suggestions = new ArrayList<>(nrOfSuggestions);
+        for (int i=0; i < nrOfSuggestions; i++) {
+            suggestions.add(allValues.get(ThreadLocalRandom.current().nextInt(allValues.size())));
+        }
+        return suggestions;
+    }
+
 }

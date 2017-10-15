@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Small piece of experimentation with the Amazon DynamoDB Client
@@ -87,174 +85,6 @@ public class DynamoDbExperimenter {
         set("20170421", "Spaghetti");
     }
 
-    @Test
-    void writeMenuWeekApril22() {
-        set("20170422", "Sandwiches");
-        set("20170423", "Soep met balletjes");
-        set("20170424", "Pragerschnitzel");
-        set("20170425", "Biefstuk - Frietjes");
-        set("20170426", "Croques");
-        set("20170427", "Groen patatjes met worst");
-        set("20170428", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekApril29() {
-        set("20170429", "Vogelnestjes");
-        set("20170430", "Eerste Communie Liesbeth");
-        set("20170501", "Kippebillen met rijst en curry");
-        set("20170502", "Diepvriespizza");
-        set("20170503", "Soep met balletjes");
-        // set("20170504", "");
-        set("20170505", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekMay6() {
-        set("20170506", "Nasi Goreng");
-        set("20170507", "Spaghetti");
-        set("20170508", "Mix Paysanne en Kipfilet");
-        set("20170509", "Diepvriespizza");
-        set("20170510", "Vol-au-vent");
-        set("20170511", "Pasta met spruitjes");
-        set("20170512", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekMay13() {
-        set("20170513", "Huwelijk Kurt en An");
-        set("20170514", "Groumet, koude groentjes");
-        set("20170515", "Hotdogs");
-        set("20170516", "Diepvriespizza");
-        set("20170517", "Kip met appelmoes");
-        set("20170518", "Groen patatjes, worst, eitjes");
-        set("20170519", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekMay20() {
-        set("20170520", "Fruit en Taart / Cassoulet");
-        set("20170521", "David & Anita / Quick");
-        set("20170522", "Pitta");
-        set("20170523", "Diepvriespizza");
-        set("20170524", "Groen petatjes, worst, eitjes");
-        set("20170525", "Macaroni");
-        set("20170526", "Tussendoor Snacks");
-    }
-
-    @Test
-    void writeMenuWeekMay27() {
-        set("20170527", "Sushi Boterhammen");
-        set("20170528", "Erwtjes en worteltjes met worst");
-        set("20170529", "Sushi Boot");
-        set("20170530", "Diepvriespizza");
-        set("20170531", "Vol-au-vent");
-        set("20170601", "Koude rijst");
-        set("20170602", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekJune03() {
-        set("20170603", "Verjaardag Kris");
-        set("20170604", "Nasi Goreng");
-        set("20170605", "Kip met appelmoes");
-        set("20170606", "Diepvriespizza");
-        set("20170607", "Pannenkoeken");
-        set("20170608", "E&W met biefstuk");
-        set("20170609", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekJune10() {
-        set("20170610", "Sandwiches");
-        set("20170611", "Kip met appelmoes");
-        set("20170612", "Sushiboot");
-        set("20170613", "Diepvriespizza");
-        set("20170614", "Pannenkoeken / groen petatjes met worst");
-        set("20170615", "Mix paysanne met zwitserse schijf");
-        set("20170616", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekJune17() {
-        set("20170617", "Macaroni");
-        set("20170618", "Varkenshaasje met mango");
-        set("20170619", "Pitta");
-        set("20170620", "Diepvriespizza");
-        set("20170621", "Papa take-out");
-        set("20170622", "Mama take-out/worstenbroodjes");
-        set("20170623", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekJune24() {
-        set("20170624", "Natascha");
-        set("20170625", "Frituur");
-        set("20170626", "Medaillon met appelmoes");
-        set("20170627", "Nasi goreng");
-        set("20170628", "Soep met balletjes");
-        set("20170629", "Macaroni");
-        set("20170630", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekAugust16() {
-        set("20170816", "Diepvriespizza");
-        set("20170817", "Macaroni");
-        set("20170818", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekAugust26() {
-        set("20170826", "Mix Paysanne + Kipfilet");
-        set("20170827", "Patatjes, Pragerschnitzel, Mix Forestiere");
-        set("20170828", "Restaurant");
-        set("20170829", "Pitta");
-        set("20170830", "Diepvriespizza");
-        set("20170831", "Koude rijst");
-        set("20170901", "Mama spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekSeptember02() {
-        set("20170902", "Varkenshaasje met mango");
-        set("20170903", "kippe loze vink + appelmoes");
-        set("20170904", "poffertjes");
-        set("20170905", "diepvriespizza");
-        set("20170906", "hotdogs");
-        set("20170907", "Koude rijst");
-        set("20170908", "Mama spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekSeptember09and16() {
-        set("20170909", "Macaroni");
-        set("20170910", "Groen patatjes, worst, eitje");
-        set("20170911", "Worstebroodjes");
-        set("20170912", "Diepvriespizza");
-        set("20170913", "Frituur");
-        set("20170914", "Biefstuk, Erwtjes en Worteltjes");
-        set("20170915", "Etentjes Kinderwoorddiesnt / Worstebroodjes");
-
-        set("20170916", "AS Family Event");
-        set("20170917", "Groen patatjes, worst, eitje");
-        set("20170918", "Lasagne");
-        set("20170919", "Diepvriespizza");
-        set("20170920", "Kip met rijst en curry");
-        set("20170921", "Pitta");
-        set("20170922", "Spaghetti");
-    }
-
-    @Test
-    void writeMenuWeekSeptember23() {
-        set("20170923", "Mazda Personeelsfeest");
-        set("20170924", "Oranje petatjes, Spek");
-        set("20170925", "Kip met Appelmoes");
-        set("20170926", "Dieprriespizza");
-        set("20170927", "Pitta");
-        set("20170928", "Hotdogs");
-        set("20170929", "Spaghetti");
-    }
 
     @Test
     void getDinnerForToday() {
@@ -322,6 +152,44 @@ public class DynamoDbExperimenter {
         }
 
 
+    }
+
+    @Test
+    void listDistinctDinnersForUser() {
+        List<Map<String, AttributeValue>> allItemsForUser = getAllItemsForUser(AMAZON_USER_ID);
+
+        List<String> distinctValues = extractDistinct(allItemsForUser);
+
+        System.out.println("Found "+distinctValues.size()+" distinct values for "+AMAZON_USER_ID);
+        distinctValues.stream().forEach(dinner -> System.out.println(dinner));
+
+        for (int i=0; i < 5; i++) {
+            System.out.println("\nSuggestions:");
+            List<String> suggestions = extractSuggestions(distinctValues);
+            suggestions.stream().forEach(suggestion -> System.out.println(suggestion));
+        }
+
+    }
+
+    private List<String> extractSuggestions(List<String> allValues) {
+        Random random = new Random();
+        int nrOfSuggestions = 3;
+        List<String> suggestions = new ArrayList<>(nrOfSuggestions);
+        for (int i=0; i < nrOfSuggestions; i++) {
+            suggestions.add(allValues.get(random.nextInt(allValues.size())));
+        }
+        return suggestions;
+    }
+
+    private List<String> extractDistinct(List<Map<String, AttributeValue>> items) {
+        return items.stream().map(item -> item.get("dinner").getS()).distinct().collect(Collectors.toList());
+    }
+
+    private List<Map<String, AttributeValue>> getAllItemsForUser(String userId) {
+        ScanRequest allMenusForUser = new ScanRequest("menus");
+        allMenusForUser.addScanFilterEntry("userId", new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue(userId)));
+        ScanResult scanResult = dbClient.scan(allMenusForUser);
+        return scanResult.getItems();
     }
 
     private void migrate(Map<String, AttributeValue> alexaRecord) {

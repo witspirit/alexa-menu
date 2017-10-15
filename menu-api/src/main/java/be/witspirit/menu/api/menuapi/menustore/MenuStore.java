@@ -26,6 +26,14 @@ public interface MenuStore {
     List<MenuRecord> getNext(String userId, LocalDate since, int nrOfDays);
 
     /**
+     * Based on your earlier dinners, nrOfSuggestions suggestions are selected.
+     * @param userId User identification (e.g. Amazon User Id) of the owning user
+     * @param nrOfSuggestions Nr of suggestions you wish to receive
+     * @return Requested Nr. of dinner suggestions. (Never null, potentially empty if no earlier records are available)
+     */
+    List<String> getDinnerSuggestions(String userId, int nrOfSuggestions);
+
+    /**
      * Sets the menu. Will overwrite whatever is already there.
      * @param menuRecord The menu record to be stored
      */
