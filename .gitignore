@@ -17,4 +17,7 @@ buildNumber.properties
 # Shippable Reporting
 shippable
 
+# Angular
+node-modules
+node
 

@@ -6,7 +6,7 @@
     "postinstall": "typings install",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod --aot=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -33,7 +33,7 @@
     "zone.js": "^0.8.17"
   },
   "devDependencies": {
-    "@angular/cli": "1.4.3",
+    "@angular/cli": "1.4.9",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.4.1",
     "@types/jasmine": "~2.6.0",
