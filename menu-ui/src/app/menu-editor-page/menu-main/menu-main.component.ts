@@ -16,7 +16,7 @@ export class MenuMainComponent implements OnInit, OnChanges {
 
   menuEditors: Array<MenuEditor> = [];
 
-  constructor(private menuService: MenuService) {
+  constructor(public menuService: MenuService) {
   }
 
   ngOnInit() {
@@ -26,28 +26,6 @@ export class MenuMainComponent implements OnInit, OnChanges {
     console.log('MenuMainComponent - Input changes');
     this.menuEditors = this.menus.map((menu) => new MenuEditor(this, menu, new FormControl()));
   }
-
-  public applyMenuUpdate(menuEditor: MenuEditor): void {
-    const newDinner = menuEditor.dinnerInput.value;
-    console.log('applyMenuUpdate: originalDinner = ' + menuEditor.originalDinner + ', newDinner = ' + newDinner);
-    if (menuEditor.originalDinner === newDinner) {
-      return; // Nothing changed... So don't do anything
-    }
-    const newMenu = new Menu(menuEditor.menu.date, newDinner);
-    menuEditor.originalDinner = newDinner; // Temporary workaround until I figure out why I don't get a menu refresh as expected
-    console.log('Received confirmation for ' + newMenu);
-    this.onMenuUpdate.emit(newMenu);
-  }
-
-  public suggestFor(menuEditor: MenuEditor): void {
-    console.log('suggestFor ' + menuEditor.displayDate);
-    this.menuService.getSuggestions(3, suggestions => {
-      console.log('Received suggestions: ' + suggestions);
-      menuEditor.suggestions = suggestions;
-    });
-  }
-
-
 
 }
 
@@ -72,9 +50,30 @@ export class MenuEditor {
     this.originalDinner = menu.dinner;
   }
 
+  public fetchSuggestions(): void {
+    console.log('suggestFor ' + this.displayDate);
+    this.main.menuService.getSuggestions(3, suggestions => {
+      console.log('Received suggestions: ' + suggestions);
+      this.suggestions = suggestions;
+    });
+  }
+
   public applySuggestion(suggestion: string): void {
     console.log('applySuggestion');
     this.dinnerInput.setValue(suggestion);
-    this.main.applyMenuUpdate(this);
+    this.applyMenuUpdate();
+
+  }
+
+  public applyMenuUpdate(): void {
+    const newDinner = this.dinnerInput.value;
+    console.log('applyMenuUpdate: originalDinner = ' + this.originalDinner + ', newDinner = ' + newDinner);
+    if (this.originalDinner === newDinner) {
+      return; // Nothing changed... So don't do anything
+    }
+    const newMenu = new Menu(this.menu.date, newDinner);
+    this.originalDinner = newDinner; // Temporary workaround until I figure out why I don't get a menu refresh as expected
+    console.log('Received confirmation for ' + newMenu);
+    this.main.onMenuUpdate.emit(newMenu);
   }
 }

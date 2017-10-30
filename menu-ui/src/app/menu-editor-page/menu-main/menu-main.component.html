@@ -12,9 +12,9 @@
       <td>{{menuEditor.displayDate}}</td>
       <td>
         <div class="input-group">
-          <input type="text" class="form-control" [formControl]="menuEditor.dinnerInput" (keydown.enter)="applyMenuUpdate(menuEditor)" (blur)="applyMenuUpdate(menuEditor)">
+          <input type="text" class="form-control" [formControl]="menuEditor.dinnerInput" (keydown.enter)="menueditor.applyMenuUpdate()" (blur)="menuEditor.applyMenuUpdate()">
           <span class="input-group-btn">
-            <button class="btn btn-outline-primary" (click)="suggestFor(menuEditor)"
+            <button class="btn btn-outline-primary" (click)="menuEditor.fetchSuggestions()"
                     [popover]="suggestionDisplay" popoverTitle="Suggestions" placement="right" container="body" containerClass="suggestions" [outsideClick]="true">
               <i class="fa fa-lightbulb-o" aria-hidden="true" title="Suggest"></i>
             </button>
