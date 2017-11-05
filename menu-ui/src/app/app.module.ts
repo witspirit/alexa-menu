@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
 import { PopoverModule } from 'ngx-bootstrap';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { PopoverModule } from 'ngx-bootstrap';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
     CollapseModule.forRoot(),
