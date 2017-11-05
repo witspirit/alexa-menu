@@ -10,15 +10,12 @@ import { FormControl } from '@angular/forms';
 export class DateSelectorComponent implements OnInit, OnChanges {
   @Input() date: moment.Moment;
   @Input() jumpLength: number; // in days
-  @Input() nrOfDays: number; // in days
 
   @Output() onStartDateUpdate = new EventEmitter<moment.Moment>();
-  @Output() onNrOfDaysUpdate = new EventEmitter<number>();
 
 
   selectedDate = new FormControl();
   selectedJumpLength = new FormControl();
-  selectedNrOfDays = new FormControl();
 
   constructor() {
   }
@@ -43,15 +40,9 @@ export class DateSelectorComponent implements OnInit, OnChanges {
     // Not emitting this, as the value is really only useful internally.
   }
 
-  public applyNrOfDaysUpdate() {
-    this.nrOfDays = this.selectedNrOfDays.value;
-    this.onNrOfDaysUpdate.emit(this.nrOfDays);
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedDate.setValue(this.date.format('YYYYMMDD'));
     this.selectedJumpLength.setValue(this.jumpLength);
-    this.selectedNrOfDays.setValue(this.nrOfDays);
   }
 
   public earlier() {

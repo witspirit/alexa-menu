@@ -1,7 +1,8 @@
-<app-date-selector [date]="startDate"
-                   [jumpLength]="jumpLength"
-                   [nrOfDays]="nrOfDays"
-                   (onStartDateUpdate)="handleStartDateUpdate($event)"
-                   (onNrOfDaysUpdate)="handleNrOfDaysUpdate($event)"
-></app-date-selector>
+<app-display-controller
+  [date]="startDate"
+  [jumpLength]="jumpLength"
+  [nrOfDays]="nrOfDays"
+  (onStartDateUpdate)="handleStartDateUpdate($event)"
+  (onNrOfDaysUpdate)="handleNrOfDaysUpdate($event)"
+></app-display-controller>
 <app-menu-main [menus]="menus" (onMenuUpdate)="handleMenuUpdate($event)"></app-menu-main>

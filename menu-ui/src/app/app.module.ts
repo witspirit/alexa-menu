@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
 import { PopoverModule } from 'ngx-bootstrap';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { DisplayControllerComponent } from './menu-editor-page/display-controller/display-controller.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     MenuHeaderComponent,
     DateSelectorComponent,
     FooterComponent,
-    MenuEditorPageComponent
+    MenuEditorPageComponent,
+    DisplayControllerComponent
   ],
   imports: [
     BrowserModule,

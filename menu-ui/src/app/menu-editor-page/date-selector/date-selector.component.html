@@ -1,42 +1,23 @@
-<div class="date-selector" class="row">
+<div class="row">
 
-  <div class="col-sm-8"> <!-- The date part -->
-
-    <div class="row">
-
-      <div class="col-sm-1">
-        <button class="btn float-right" (click)="earlier()">&lt;</button>
-      </div>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()"
-               (blur)="applyDateUpdate()">
-      </div>
-      <div class="col-sm-1">
-        <button class="btn" (click)="later()">&gt;</button>
-      </div>
-      <div class="col-sm-2 align-self-end">
-        <label for="jumpLength" class="float-right">Jump</label>
-      </div>
-      <div class="col-sm-2">
-        <!--<label for="jumpLength">Jump Length</label>-->
-        <input id="jumpLength" type="number" class="form-control" [formControl]="selectedJumpLength"
-               (keydown.enter)="applyJumpLengthUpdate()" (blur)="applyJumpLengthUpdate()">
-      </div>
-    </div>
-
+  <div class="col-sm-1 align-self-end">
+    <button class="btn float-right" (click)="earlier()">&lt;</button>
   </div>
-
-  <div class="col-sm-4">
-    <div class="row">
-      <div class="col-sm-6 align-self-end">
-        <label for="nrOfDays" class="float-right">Show</label>
-      </div>
-      <div class="col-sm-6">
-        <!--<label for="nrOfDays">Nr. of Days</label>-->
-        <input id="nrOfDays" type="number" class="form-control" [formControl]="selectedNrOfDays"
-               (keydown.enter)="applyNrOfDaysUpdate()" (blur)="applyNrOfDaysUpdate()">
-      </div>
-    </div>
+  <div class="col-sm-6">
+    <input type="text" class="form-control" [formControl]="selectedDate" (keydown.enter)="applyDateUpdate()"
+           (blur)="applyDateUpdate()">
+  </div>
+  <div class="col-sm-1">
+    <button class="btn" (click)="later()">&gt;</button>
+  </div>
+  <div class="col-sm-1 align-self-end">
+    <label for="jumpLength" class="float-right">Jump</label>
+  </div>
+  <div class="col-sm-1">
+    <input id="jumpLength" type="number" class="form-control" [formControl]="selectedJumpLength"
+           (keydown.enter)="applyJumpLengthUpdate()" (blur)="applyJumpLengthUpdate()">
   </div>
 
 </div>
+
+

@@ -1,0 +1,26 @@
+<div class="row">
+
+  <div class="col-sm-10"> <!-- The date part -->
+
+    <app-date-selector
+      [date]="date"
+      [jumpLength]="jumpLength"
+      (onStartDateUpdate)="update($event)">
+    </app-date-selector>
+
+  </div>
+
+  <div class="col-sm-2">
+    <div class="row">
+      <div class="col-sm-6 align-self-end">
+        <label for="nrOfDays" class="float-right">Show</label>
+      </div>
+      <div class="col-sm-6">
+        <!--<label for="nrOfDays">Nr. of Days</label>-->
+        <input id="nrOfDays" type="number" class="form-control" [formControl]="selectedNrOfDays"
+               (keydown.enter)="applyNrOfDaysUpdate()" (blur)="applyNrOfDaysUpdate()">
+      </div>
+    </div>
+  </div>
+
+</div>
