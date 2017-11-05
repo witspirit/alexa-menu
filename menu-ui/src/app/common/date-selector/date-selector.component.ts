@@ -11,8 +11,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   @Input() date: moment.Moment;
   @Input() jumpLength: number; // in days
 
-  @Output() onStartDateUpdate = new EventEmitter<moment.Moment>();
-
+  @Output() onUpdate = new EventEmitter<moment.Moment>();
 
   selectedDate = new FormControl();
   selectedJumpLength = new FormControl();
@@ -54,7 +53,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   }
 
   private update(desiredDate: moment.Moment) {
-    this.onStartDateUpdate.emit(desiredDate);
+    this.onUpdate.emit(desiredDate);
   }
 
 }

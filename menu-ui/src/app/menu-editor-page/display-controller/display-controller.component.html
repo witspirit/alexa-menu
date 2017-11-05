@@ -5,17 +5,13 @@
     <!--<app-date-selector-->
       <!--[date]="date"-->
       <!--[jumpLength]="jumpLength"-->
-      <!--(onStartDateUpdate)="update($event)">-->
+      <!--(onUpdate)="update($event)">-->
     <!--</app-date-selector>-->
 
-    <p-calendar
-      [formControl]="editableDate"
-      [showIcon]="true"
-      dateFormat="yymmdd"
-      [locale]="myDateLocale"
-      showButtonBar="true"
-      (onSelect)="onDateSelected($event)">
-    </p-calendar>
+    <app-prime-date-selector
+      [date]="date"
+      (onUpdate)="update($event)">
+    </app-prime-date-selector>
 
   </div>
 

@@ -9,7 +9,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse' ;
 import { AmazonLoginService } from './amazon-login.service';
 import { MenuService } from './menu.service';
 import { HttpClientModule } from '@angular/common/http';
-import { DateSelectorComponent } from './menu-editor-page/date-selector/date-selector.component';
+import { DateSelectorComponent } from './common/date-selector/date-selector.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
@@ -17,6 +17,7 @@ import { PopoverModule } from 'ngx-bootstrap';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DisplayControllerComponent } from './menu-editor-page/display-controller/display-controller.component';
 import { CalendarModule } from 'primeng/primeng';
+import { PrimeDateSelectorComponent } from './common/prime-date-selector/prime-date-selector.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CalendarModule } from 'primeng/primeng';
     DateSelectorComponent,
     FooterComponent,
     MenuEditorPageComponent,
-    DisplayControllerComponent
+    DisplayControllerComponent,
+    PrimeDateSelectorComponent
   ],
   imports: [
     BrowserModule,
