@@ -1,13 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-display-controller',
   templateUrl: './display-controller.component.html',
   styleUrls: ['./display-controller.component.scss']
 })
-export class DisplayControllerComponent implements OnInit, OnChanges {
+export class DisplayControllerComponent implements OnInit {
   @Input() date: moment.Moment;
   @Input() jumpLength: number; // in days
   @Input() nrOfDays: number; // in days
@@ -15,25 +14,18 @@ export class DisplayControllerComponent implements OnInit, OnChanges {
   @Output() onStartDateUpdate = new EventEmitter<moment.Moment>();
   @Output() onNrOfDaysUpdate = new EventEmitter<number>();
 
-  selectedNrOfDays = new FormControl();
-
   constructor() {
   }
 
   ngOnInit() {
   }
 
-  public applyNrOfDaysUpdate() {
-    this.nrOfDays = this.selectedNrOfDays.value;
-    this.onNrOfDaysUpdate.emit(this.nrOfDays);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.selectedNrOfDays.setValue(this.nrOfDays);
-  }
-
-  private update(desiredDate: moment.Moment) {
+  private updateStartDate(desiredDate: moment.Moment) {
     this.onStartDateUpdate.emit(desiredDate);
+  }
+
+  private updateNrOfDays(desiredNrOfDays: number) {
+    this.onNrOfDaysUpdate.emit(desiredNrOfDays);
   }
 
 }

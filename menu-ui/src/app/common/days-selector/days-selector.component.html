@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-sm-6 align-self-end">
+    <label for="nrOfDays" class="float-right">Show</label>
+  </div>
+  <div class="col-sm-6">
+    <!--<label for="nrOfDays">Nr. of Days</label>-->
+    <input id="nrOfDays" type="number" class="form-control" [formControl]="selectedNrOfDays"
+           (keydown.enter)="applyUpdate()" (blur)="applyUpdate()">
+  </div>
+</div>

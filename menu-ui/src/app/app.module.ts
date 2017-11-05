@@ -18,6 +18,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DisplayControllerComponent } from './menu-editor-page/display-controller/display-controller.component';
 import { CalendarModule } from 'primeng/primeng';
 import { PrimeDateSelectorComponent } from './common/prime-date-selector/prime-date-selector.component';
+import { DaysSelectorComponent } from './common/days-selector/days-selector.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PrimeDateSelectorComponent } from './common/prime-date-selector/prime-d
     FooterComponent,
     MenuEditorPageComponent,
     DisplayControllerComponent,
-    PrimeDateSelectorComponent
+    PrimeDateSelectorComponent,
+    DaysSelectorComponent
   ],
   imports: [
     BrowserModule,
