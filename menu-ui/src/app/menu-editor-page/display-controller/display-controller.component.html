@@ -2,11 +2,20 @@
 
   <div class="col-sm-10"> <!-- The date part -->
 
-    <app-date-selector
-      [date]="date"
-      [jumpLength]="jumpLength"
-      (onStartDateUpdate)="update($event)">
-    </app-date-selector>
+    <!--<app-date-selector-->
+      <!--[date]="date"-->
+      <!--[jumpLength]="jumpLength"-->
+      <!--(onStartDateUpdate)="update($event)">-->
+    <!--</app-date-selector>-->
+
+    <p-calendar
+      [formControl]="editableDate"
+      [showIcon]="true"
+      dateFormat="yymmdd"
+      [locale]="myDateLocale"
+      showButtonBar="true"
+      (onSelect)="onDateSelected($event)">
+    </p-calendar>
 
   </div>
 

@@ -17,7 +17,20 @@ export class DisplayControllerComponent implements OnInit, OnChanges {
 
   selectedNrOfDays = new FormControl();
 
+  editableDate = new FormControl();
+  myDateLocale: any;
+
   constructor() {
+    this.myDateLocale = {
+      firstDayOfWeek: 1,
+      dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+      monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      today: 'Today',
+      clear: 'Clear'
+    };
   }
 
   ngOnInit() {
@@ -30,6 +43,12 @@ export class DisplayControllerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedNrOfDays.setValue(this.nrOfDays);
+    this.editableDate.setValue(this.date.toDate());
+  }
+
+  private onDateSelected(date: Date) {
+    this.date = moment(date);
+    this.update(this.date);
   }
 
   private update(desiredDate: moment.Moment) {

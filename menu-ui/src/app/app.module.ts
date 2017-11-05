@@ -14,8 +14,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { MenuEditorPageComponent } from './menu-editor-page/menu-editor-page.component';
 import { PopoverModule } from 'ngx-bootstrap';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DisplayControllerComponent } from './menu-editor-page/display-controller/display-controller.component';
+import { CalendarModule } from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DisplayControllerComponent } from './menu-editor-page/display-controlle
     ReactiveFormsModule,
     HttpClientModule,
     CollapseModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    CalendarModule
   ],
   providers: [AmazonLoginService, MenuService],
   bootstrap: [AppComponent]
