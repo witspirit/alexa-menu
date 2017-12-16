@@ -22,3 +22,6 @@ LinkExperimentIntent for my e-mail
 LinkExperimentIntent what is my profile
 LinkExperimentIntent what's my profile
 
+WhatsForDinnerOnDayIntent what's for dinner for {Date}
+WhatsForDinnerOnDayIntent what is for dinner for {Date}
+WhatsForDinnerOnDayIntent for {Date}

@@ -11,6 +11,15 @@
     },
     {
       "intent": "LinkExperimentIntent"
+    },
+    {
+      "intent": "WhatsForDinnerOnDayIntent",
+      "slots" : [
+        {
+          "name": "Date",
+          "type": "AMAZON.DATE"
+        }
+      ]
     }
   ]
 }

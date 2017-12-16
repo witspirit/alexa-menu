@@ -6,12 +6,14 @@ import be.witspirit.common.exception.InvalidTokenException;
 import be.witspirit.menu.api.menuapi.menustore.MenuStore;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.slu.Intent;
+import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
@@ -59,11 +61,27 @@ public class ChefSkill implements SpeechletV2 {
                 return dinner(user, LocalDate.now());
             case "WhatsForDinnerTomorrowIntent":
                 return dinner(user, LocalDate.now().plusDays(1));
+            case "WhatsForDinnerOnDayIntent":
+                Slot dateSlot = intent.getSlot("Date");
+                return dinner(user, parseDate(dateSlot));
             case "LinkExperimentIntent":
                 return profile(user);
             case "AMAZON.HelpIntent":
             default:
                 return alexaResponses.help();
+        }
+    }
+
+    private LocalDate parseDate(Slot dateSlot) {
+        LOG.debug("Date Slot : confirmationStatus = "+dateSlot.getConfirmationStatus()+"; name = "+dateSlot.getName()+"; value = "+dateSlot.getValue()+"; resolutions = "+dateSlot.getResolutions());
+
+        String dateSlotValue = dateSlot.getValue();
+
+        try {
+            return LocalDate.parse(dateSlotValue);
+        } catch (DateTimeParseException parseEx) {
+            LOG.debug("Failed to parse "+dateSlotValue+" as a LocalDate", parseEx);
+            return LocalDate.now();
         }
     }
 
