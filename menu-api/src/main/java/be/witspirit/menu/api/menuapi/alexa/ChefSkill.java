@@ -58,13 +58,9 @@ public class ChefSkill implements SpeechletV2 {
 
         switch (intentName) { // Issue in JaCoCo to compute coverage on String Switch. Issue already identified on GitHub, but not yet merged :-(
             case "WhatsForDinnerIntent":
-                return dinner(user, LocalDate.now());
-            case "WhatsForDinnerTomorrowIntent":
-                return dinner(user, LocalDate.now().plusDays(1));
-            case "WhatsForDinnerOnDayIntent":
                 Slot dateSlot = intent.getSlot("Date");
                 return dinner(user, parseDate(dateSlot));
-            case "LinkExperimentIntent":
+            case "LinkExperimentIntent": // Disabled this in practice, otherwise it get's precedence over the intent with missing date
                 return profile(user);
             case "AMAZON.HelpIntent":
             default:
@@ -73,16 +69,21 @@ public class ChefSkill implements SpeechletV2 {
     }
 
     private LocalDate parseDate(Slot dateSlot) {
-        LOG.debug("Date Slot : confirmationStatus = "+dateSlot.getConfirmationStatus()+"; name = "+dateSlot.getName()+"; value = "+dateSlot.getValue()+"; resolutions = "+dateSlot.getResolutions());
-
-        String dateSlotValue = dateSlot.getValue();
-
-        try {
-            return LocalDate.parse(dateSlotValue);
-        } catch (DateTimeParseException parseEx) {
-            LOG.debug("Failed to parse "+dateSlotValue+" as a LocalDate", parseEx);
-            return LocalDate.now();
+        if (dateSlot == null) {
+            LOG.info("No date slot available"); // Don't think this normally occurs
+        } else {
+            LOG.info("Date Slot : confirmationStatus = "+dateSlot.getConfirmationStatus()+"; name = "+dateSlot.getName()+"; value = "+dateSlot.getValue()+"; resolutions = "+dateSlot.getResolutions());
+            String dateSlotValue = dateSlot.getValue();
+            if (dateSlotValue != null) { // This seems to be the case if no date could be resolved
+                try {
+                    return LocalDate.parse(dateSlotValue);
+                } catch (DateTimeParseException parseEx) {
+                    LOG.warn("Failed to parse " + dateSlotValue + " as a LocalDate", parseEx);
+                }
+            }
         }
+        LOG.info("Fallback to today...");
+        return LocalDate.now();
     }
 
     private SpeechletResponse profile(User user) {

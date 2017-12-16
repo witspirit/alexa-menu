@@ -1,27 +1,5 @@
-WhatsForDinnerIntent what is for dinner
-WhatsForDinnerIntent what's for dinner
-WhatsForDinnerIntent what are we having
-WhatsForDinnerIntent dinner
-WhatsForDinnerIntent what do we eat
-WhatsForDinnerIntent what is for dinner today
-WhatsForDinnerIntent what's for dinner today
-WhatsForDinnerIntent today
-
-WhatsForDinnerTomorrowIntent what is for dinner tomorrow
-WhatsForDinnerTomorrowIntent what's for dinner tomorrow
-WhatsForDinnerTomorrowIntent tomorrow
-
-
-LinkExperimentIntent e-mail
-LinkExperimentIntent link test
-LinkExperimentIntent profile
-LinkExperimentIntent for my profile
-LinkExperimentIntent for my account
-LinkExperimentIntent for my info
-LinkExperimentIntent for my e-mail
-LinkExperimentIntent what is my profile
-LinkExperimentIntent what's my profile
-
-WhatsForDinnerOnDayIntent what's for dinner for {Date}
-WhatsForDinnerOnDayIntent what is for dinner for {Date}
-WhatsForDinnerOnDayIntent for {Date}
+WhatsForDinnerIntent what is for dinner {Date}
+WhatsForDinnerIntent what's for dinner {Date}
+WhatsForDinnerIntent what are we having {Date}
+WhatsForDinnerIntent dinner {Date}
+WhatsForDinnerIntent what do we eat {Date}

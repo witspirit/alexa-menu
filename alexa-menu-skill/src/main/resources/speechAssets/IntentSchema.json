@@ -1,25 +1,16 @@
 {
   "intents": [
     {
-      "intent": "WhatsForDinnerIntent"
-    },
-    {
-      "intent": "WhatsForDinnerTomorrowIntent"
-    },
-    {
-      "intent": "AMAZON.HelpIntent"
-    },
-    {
-      "intent": "LinkExperimentIntent"
-    },
-    {
-      "intent": "WhatsForDinnerOnDayIntent",
+      "intent": "WhatsForDinnerIntent",
       "slots" : [
         {
           "name": "Date",
           "type": "AMAZON.DATE"
         }
       ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
     }
   ]
 }
