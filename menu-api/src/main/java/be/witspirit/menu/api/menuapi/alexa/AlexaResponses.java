@@ -60,7 +60,11 @@ public class AlexaResponses {
      * @return SpeechletResponse spoken and visual response for the given intent
      */
     public SpeechletResponse dinner(LocalDate date, String dinner) {
-        return tell(dinner);
+        if (dinner == null || dinner.trim().isEmpty()) {
+            return tell("We haven't decided yet");
+        } else {
+            return tell(dinner);
+        }
     }
 
     private SpeechletResponse tell(String speechText) {
