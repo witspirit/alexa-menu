@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { AmazonLoginService } from './amazon/amazon-login.service';
 import { AuthError } from './authError';
-import { CognitoService } from './cognito/cognito.service';
+import { AuthCallback } from './authCallback';
 
 export const NO_USER = new User(null);
 
@@ -16,14 +16,17 @@ export class AuthService {
 
   private loginService: any;
 
-  constructor(private amazon: AmazonLoginService, private cognito: CognitoService) {
+  constructor(private amazon: AmazonLoginService) {
     this.loginService = amazon;
   }
 
   public login() {
     console.log('login()');
     // Perform actual login
-    this.loginService.login((user) => this.handleSuccess(user), (authError) => this.handleError(authError)); // Arrow functions to preserve this
+    this.loginService.login(new AuthCallback(
+      (user) => this.handleSuccess(user),
+      (authError) => this.handleError(authError)
+    )); // Arrow functions to preserve this
   }
 
   public logout() {
