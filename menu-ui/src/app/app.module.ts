@@ -20,6 +20,7 @@ import { CalendarModule } from 'primeng/primeng';
 import { PrimeDateSelectorComponent } from './common/prime-date-selector/prime-date-selector.component';
 import { DaysSelectorComponent } from './common/days-selector/days-selector.component';
 import { AuthService } from './auth/auth.service';
+import { CognitoService } from './auth/cognito/cognito.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { AuthService } from './auth/auth.service';
     PopoverModule.forRoot(),
     CalendarModule
   ],
-  providers: [AmazonLoginService, MenuService, AuthService],
+  providers: [AmazonLoginService, CognitoService, MenuService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
