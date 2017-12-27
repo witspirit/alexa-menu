@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { User } from '../model/user';
+import { User } from '../auth/user';
 
 const SIGN_IN = 'Sign In';
 

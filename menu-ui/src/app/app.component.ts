@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from './menu.service';
-import { AmazonLoginService, NO_USER } from './amazon-login.service';
-import { User } from './model/user';
+import { User } from './auth/user';
 import * as moment from 'moment';
 import { Menu } from './model/menu';
+import { AuthService, NO_USER } from './auth/auth.service';
 
 // With the current initial setup of jump by 7 and nrOfDays 21, it is nice to put the start date
 // starting at last weeks scheduling period. Such that the current period is in the middle of the screen.
@@ -29,13 +29,13 @@ export class AppComponent implements OnInit {
   jumpLength = 7;
   nrOfDays = 21;
 
-  constructor(private amazonLogin: AmazonLoginService, private menuService: MenuService) {
+  constructor(private auth: AuthService, private menuService: MenuService) {
     menuService.setStartDate(this.startDate);
     menuService.setNrOfDays(this.nrOfDays);
   }
 
   ngOnInit(): void {
-    this.amazonLogin.user$.subscribe(newUser => this.onUserUpdate(newUser));
+    this.auth.user$.subscribe(newUser => this.onUserUpdate(newUser));
     this.menuService.menus$.subscribe(menus => this.menus = menus);
   }
 
@@ -45,11 +45,11 @@ export class AppComponent implements OnInit {
   }
 
   public login(): void {
-    this.amazonLogin.login();
+    this.auth.login();
   }
 
   public logout(): void {
-    this.amazonLogin.logout();
+    this.auth.logout();
   }
 
   public handleStartDateUpdate(newStartDate: moment.Moment) {

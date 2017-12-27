@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^4.4.1",
     "@angular/platform-server": "^4.4.1",
     "@angular/router": "^4.4.1",
+    "amazon-cognito-auth-js": "^1.1.0",
     "bootstrap": "^4.0.0-beta",
     "core-js": "^2.5.1",
     "moment": "^2.18.1",
