@@ -17,18 +17,10 @@ import java.util.stream.Collectors;
  */
 @Repository
 public class DynamoDBMenuStore implements MenuStore {
-    public static final String DEFAULT_SERVICE_ENDPOINT = "dynamodb.eu-west-1.amazonaws.com";
-    public static final String DEFAULT_REGION = "eu-west-1";
-
     private final AmazonDynamoDB dbClient;
 
-    public DynamoDBMenuStore() {
-        // Control credentials through environment variables:
-        // AWS_ACCESS_KEY_ID & AWS_SECRET_KEY
-        // or via the aws configure in the AWS CLI
-        dbClient = AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(DEFAULT_SERVICE_ENDPOINT, DEFAULT_REGION))
-                .build();
+    public DynamoDBMenuStore(AmazonDynamoDB dbClient) {
+        this.dbClient = dbClient;
     }
 
 
