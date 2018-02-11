@@ -4,6 +4,7 @@ import be.witspirit.amazonlogin.ProfileService;
 import be.witspirit.menu.api.menuapi.menustore.DynamoDbSetup;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
+import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,8 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.io.IOException;
 
 import static org.mockito.Mockito.when;
 
@@ -67,5 +71,12 @@ public abstract class AbstractIntegrationTest {
         return mockCaller;
     }
 
+    protected String testResource(String resourceLocation) {
+        try {
+            return IOUtils.toString(new ClassPathResource(resourceLocation).getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read test resource at "+resourceLocation);
+        }
+    }
 
 }

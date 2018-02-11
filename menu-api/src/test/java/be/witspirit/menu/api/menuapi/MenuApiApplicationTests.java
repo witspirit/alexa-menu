@@ -28,7 +28,7 @@ public class MenuApiApplicationTests extends AbstractIntegrationTest {
 
         mvc.perform(get("/menus?since=20180210").header("Authorization", "Bearer "+caller.token()))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"date\":\"20180210\",\"dinner\":\"dummyDinner1\"},{\"date\":\"20180211\",\"dinner\":\"dummyDinner2\"}]"));
+                .andExpect(content().json(testResource("/api/menu_result_1.json")));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class MenuApiApplicationTests extends AbstractIntegrationTest {
 
         mvc.perform(get("/menus?since=20180210").header("Authorization", "Bearer "+caller.token()))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"date\":\"20180212\",\"dinner\":\"dummyDinner1\"},{\"date\":\"20180213\",\"dinner\":\"dummyDinner2\"}]"));
+                .andExpect(content().json(testResource("/api/menu_result_2.json")));
     }
 
 }
