@@ -9,6 +9,10 @@ public class MockCaller {
         this.key = key;
     }
 
+    public String key() {
+        return key;
+    }
+
     public String token() {
         return key+"Token";
     }
@@ -29,7 +33,8 @@ public class MockCaller {
         return new AmazonProfile().setName(name()).setEmail(email()).setUserId(userId());
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return key();
+    }
 }
