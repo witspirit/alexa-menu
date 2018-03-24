@@ -21,8 +21,8 @@
     </properties>
 
     <modules>
-        <module>alexa-menu-skill</module>
-        <module>authorizer</module>
+        <module>lambdas/alexa-menu-skill</module>
+        <module>lambdas/authorizer</module>
         <module>amazon-login</module>
         <module>menu-common</module>
         <module>menu-api</module>

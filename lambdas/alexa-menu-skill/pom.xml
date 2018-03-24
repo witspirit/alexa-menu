@@ -6,7 +6,7 @@
         <groupId>be.witspirit.alexamenu</groupId>
         <artifactId>alexa-menu-root</artifactId>
         <version>0.3.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../..</relativePath>
     </parent>
 
     <artifactId>alexa-menu-skill</artifactId>
