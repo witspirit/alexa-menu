@@ -12,6 +12,18 @@
     <artifactId>alexa-menu-skill</artifactId>
     <packaging>jar</packaging>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>be.witspirit.alexamenu</groupId>
+                <artifactId>aws-dependencies</artifactId>
+                <version>0.3.1-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>be.witspirit.alexamenu</groupId>
@@ -22,6 +34,11 @@
             <groupId>be.witspirit.alexamenu</groupId>
             <artifactId>amazon-login</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
