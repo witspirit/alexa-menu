@@ -31,6 +31,7 @@
         <module>menu-api</module>
         <module>menu-ui</module>
         <module>aws-dependencies</module>
+        <module>lambdas/menu-api-gwlambda</module>
     </modules>
 
     <dependencyManagement>
