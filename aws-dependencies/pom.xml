@@ -20,10 +20,17 @@
         <aws-lambda-java-events.version>2.1.0</aws-lambda-java-events.version>
         <aws-java-sdk-dynamodb.version>1.11.125</aws-java-sdk-dynamodb.version>
         <DynamoDBLocal.version>1.11.86</DynamoDBLocal.version>
+        <aws-serverless-java-container-spring.version>1.0.1</aws-serverless-java-container-spring.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.amazonaws.serverless</groupId>
+                <artifactId>aws-serverless-java-container-spring</artifactId>
+                <version>${aws-serverless-java-container-spring.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.amazon.alexa</groupId>
                 <artifactId>alexa-skills-kit</artifactId>

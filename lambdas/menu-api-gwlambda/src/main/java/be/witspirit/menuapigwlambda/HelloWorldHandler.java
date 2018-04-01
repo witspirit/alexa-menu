@@ -1,15 +1,16 @@
 package be.witspirit.menuapigwlambda;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Component
-public class HelloWorldHandler implements ApiGwHandler {
+@RestController
+@RequestMapping("/test/hello")
+public class HelloWorldHandler {
 
-    @Override
-    public APIGatewayProxyResponseEvent handle(APIGatewayProxyRequestEvent request) {
-        APIGatewayProxyResponseEvent apiGwResponse = new APIGatewayProxyResponseEvent().withStatusCode(200).withBody("Hello World");
-        return apiGwResponse;
+    @GetMapping
+    public String helloWorld() {
+        return "Hello World";
     }
+
 }
