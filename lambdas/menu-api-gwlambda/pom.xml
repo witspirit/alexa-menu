@@ -32,9 +32,9 @@
             <version>${project.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>be.witspirit.alexamenu</groupId>-->
-            <!--<artifactId>amazon-login</artifactId>-->
-            <!--<version>${project.version}</version>-->
+        <!--<groupId>be.witspirit.alexamenu</groupId>-->
+        <!--<artifactId>amazon-login</artifactId>-->
+        <!--<version>${project.version}</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -50,6 +50,10 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
+                <exclusion> <!-- Not using it, so let's avoid it to reduce our lambda package size -->
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -57,10 +61,10 @@
             <artifactId>aws-serverless-java-container-spring</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-events</artifactId>
-        </dependency>
+        <!--<dependency>--> <!-- No longer required since switching to serverless java container as it contains a version of its own -->
+            <!--<groupId>com.amazonaws</groupId>-->
+            <!--<artifactId>aws-lambda-java-events</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-dynamodb</artifactId>
@@ -115,30 +119,30 @@
         <plugins>
             <!-- Trying to do a basic configuration doesn't seem to be compatible with the configuration by Spring Boot in the parent POM... -->
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-shade-plugin</artifactId>-->
-                <!--&lt;!&ndash;<version>2.4.3</version>&ndash;&gt;-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>shade</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<finalName>${project.artifactId}-lambda</finalName>-->
-                            <!--<transformers>-->
-                                <!--<transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer"/>-->
-                            <!--</transformers>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-                <!--<dependencies>-->
-                    <!--<dependency>-->
-                        <!--<groupId>com.github.edwgiz</groupId>-->
-                        <!--<artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>-->
-                        <!--<version>2.8.1</version>-->
-                    <!--</dependency>-->
-                <!--</dependencies>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-shade-plugin</artifactId>-->
+            <!--&lt;!&ndash;<version>2.4.3</version>&ndash;&gt;-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+            <!--<goal>shade</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<finalName>${project.artifactId}-lambda</finalName>-->
+            <!--<transformers>-->
+            <!--<transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer"/>-->
+            <!--</transformers>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--<dependencies>-->
+            <!--<dependency>-->
+            <!--<groupId>com.github.edwgiz</groupId>-->
+            <!--<artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>-->
+            <!--<version>2.8.1</version>-->
+            <!--</dependency>-->
+            <!--</dependencies>-->
             <!--</plugin>-->
 
             <!-- When I fully merge the Spring Boot configuration with the log4j/aws configuration, it does work... Don't know why... -->
@@ -181,20 +185,26 @@
                         <configuration>
                             <finalName>${project.artifactId}-lambda</finalName>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.handlers</resource>
                                 </transformer>
-                                <transformer implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
+                                <transformer
+                                        implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
                                     <resource>META-INF/spring.factories</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/spring.schemas</resource>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${start-class}</mainClass>
                                 </transformer>
-                                <transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer"/>
+                                <transformer
+                                        implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer"/>
                             </transformers>
                             <!-- Ensure we don't include the Tomcat that gets provided through the spring-boot-starter-web -->
                             <artifactSet>
