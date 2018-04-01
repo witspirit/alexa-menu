@@ -1,13 +1,20 @@
 package be.witspirit.menuapigwlambda;
 
+import com.amazon.speech.speechlet.SpeechletV2;
+import com.amazon.speech.speechlet.servlet.SpeechletServlet;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -15,10 +22,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SpringBootApplication
+@EnableWebMvc
 public class MenuApiConfig extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(MenuApiConfig.class, args);
+    }
+
+
+//    @Bean
+//    public ServletRegistrationBean exampleServletBean(SpeechletV2 chefSkill) {
+//        SpeechletServlet chefSkillServlet = new SpeechletServlet();
+//        chefSkillServlet.setSpeechlet(chefSkill);
+//        ServletRegistrationBean bean = new ServletRegistrationBean(chefSkillServlet, "/chefskill/*");
+//        bean.setLoadOnStartup(1);
+//        return bean;
+//    }
+
+    @Bean
+    public AmazonDynamoDB dynamoDb() {
+        // Control credentials through environment variables:
+        // AWS_ACCESS_KEY_ID & AWS_SECRET_KEY
+        // or via the aws configure in the AWS CLI
+        return AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("dynamodb.eu-west-1.amazonaws.com", "eu-west-1"))
+                .build();
     }
 
 

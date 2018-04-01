@@ -31,11 +31,11 @@
             <artifactId>menu-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>be.witspirit.alexamenu</groupId>-->
-        <!--<artifactId>amazon-login</artifactId>-->
-        <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>be.witspirit.alexamenu</groupId>
+            <artifactId>amazon-login</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -61,6 +61,11 @@
             <artifactId>aws-serverless-java-container-spring</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!--<dependency>--> <!-- No longer required since switching to serverless java container as it contains a version of its own -->
             <!--<groupId>com.amazonaws</groupId>-->
             <!--<artifactId>aws-lambda-java-events</artifactId>-->
@@ -78,6 +83,22 @@
         <dependency> <!-- Takes care of all Spring Boot logging setup in combination with log4j 2 -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazon.alexa</groupId>
+            <artifactId>alexa-skills-kit</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
 
