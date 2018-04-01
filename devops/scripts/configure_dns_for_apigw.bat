@@ -1,0 +1,1 @@
+aws route53 change-resource-record-sets --hosted-zone-id Z3P2U30ICPLN4L --change-batch file://../apigw/dns_name_for_apigw_menu_witspirit_be.json
