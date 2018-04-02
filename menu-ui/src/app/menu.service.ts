@@ -11,6 +11,8 @@ function format(date: moment.Moment) {
   return date.format('YYYYMMDD');
 }
 
+const baseUrl = 'https://apigw.menu.witspirit.be';
+
 @Injectable()
 export class MenuService {
   private nrOfDays = 7;
@@ -49,7 +51,7 @@ export class MenuService {
   }
 
   getMenusFor(date: moment.Moment) {
-    this.http.get<Menu[]>('https://api.menu.witspirit.be/menus', {
+    this.http.get<Menu[]>(baseUrl + '/menus', {
       headers: new HttpHeaders().set('Authorization', this.accessToken),
       params: new HttpParams().set('since', format(date)).set('nrOfDays', this.nrOfDays.toString())
     }).subscribe(receivedMenus => this.onMenusReceived(date, receivedMenus), err => this.onApiError(err));
@@ -62,16 +64,16 @@ export class MenuService {
 
     let httpRequest: Observable<object>;
     if (menu.dinner) {
-      httpRequest = this.http.put('https://api.menu.witspirit.be/menus/' + menu.date, menu.dinner, authHeader);
+      httpRequest = this.http.put(baseUrl + '/menus/' + menu.date, menu.dinner, authHeader);
     } else {
-      httpRequest = this.http.delete('https://api.menu.witspirit.be/menus/' + menu.date, authHeader);
+      httpRequest = this.http.delete(baseUrl + '/menus/' + menu.date, authHeader);
     }
 
     httpRequest.subscribe(() => this.refreshMenus(), err => this.onApiError(err));
   }
 
   public getSuggestions(nrOfSuggestions: number, callback: (suggestions: string[]) => void): void {
-    this.http.get<string[]>('https://api.menu.witspirit.be/suggestions/dinner', {
+    this.http.get<string[]>(baseUrl + '/suggestions/dinner', {
       headers: new HttpHeaders().set('Authorization', this.accessToken),
       params: new HttpParams().set('nrOfSuggestions', nrOfSuggestions.toString())
     }).subscribe(receivedSuggestions => callback(receivedSuggestions), err => this.onApiError(err));
