@@ -1,0 +1,31 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "chef",
+      "intents": [
+        {
+          "name": "WhatsForDinnerIntent",
+          "slots": [
+            {
+              "name": "Date",
+              "type": "AMAZON.DATE"
+            }
+          ],
+          "samples": [
+            "what is for dinner {Date}",
+            "what's for dinner {Date}",
+            "what are we having {Date}",
+            "dinner {Date}",
+            "what do we eat {Date}",
+            "{Date}"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        }
+      ],
+      "types": []
+    }
+  }
+}
