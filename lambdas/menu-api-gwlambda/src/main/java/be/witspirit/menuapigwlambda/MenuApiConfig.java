@@ -1,13 +1,10 @@
 package be.witspirit.menuapigwlambda;
 
-import com.amazon.speech.speechlet.SpeechletV2;
-import com.amazon.speech.speechlet.servlet.SpeechletServlet;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.HandlerAdapter;
