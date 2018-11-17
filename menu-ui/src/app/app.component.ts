@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   nrOfDays = 21;
 
   constructor(private auth: AuthService, private menuService: MenuService) {
+    console.log('AppComponent constructor')
     menuService.setStartDate(this.startDate);
     menuService.setNrOfDays(this.nrOfDays);
   }

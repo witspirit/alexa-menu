@@ -8,4 +8,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+console.log('Running main.ts');
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.log(err));

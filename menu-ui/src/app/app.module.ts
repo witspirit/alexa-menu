@@ -45,4 +45,8 @@ import { AuthService } from './auth/auth.service';
   providers: [AmazonLoginService, MenuService, AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    console.log('AppModule constructor');
+  }
+}
