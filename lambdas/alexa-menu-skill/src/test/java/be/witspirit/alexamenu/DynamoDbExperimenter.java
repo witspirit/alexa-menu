@@ -1,7 +1,6 @@
 package be.witspirit.alexamenu;
 
-import be.witspirit.amazonlogin.AmazonProfileService;
-import com.amazon.speech.speechlet.User;
+import be.witspirit.alexamenu.menustore.DynamoDBMenuStore;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -61,9 +60,9 @@ public class DynamoDbExperimenter {
 
     @Test
     void todaysMenuViaMenuRepository() {
-        DynamoDBMenuRepository repo = new DynamoDBMenuRepository(new AmazonProfileService());
-        String dinner = repo.whatIsForDinner(
-                User.builder().withUserId(ALEXA_USER_ID).build(),
+        DynamoDBMenuStore repo = new DynamoDBMenuStore();
+        String dinner = repo.get(
+                ALEXA_USER_ID,
                 LocalDate.now());
         System.out.println("Dinner today = " + dinner);
     }

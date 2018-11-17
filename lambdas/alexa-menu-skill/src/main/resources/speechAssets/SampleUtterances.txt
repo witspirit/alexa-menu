@@ -1,5 +1,0 @@
-WhatsForDinnerIntent what is for dinner {Date}
-WhatsForDinnerIntent what's for dinner {Date}
-WhatsForDinnerIntent what are we having {Date}
-WhatsForDinnerIntent dinner {Date}
-WhatsForDinnerIntent what do we eat {Date}

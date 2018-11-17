@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <ask-sdk.version>2.9.0</ask-sdk.version> <!-- New generation of Alexa Skills Kit -->
         <alexa-skills-kit.version>1.6.0</alexa-skills-kit.version>
         <aws-lambda-java-core.version>1.2.0</aws-lambda-java-core.version>
         <aws-lambda-java-log4j.version>1.0.0</aws-lambda-java-log4j.version>
@@ -29,6 +30,12 @@
                 <groupId>com.amazonaws.serverless</groupId>
                 <artifactId>aws-serverless-java-container-spring</artifactId>
                 <version>${aws-serverless-java-container-spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.amazon.alexa</groupId>
+                <artifactId>ask-sdk</artifactId>
+                <version>${ask-sdk.version}</version>
             </dependency>
 
             <dependency>

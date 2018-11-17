@@ -1,8 +1,6 @@
-package be.witspirit.alexamenu;
+package be.witspirit.alexamenu.menustore;
 
 import be.witspirit.amazonlogin.ProfileService;
-import be.witspirit.common.exception.InvalidTokenException;
-import com.amazon.speech.speechlet.User;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -20,14 +18,13 @@ import java.time.format.DateTimeFormatter;
 /**
  * DynamoDB backed Menu Repository
  */
-public class DynamoDBMenuRepository implements MenuRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBMenuRepository.class);
+public class DynamoDBMenuStore implements MenuStore {
+    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBMenuStore.class);
 
     private final AmazonDynamoDB dynamo;
-    private final ProfileService profileService;
 
-    public DynamoDBMenuRepository(ProfileService profileService) {
-        this(createDefaultDynamoDBClient(), profileService);
+    public DynamoDBMenuStore() {
+        this(createDefaultDynamoDBClient());
     }
 
     private static AmazonDynamoDB createDefaultDynamoDBClient() {
@@ -37,14 +34,12 @@ public class DynamoDBMenuRepository implements MenuRepository {
         return dbClient;
     }
 
-    public DynamoDBMenuRepository(AmazonDynamoDB dynamo, ProfileService profileService) {
+    public DynamoDBMenuStore(AmazonDynamoDB dynamo) {
         this.dynamo = dynamo;
-        this.profileService = profileService;
     }
 
     @Override
-    public String whatIsForDinner(User user, LocalDate date) {
-        String userId = extractUserId(user);
+    public String get(String userId, LocalDate date) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         String dateKey = dateFormat.format(date);
 
@@ -75,11 +70,4 @@ public class DynamoDBMenuRepository implements MenuRepository {
         return "We haven't decided yet";
     }
 
-    private String extractUserId(User user) {
-        String accessToken = user.getAccessToken();
-        if (accessToken == null) {
-            throw new InvalidTokenException();
-        }
-        return profileService.getProfile(accessToken).getUserId();
-    }
 }

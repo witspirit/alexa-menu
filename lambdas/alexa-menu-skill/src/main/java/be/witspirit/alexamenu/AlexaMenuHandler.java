@@ -1,36 +1,38 @@
 package be.witspirit.alexamenu;
 
+import be.witspirit.alexamenu.menustore.DynamoDBMenuStore;
+import be.witspirit.alexamenu.menustore.MenuStore;
+import be.witspirit.alexamenu.menustore.SkillIds;
 import be.witspirit.amazonlogin.AmazonProfileService;
 import be.witspirit.amazonlogin.ProfileService;
-import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler;
-
-import java.util.Collections;
-import java.util.Set;
+import com.amazon.ask.AlexaSkill;
+import com.amazon.ask.SkillStreamHandler;
+import com.amazon.ask.Skills;
 
 /**
  * Handler wrapper for the Alexa Menu Skill
  */
-public class AlexaMenuHandler extends SpeechletRequestStreamHandler {
+public class AlexaMenuHandler extends SkillStreamHandler {
 
     // Used by the normal invocation on AWS
     public AlexaMenuHandler() {
-        this(menuRepository(new AmazonProfileService()), new AmazonProfileService());
+        this(new DynamoDBMenuStore(), new AmazonProfileService());
     }
 
-    public AlexaMenuHandler(MenuRepository menuRepository, ProfileService profileService) {
-        super(new AlexaMenuSpeechlet(menuRepository, profileService), supportedApplicationIds());
+    public AlexaMenuHandler(MenuStore menuStore, ProfileService profileService) {
+        super(skillSetup(menuStore, profileService));
     }
 
-    private static Set<String> supportedApplicationIds() {
-        return Collections.singleton("amzn1.ask.skill.51d5e161-2205-44b0-a0ea-aaf646d40a1e");
+    private static AlexaSkill skillSetup(MenuStore menuStore, ProfileService profileService) {
+        return Skills.standard()
+                .addRequestHandlers(
+                        new WelcomeHandler(),
+                        new HelpHandler(),
+                        new WhatsForDinnerHandler(profileService, menuStore)
+                )
+                .withSkillId(SkillIds.MENU)
+                // .withSkillId(SkillIds.CHEF)
+                .build();
     }
 
-    private static MenuRepository menuRepository(ProfileService profileService) {
-        String menuRepoId = System.getenv().get("menuRepository");
-        if (menuRepoId == null || menuRepoId.equals("dynamodb")) {
-            return new DynamoDBMenuRepository(profileService);
-        } else {
-            return new ApiGwMenuRepository();
-        }
-    }
 }
