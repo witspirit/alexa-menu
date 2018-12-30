@@ -8,7 +8,7 @@ import com.amazon.ask.request.Predicates;
 
 import java.util.Optional;
 
-public class WelcomeHandler implements RequestHandler {
+public class LaunchHandler implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput input) {
@@ -17,6 +17,6 @@ public class WelcomeHandler implements RequestHandler {
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-        return new AlexaResponses(input.getResponseBuilder()).welcome();
+        return new AlexaResponses(input.getResponseBuilder()).start();
     }
 }

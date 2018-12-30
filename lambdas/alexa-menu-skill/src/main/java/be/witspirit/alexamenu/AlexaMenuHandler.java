@@ -26,9 +26,12 @@ public class AlexaMenuHandler extends SkillStreamHandler {
     private static AlexaSkill skillSetup(MenuStore menuStore, ProfileService profileService) {
         return Skills.standard()
                 .addRequestHandlers(
-                        new WelcomeHandler(),
+                        new LaunchHandler(),
                         new HelpHandler(),
-                        new WhatsForDinnerHandler(profileService, menuStore)
+                        new WhatsForDinnerHandler(profileService, menuStore),
+                        new WrapUpHandler(),
+                        new ContinueHandler(),
+                        new FallbackHandler()
                 )
                 .withSkillId(SkillIds.MENU)
                 // .withSkillId(SkillIds.CHEF)

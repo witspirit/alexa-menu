@@ -14,6 +14,8 @@ import java.util.Optional;
 public class AlexaResponses {
     private static final Logger LOG = LoggerFactory.getLogger(AlexaResponses.class);
 
+    private static final String CARD_TITLE = "Dinner Wizard";
+
     private final ResponseBuilder responseBuilder;
 
     public AlexaResponses(ResponseBuilder responseBuilder) {
@@ -25,8 +27,8 @@ public class AlexaResponses {
      *
      * @return SpeechletResponse spoken and visual response for the given intent
      */
-    public Optional<Response> welcome() {
-        return reprompt("Welcome to the Chef skill, you can ask 'what's for dinner'");
+    public Optional<Response> start() {
+        return reprompt("yes ?");
     }
 
     /**
@@ -41,7 +43,7 @@ public class AlexaResponses {
     private Optional<Response> reprompt(String speechText) {
         LOG.debug("Reprompt : {}", speechText);
         return responseBuilder.withSpeech(speechText)
-                .withSimpleCard("Chef", speechText)
+                .withSimpleCard(CARD_TITLE, speechText)
                 .withReprompt(speechText)
                 .build();
     }
@@ -63,7 +65,8 @@ public class AlexaResponses {
     private ResponseBuilder tell(String speechText) {
         LOG.debug("Tell: {}", speechText);
         return responseBuilder.withSpeech(speechText)
-                .withSimpleCard("Chef", speechText)
+                .withSimpleCard(CARD_TITLE, speechText)
+                .withReprompt("Anything else ?")
                 ;
     }
 
@@ -71,4 +74,13 @@ public class AlexaResponses {
         return tell("Please link an Amazon account to get your personal menu storage").withLinkAccountCard().build();
     }
 
+    public Optional<Response> bye() {
+        return responseBuilder.withSpeech("Bye")
+                .withSimpleCard(CARD_TITLE, "Happy to be of assistance")
+                .build();
+    }
+
+    public Optional<Response> fallback() {
+        return reprompt("Couldn't quite make out what you meant. You can ask me 'what's for dinner'");
+    }
 }
