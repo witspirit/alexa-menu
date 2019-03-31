@@ -42,7 +42,11 @@
         },
         {
           "name": "AMAZON.StopIntent",
-          "samples": []
+          "samples": [
+            "thank you",
+            "thanks",
+            "bye"
+          ]
         }
       ],
       "types": []
