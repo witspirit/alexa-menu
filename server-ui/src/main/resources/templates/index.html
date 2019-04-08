@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- include css in the header -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ui.css}"/>
+    <title>Menu UI</title>
+</head>
+<body>
+<h1>Menu UI</h1>
+
+<h2>Authentication</h2>
+
+<ul>
+    <li>Authorities: [[${authentication.authorities}]]</li>
+    <li>Credentials: [[${authentication.credentials}]]</li>
+    <li>Principal: [[${authentication.principal}]]</li>
+    <li>Details: [[${authentication.details}]]</li>
+</ul>
+
+
+</body>
+</html>

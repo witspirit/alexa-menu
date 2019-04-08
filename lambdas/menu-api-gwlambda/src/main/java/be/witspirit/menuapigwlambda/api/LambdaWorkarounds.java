@@ -4,7 +4,7 @@ import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Web request invocation through the Serverlass Java adapter with the Proxy integrtion from API GW seems
+ * Web request invocation through the Serverless Java adapter with the Proxy integration from API GW seems
  * to behave slightly different from the normal Tomcat deployment.
  *
  * Haven't investigated the sources of these issues properly, as I expect they can be fixed properly in the

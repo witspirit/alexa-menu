@@ -1,0 +1,15 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          DevoxxShowcase:
+            provider: auth0
+            client-id: dummy-id
+            client-secret: dummy-secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, profile, email
+        provider:
+          auth0:
+            issuer-uri: https://witspirit.eu.auth0.com/
